@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import TextNode from './TextNode.vue'
 import bus from '../bus.js'
-import term from '../term.js'
+import term from '../data/term.js'
 
 const data = ref(term.data)
 const race = ref({

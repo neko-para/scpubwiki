@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import CardShow from './CardShow.vue'
 const props = defineProps({
-  data: Array
+  data: Array,
+  selector: Function
 })
 const race = ref({
   T: '人族',
@@ -14,9 +15,11 @@ const race = ref({
 
 <template>
   <v-expansion-panels multiple>
-    <v-expansion-panel v-for="(d, i) in props.data" :key="i">
-      <v-expansion-panel-title>{{ d.name }} {{ race[d.race] }} {{ d.level }}</v-expansion-panel-title>
-      <card-show :data="d"></card-show>
-    </v-expansion-panel>
+    <template v-for="(d, i) in props.data" :key="i">
+      <v-expansion-panel>
+        <v-expansion-panel-title>{{ d.name }} {{ race[d.race] }} {{ d.level }}</v-expansion-panel-title>
+        <card-show :data="d"></card-show>
+      </v-expansion-panel>
+    </template>
   </v-expansion-panels>
 </template>

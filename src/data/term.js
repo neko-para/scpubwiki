@@ -1,8 +1,8 @@
-import General from './data/General/term.js'
-import Terran from './data/Terran/term.js'
-import Protoss from './data/Protoss/term.js'
-import Zerg from './data/Zerg/term.js'
-import Middle from './data/Middle/term.js'
+import General from './General/term.js'
+import Terran from './Terran/term.js'
+import Protoss from './Protoss/term.js'
+import Zerg from './Zerg/term.js'
+import Middle from './Middle/term.js'
 
 const res = {
   data: {

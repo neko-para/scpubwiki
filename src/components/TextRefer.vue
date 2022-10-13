@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import TextNode from './TextNode.vue'
-import data from '../term.js'
+import data from '../data/term.js'
 import bus from '../bus.js'
 const props = defineProps({
   text: String

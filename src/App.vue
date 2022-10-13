@@ -1,41 +1,38 @@
 <script setup>
-import { ref } from 'vue'
-
-import CardList from './components/CardList.vue'
+import { ref } from 'vue';
+import CardListAll from './components/CardListAll.vue'
 import ReferList from './components/ReferList.vue'
-import data from './data.js'
 
-const cardData = ref(data.data)
-const race = ref({
-  T: '人族',
-  P: '神族',
-  Z: '虫族',
-  M: '中立'
-})
-
+const tab = ref(null)
 </script>
 
 <template>
   <v-app>
+    <v-app-bar>
+      <v-app-bar-title>星际酒馆 非官方Wiki</v-app-bar-title>
+    </v-app-bar>
     <v-main>
       <v-container>
         <v-row>
-          <v-col cols="6">
-            <v-expansion-panels multiple>
-              <v-expansion-panel v-for="(d, r) in cardData" :key="r">
-                <v-expansion-panel-title>
-                  {{ race[r] }}
-                </v-expansion-panel-title>
-                <v-expansion-panel-text>
-                  <card-list :data="d" />
-                </v-expansion-panel-text>
-              </v-expansion-panel>
-            </v-expansion-panels>
+          <v-col cols="9">
+            <v-card elevation="10">
+              <v-tabs v-model="tab">
+                <v-tab value="card">卡牌</v-tab>
+                <v-tab value="unit">单位</v-tab>
+              </v-tabs>
+              <v-window v-model="tab">
+                <v-window-item value="card">
+                  <card-list-all></card-list-all>
+                </v-window-item>
+                <v-window-item value="unit">
+                  123
+                </v-window-item>
+              </v-window>
+            </v-card>
           </v-col>
           <v-col cols="3">
             <refer-list></refer-list>
           </v-col>
-          <v-col cols="3"></v-col>
         </v-row>
       </v-container>
     </v-main>

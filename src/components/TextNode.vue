@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
 import TextRefer from './TextRefer.vue'
+
 const props = defineProps({
   text: String,
   notip: {

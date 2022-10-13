@@ -31,8 +31,7 @@ let isGold = ref(false)
         <v-col>
           卡面描述
         </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="3">
+        <v-col>
           <v-switch :disabled="props.data.attr?.gold" v-model="isGold" color="primary" label="三连"></v-switch>
         </v-col>
       </v-row>
