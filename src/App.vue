@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import CardListAll from './components/CardListAll.vue'
 import ReferList from './components/ReferList.vue'
+import AboutDialog from './components/AboutDialog.vue';
 
 const tab = ref(null)
 </script>
@@ -10,6 +11,8 @@ const tab = ref(null)
   <v-app>
     <v-app-bar>
       <v-app-bar-title>星际酒馆 非官方Wiki</v-app-bar-title>
+      <v-spacer></v-spacer>
+      <about-dialog></about-dialog>
     </v-app-bar>
     <v-main>
       <v-container>
