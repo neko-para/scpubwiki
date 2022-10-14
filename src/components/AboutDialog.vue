@@ -18,9 +18,9 @@ const show = ref(false)
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-card-action>
+        <v-card-actions>
           <v-btn @click="show = false">关闭</v-btn>
-        </v-card-action>
+        </v-card-actions>
       </v-card-actions>
     </v-card>
   </v-dialog>
