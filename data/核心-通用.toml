@@ -1,7 +1,8 @@
 race = "G"
 
 [info]
-race = "TPZNG"
+race = [ "T", "P", "Z", "N", "G" ]
+pack = [ "核心", "天空之怒", "并肩作战", "拉克希尔", "短兵相接", "快速启动", "独辟蹊径", "军备竞赛" ]
 
 [attr]
 "$order" = ["rare", "gold", "insert", "origin", "dark", "void"]

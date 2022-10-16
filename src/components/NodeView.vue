@@ -112,6 +112,12 @@ function reqClose() {
           </v-card>
         </v-card-text>
       </template>
+      <template v-if="node.pack !== '核心'">
+          <v-divider></v-divider>
+          <v-card-text>
+            来自拓展包: {{ node.pack }}
+          </v-card-text>
+        </template>
     </template>
     <template v-else-if="node.type === 'term'">
       <v-card-title class="text-h5">

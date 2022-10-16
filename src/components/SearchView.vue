@@ -6,7 +6,7 @@ import raw from '../pubdata.js'
 const { attr, info, upgradeCategory, tr } = raw
 
 const categorySelector = ref('card')
-const races = info.race.split('')
+const packSelector = ref('none')
 const raceSelector = ref('none')
 const starTick = {}
 for (let i = 0; i <= 7; i++) {
@@ -15,6 +15,10 @@ for (let i = 0; i <= 7; i++) {
 const cateSelector = ref('none')
 const starRange = ref([0, 7])
 const attrSelector = ref('none')
+
+function testSelector (value, selector) {
+  return selector !== 'none' && selector !== value
+}
 
 const searchResult = computed(() => {
   const res = []
@@ -26,12 +30,15 @@ const searchResult = computed(() => {
     if (d.type !== categorySelector.value) {
       continue
     }
+    if (testSelector(d.pack, packSelector.value)) {
+      continue
+    }
     if (d.type === 'upgrade') {
-      if (cateSelector.value !== d.cate && cateSelector.value !== 'none') {
+      if (testSelector(d.cate, cateSelector.value)) {
         continue
       }
     } else {
-      if (raceSelector.value !== d.race && raceSelector.value !== 'none') {
+      if (testSelector(d.race, raceSelector.value)) {
         continue
       }
     }
@@ -64,17 +71,22 @@ const searchResult = computed(() => {
           <v-divider></v-divider>
           <v-radio-group v-model="raceSelector" inline hide-details>
             <v-radio value="none" label="全部"></v-radio>
-            <v-radio v-for="(k, i) in races" :key="`Race-${i}`" :value="k" :label="tr[k]"></v-radio>
+            <v-radio v-for="(k, i) in info.race" :key="`Race-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
         </template>
         <template v-else>
           <v-divider></v-divider>
-          <v-radio-group v-model="cateSelector" inline hide-details>
+          <v-radio-group v-model="cateSelector" inline hide-details class="radios">
             <v-radio value="none" label="全部"></v-radio>
             <v-radio v-for="(k, i) in upgradeCategory.$order" :key="`Cate-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
         </template>
         <template v-if="categorySelector === 'card'">
+          <v-divider></v-divider>
+          <v-radio-group v-model="packSelector" inline hide-details class="radios">
+            <v-radio value="none" label="全部"></v-radio>
+            <v-radio v-for="(k, i) in info.pack" :key="`Pack-${i}`" :value="k" :label="k"></v-radio>
+          </v-radio-group>
           <v-divider></v-divider>
           <v-range-slider min="0" max="7" step="1" :ticks="starTick" show-ticks="always" v-model="starRange"></v-range-slider>
           <v-divider></v-divider>
@@ -87,3 +99,9 @@ const searchResult = computed(() => {
     </v-card>
   </NodeList>
 </template>
+
+<style>
+.radios .v-selection-control-group  {
+  flex-flow: wrap;
+}
+</style>

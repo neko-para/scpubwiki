@@ -36,6 +36,7 @@ function processCards (obj) {
   obj.card.forEach(c => {
     const m = /^(\d)(.+)$/.exec(c.name)
     c.type = 'card'
+    c.pack = c.pack || obj.pack
     c.race = c.race || obj.race
     c.level = Number(m[1])
     c.name = m[2]
@@ -71,6 +72,7 @@ function processTerms (obj) {
   }
   obj.term.forEach(t => {
     t.type = 'term'
+    t.pack = t.pack || obj.pack
     t.race = t.race || obj.race
   })
 }
@@ -81,6 +83,7 @@ function processUnits (obj) {
   }
   obj.unit.forEach(u => {
     u.type = 'unit'
+    u.pack = u.pack || obj.pack
     u.race = u.race || obj.race
   })
 }
@@ -91,11 +94,13 @@ function processUpgrades (obj) {
   }
   obj.upgrade.forEach(u => {
     u.type = 'upgrade'
+    u.pack = u.pack || obj.pack
   })
 }
 
 async function read (path) {
   const obj = await readTOML(path)
+  obj.pack = obj.pack || "核心"
   processCards(obj)
   processTerms(obj)
   processUnits(obj)
