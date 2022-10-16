@@ -298,15 +298,15 @@ valu = 425
 name = "侦察机"
 valu =  250
 
-[[name]]
+[[unit]]
 name = "莫汗达尔"
 valu = 600
 
-[[name]]
+[[unit]]
 name = "泰坦棱镜"
 valu = 500
 
-[[name]]
+[[unit]]
 name = "菲尼克斯"
 valu = 1000
 
@@ -314,11 +314,11 @@ valu = 1000
 name = "旋风狂热者"
 valu = 100
 
-[[name]]
+[[unit]]
 name = "科罗拉里昂"
 valu = 1500
 
-[[name]]
+[[unit]]
 name = "卡尔达利斯"
 valu = 800
 
@@ -359,7 +359,7 @@ valu = 250
 name = "黑暗圣堂武士(精英)"
 valu = 375
 
-[[name]]
+[[unit]]
 name = "巨像(精英)"
 valu = 800
 
