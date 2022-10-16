@@ -12,8 +12,8 @@ jobs:
 
       - name: Build
         run: |
-          node ./generate.js
           npm install
+          npm run generate
           npm run build
 
       - name: Deploy
