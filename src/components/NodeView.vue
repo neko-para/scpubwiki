@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import ReferText from './ReferText.vue'
 import raw from '../pubdata.js'
+import { data } from '../data.js'
 import bus from '../bus'
 const { attr, tr } = raw
 
@@ -142,6 +143,18 @@ function reqClose() {
       <v-card-text>
         价值 {{ node.valu }}
       </v-card-text>
+      <template v-if="node.name.endsWith('(精英)')">
+        <v-divider></v-divider>
+        <v-card-text>
+          <refer-text :text="`作为${node.name.substring(0, node.name.length - 4)}的精英变种`"></refer-text>
+        </v-card-text>
+      </template>
+      <template v-else-if="`${node.name}(精英)` in data">
+        <v-divider></v-divider>
+        <v-card-text>
+          <refer-text :text="`存在精英变种${node.name}(精英)`"></refer-text>
+        </v-card-text>
+      </template>
       <template v-if="node.bref">
         <v-divider></v-divider>
         <v-card-text>
