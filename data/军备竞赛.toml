@@ -48,5 +48,9 @@ name = "末日巨兽"
 valu = 3000
 
 [[unit]]
+name = "恶蝠游骑兵"
+valu = 650
+
+[[unit]]
 name = "死亡之握水晶"
 valu = 1000

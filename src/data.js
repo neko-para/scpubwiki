@@ -49,12 +49,13 @@ export function splitText (text) {
     }
     const outer = result[i]
     for (let j = i + 1; j < result.length; j++) {
-      if (!(result[j].drop) && outer.start >= result[j].start && result[j].end <= outer.end) {
+      if (!(result[j].drop) && outer.start <= result[j].start && result[j].end <= outer.end) {
         result[j].drop = true
       }
     }
   }
   result = result.filter(r => !r.drop)
+  result.sort((a, b) => a.end - b.end)
 
   let ps = 0
   const secs = []
