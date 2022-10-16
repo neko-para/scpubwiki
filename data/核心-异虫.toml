@@ -243,6 +243,10 @@ name = "感染者"
 valu = 250
 
 [[unit]]
+name = "畸变体"
+valu = 400
+
+[[unit]]
 name = "腐化者"
 valu = 250
 
