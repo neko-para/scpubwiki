@@ -85,6 +85,7 @@ function processUnits (obj) {
     u.type = 'unit'
     u.pack = u.pack || obj.pack
     u.race = u.race || obj.race
+    u.utyp = u.utyp || 'normal'
   })
 }
 

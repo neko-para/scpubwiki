@@ -41,6 +41,7 @@ desc = [
 [[unit]]
 name = "虚空裂隙"
 valu = 0
+utyp = "spbd"
 
 [[unit]]
 name = "百夫长"
