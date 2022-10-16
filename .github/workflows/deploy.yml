@@ -12,6 +12,7 @@ jobs:
 
       - name: Build
         run: |
+          node ./generate.js
           npm install
           npm run build
 
