@@ -1,10 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
-import NodeView from './NodeView.vue'
 import NodeList from './NodeList.vue'
 import { data } from '../data.js'
 import raw from '../pubdata.js'
-const { attr, info, tr } = raw
+const { attr, info, upgradeCategory, tr } = raw
 
 const categorySelector = ref('card')
 const races = info.race.split('')
@@ -13,6 +12,7 @@ const starTick = {}
 for (let i = 0; i <= 7; i++) {
   starTick[i] = String(i)
 }
+const cateSelector = ref('none')
 const starRange = ref([0, 7])
 const attrSelector = ref('none')
 
@@ -26,8 +26,14 @@ const searchResult = computed(() => {
     if (d.type !== categorySelector.value) {
       continue
     }
-    if (raceSelector.value !== d.race && raceSelector.value !== 'none') {
-      continue
+    if (d.type === 'upgrade') {
+      if (cateSelector.value !== d.cate && cateSelector.value !== 'none') {
+        continue
+      }
+    } else {
+      if (raceSelector.value !== d.race && raceSelector.value !== 'none') {
+        continue
+      }
     }
     if (d.type === 'card') {
       if (starRange.value[0] > d.level || starRange.value[1] < d.level) {
@@ -52,12 +58,22 @@ const searchResult = computed(() => {
           <v-radio value="card" label="卡牌"></v-radio>
           <v-radio value="unit" label="单位"></v-radio>
           <v-radio value="term" label="术语"></v-radio>
+          <v-radio value="upgrade" label="升级"></v-radio>
         </v-radio-group>
-        <v-divider></v-divider>
-        <v-radio-group v-model="raceSelector" inline hide-details>
-          <v-radio value="none" label="全部"></v-radio>
-          <v-radio v-for="(k, i) in races" :key="`Race-${i}`" :value="k" :label="tr[k]"></v-radio>
-        </v-radio-group>
+        <template v-if="categorySelector !== 'upgrade'">
+          <v-divider></v-divider>
+          <v-radio-group v-model="raceSelector" inline hide-details>
+            <v-radio value="none" label="全部"></v-radio>
+            <v-radio v-for="(k, i) in races" :key="`Race-${i}`" :value="k" :label="tr[k]"></v-radio>
+          </v-radio-group>
+        </template>
+        <template v-else>
+          <v-divider></v-divider>
+          <v-radio-group v-model="cateSelector" inline hide-details>
+            <v-radio value="none" label="全部"></v-radio>
+            <v-radio v-for="(k, i) in upgradeCategory.$order" :key="`Cate-${i}`" :value="k" :label="tr[k]"></v-radio>
+          </v-radio-group>
+        </template>
         <template v-if="categorySelector === 'card'">
           <v-divider></v-divider>
           <v-range-slider min="0" max="7" step="1" :ticks="starTick" show-ticks="always" v-model="starRange"></v-range-slider>

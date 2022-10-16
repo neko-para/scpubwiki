@@ -44,7 +44,7 @@ function reqClose() {
 
 <template>
   <v-card :elevation="elv" @mouseover="elv = 20" @mouseout="elv = 5">
-    <v-card-actions>
+    <v-card-actions v-if="props.node.type === 'card' || props.closable">
       <v-spacer></v-spacer>
       <v-btn v-if="props.node.type === 'card'" @click="bref = !bref">
         {{ bref ? '展开' : '收起' }}
@@ -142,6 +142,21 @@ function reqClose() {
           <refer-text :text="node.bref"></refer-text>
         </v-card-text>
       </template>
+      <template v-if="node.rmrk">
+        <v-divider></v-divider>
+        <v-card-text>
+          <refer-text :text="node.rmrk"></refer-text>
+        </v-card-text>
+      </template>
+    </template>
+    <template v-else-if="node.type === 'upgrade'">
+      <v-card-title class="text-h5">
+        {{ node.name }}
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text>
+        <refer-text :text="node.desc"></refer-text>
+      </v-card-text>
       <template v-if="node.rmrk">
         <v-divider></v-divider>
         <v-card-text>

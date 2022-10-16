@@ -36,15 +36,17 @@ function processCards (obj) {
   obj.card.forEach(c => {
     const m = /^(\d)(.+)$/.exec(c.name)
     c.type = 'card'
-    c.race = obj.race
+    c.race = c.race || obj.race
     c.level = Number(m[1])
     c.name = m[2]
 
     const nunit = {}
-    c.unit.split(/\s*,\s*/).forEach(s => {
-      const mm = /^(\d+)(\D+)$/.exec(s)
-      nunit[mm[2]] = Number(mm[1])
-    })
+    if (c.unit !== '') {
+      c.unit.split(/\s*,\s*/).forEach(s => {
+        const mm = /^(\d+)(\D+)$/.exec(s)
+        nunit[mm[2]] = Number(mm[1])
+      })
+    }
     c.unit = nunit
 
     const ndesc = []
@@ -69,7 +71,7 @@ function processTerms (obj) {
   }
   obj.term.forEach(t => {
     t.type = 'term'
-    t.race = obj.race
+    t.race = t.race || obj.race
   })
 }
 
@@ -79,7 +81,16 @@ function processUnits (obj) {
   }
   obj.unit.forEach(u => {
     u.type = 'unit'
-    u.race = obj.race
+    u.race = u.race || obj.race
+  })
+}
+
+function processUpgrades (obj) {
+  if (!obj.upgrade) {
+    return
+  }
+  obj.upgrade.forEach(u => {
+    u.type = 'upgrade'
   })
 }
 
@@ -88,11 +99,16 @@ async function read (path) {
   processCards(obj)
   processTerms(obj)
   processUnits(obj)
+  processUpgrades(obj)
   return {
     card: obj.card || [],
     term: obj.term || [],
     unit: obj.unit || [],
     attr: obj.attr || {
+      $order: []
+    },
+    upgrade: obj.upgrade || [],
+    upgradeCategory: obj.upgradeCategory || {
       $order: []
     },
     info: obj.info || {},
@@ -108,6 +124,10 @@ async function main () {
     attr: {
       $order: []
     },
+    upgrade: [],
+    upgradeCategory: {
+      $order: []
+    },
     info: {},
     tr: {}
   }
@@ -115,7 +135,7 @@ async function main () {
     if (!d.endsWith('.toml')) {
       continue
     }
-    const { card, term, unit, attr, info, tr } = await read(`./data/${d}`)
+    const { card, term, unit, attr, upgrade, upgradeCategory, info, tr } = await read(`./data/${d}`)
     result.card.push(...card)
     result.term.push(...term)
     result.unit.push(...unit)
@@ -124,6 +144,13 @@ async function main () {
     result.attr = {
       ...result.attr,
       ...attr
+    }
+    result.upgrade.push(...upgrade)
+    result.upgradeCategory.$order.push(...upgradeCategory.$order)
+    delete upgradeCategory.$order
+    result.upgradeCategory = {
+      ...result.upgradeCategory,
+      ...upgradeCategory
     }
     result.info = {
       ...result.info,

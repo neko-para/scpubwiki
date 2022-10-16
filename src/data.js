@@ -1,6 +1,6 @@
 import AhoCorasick from 'ahocorasick'
 import raw from './pubdata.js'
-const { card, term, unit } = raw
+const { card, term, unit, upgrade } = raw
 
 export const data = {}
 
@@ -21,7 +21,7 @@ function putIndex (entry) {
   }
 }
 
-[card, term, unit].forEach(es => {
+[card, term, unit, upgrade].forEach(es => {
   es.forEach(putIndex)
 })
 
