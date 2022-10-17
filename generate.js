@@ -77,7 +77,6 @@ function processTerms (obj) {
   }
   obj.term.forEach(t => {
     t.type = 'term'
-    t.pack = t.pack || obj.pack
     t.race = t.race || obj.race
   })
 }
@@ -88,7 +87,6 @@ function processUnits (obj) {
   }
   obj.unit.forEach(u => {
     u.type = 'unit'
-    u.pack = u.pack || obj.pack
     u.race = u.race || obj.race
     u.utyp = u.utyp || 'normal'
   })
@@ -100,7 +98,6 @@ function processUpgrades (obj) {
   }
   obj.upgrade.forEach(u => {
     u.type = 'upgrade'
-    u.pack = u.pack || obj.pack
   })
 }
 

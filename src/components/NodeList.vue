@@ -7,6 +7,7 @@ const perPage = 10
 const props = defineProps({
   nodes: Array
 })
+
 const nPage = computed(() => {
   return Math.ceil(props.nodes.length / perPage)
 })
@@ -39,6 +40,11 @@ onBeforeUpdate(() => {
     <v-row v-for="i in pageCount" :key="`${pageBegin + i}`">
       <v-col>
         <node-view :node="nodes[pageBegin + i - 1]" v-bind="$attrs"></node-view>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-pagination v-model="page" :length="nPage"></v-pagination>
       </v-col>
     </v-row>
   </v-container>

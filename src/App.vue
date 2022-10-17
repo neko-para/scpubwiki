@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed } from 'vue'
-import NodeView from './components/NodeView.vue'
 import NodeList from './components/NodeList.vue'
 import AboutDialog from './components/AboutDialog.vue'
 import SearchView from './components/SearchView.vue'
@@ -43,6 +42,11 @@ bus.on('requestClose', n => {
   }
 })
 
+function goUp() {
+  console.log(123)
+  document.getElementById('topAnchor').scrollIntoView({behavior: 'smooth'})
+}
+
 </script>
 
 <template>
@@ -53,6 +57,7 @@ bus.on('requestClose', n => {
       <about-dialog></about-dialog>
     </v-app-bar>
     <v-main>
+      <div id="topAnchor"></div>
       <v-container>
         <v-row>
           <v-col cols="10">
@@ -61,16 +66,27 @@ bus.on('requestClose', n => {
         </v-row>
       </v-container>
       <node-list :nodes="referNodes" class="right-panel" :brief="true" :closable="true"></node-list>
+      <v-btn icon="mdi-chevron-up" class="fab" @click="goUp()"></v-btn>
     </v-main>
   </v-app>
 </template>
 
 <style scoped>
+#topAnchor {
+  position: absolute;
+  top: 0;
+}
 .right-panel {
   position: fixed;
   top: 64px;
   right: 0;
   width: 25%;
+}
+
+.fab {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
 }
 
 </style>

@@ -30,7 +30,7 @@ const searchResult = computed(() => {
     if (d.type !== categorySelector.value) {
       continue
     }
-    if (testSelector(d.pack, packSelector.value)) {
+    if (d.type === 'card' && testSelector(d.pack, packSelector.value)) {
       continue
     }
     if (d.type === 'upgrade') {
@@ -42,7 +42,7 @@ const searchResult = computed(() => {
         continue
       }
     }
-    if (d.type === 'card') {
+    if (d.type === 'card' && ['none', '核心'].includes(packSelector.value)) {
       if (starRange.value[0] > d.level || starRange.value[1] < d.level) {
         continue
       }
@@ -51,6 +51,15 @@ const searchResult = computed(() => {
       }
     }
     res.push(d)
+  }
+  if (categorySelector.value === 'card') {
+    res.sort((a, b) => {
+      if (a.level !== b.level) {
+        return a.level - b.level
+      } else {
+        return a.name.localeCompare(b.name)
+      }
+    })
   }
   return res
 })
@@ -61,7 +70,7 @@ const searchResult = computed(() => {
   <NodeList :nodes="searchResult">
     <v-card>
       <v-card-text>
-        <v-radio-group v-model="categorySelector" inline hide-details>
+        <v-radio-group color="primary" v-model="categorySelector" inline hide-details>
           <v-radio value="card" label="卡牌"></v-radio>
           <v-radio value="unit" label="单位"></v-radio>
           <v-radio value="term" label="术语"></v-radio>
@@ -69,28 +78,28 @@ const searchResult = computed(() => {
         </v-radio-group>
         <template v-if="categorySelector !== 'upgrade'">
           <v-divider></v-divider>
-          <v-radio-group v-model="raceSelector" inline hide-details>
+          <v-radio-group color="secondary" v-model="raceSelector" inline hide-details>
             <v-radio value="none" label="全部"></v-radio>
             <v-radio v-for="(k, i) in info.race" :key="`Race-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
         </template>
         <template v-else>
           <v-divider></v-divider>
-          <v-radio-group v-model="cateSelector" inline hide-details class="radios">
+          <v-radio-group color="secondary" v-model="cateSelector" inline hide-details class="radios">
             <v-radio value="none" label="全部"></v-radio>
             <v-radio v-for="(k, i) in upgradeCategory.$order" :key="`Cate-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
         </template>
         <template v-if="categorySelector === 'card'">
           <v-divider></v-divider>
-          <v-radio-group v-model="packSelector" inline hide-details class="radios">
+          <v-radio-group color="secondary" v-model="packSelector" inline hide-details class="radios">
             <v-radio value="none" label="全部"></v-radio>
             <v-radio v-for="(k, i) in info.pack" :key="`Pack-${i}`" :value="k" :label="k"></v-radio>
           </v-radio-group>
           <v-divider></v-divider>
-          <v-range-slider min="0" max="7" step="1" :ticks="starTick" show-ticks="always" v-model="starRange"></v-range-slider>
+          <v-range-slider :disabled="!['none', '核心'].includes(packSelector)" color="secondary" min="0" max="7" step="1" :ticks="starTick" show-ticks="always" v-model="starRange"></v-range-slider>
           <v-divider></v-divider>
-          <v-radio-group v-model="attrSelector" inline hide-details>
+          <v-radio-group :disabled="!['none', '核心'].includes(packSelector)" color="secondary" v-model="attrSelector" inline hide-details>
             <v-radio value="none" label="全部"></v-radio>
             <v-radio v-for="(k, i) in attr.$order" :key="`Attr-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
