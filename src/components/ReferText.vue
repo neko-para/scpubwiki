@@ -18,8 +18,6 @@ const nodes = computed(() => {
   return res
 })
 
-// console.log(nodes.value)
-
 const rdata = ref(data)
 
 function request (node) {

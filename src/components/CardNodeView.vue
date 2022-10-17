@@ -53,6 +53,12 @@ function attrOf (node) {
         </v-card-text>
       </template>
     </template>
+    <template v-if="node.rmrk">
+      <v-divider></v-divider>
+      <v-card-text>
+        <refer-text :text="node.rmrk"></refer-text>
+      </v-card-text>
+    </template>
   </template>
   <template v-else>
     <v-card-title>
@@ -85,6 +91,15 @@ function attrOf (node) {
           </v-card-text>
         </template>
       </v-card>
+    </v-card-text>
+  </template>
+  <template v-if="node.rmrk">
+    <v-divider></v-divider>
+    <v-card-title>
+      备注
+    </v-card-title>
+    <v-card-text>
+      <refer-text :text="node.rmrk"></refer-text>
     </v-card-text>
   </template>
   <template v-if="node.pack !== '核心'">
