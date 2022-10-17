@@ -8,11 +8,15 @@ async function readTOML (path) {
 
 function splitDesc (str) {
   const d1 = [], d3 = []
-  str.split(/(?={\d+,\d+})|(?<={\d+,\d+})/).forEach(node => {
+  str.split(/(?={.*?\|.*?})|(?<={.*?\|.*?})/).forEach(node => {
     if (node[0] === '{') {
-      const m = /{(\d+),(\d+)}/.exec(node)
-      d1.push(m[1])
-      d3.push(m[2])
+      const m = /{(.*?)\|(.*?)}/.exec(node)
+      if (m[1].length > 0) {
+        d1.push(`<${m[1]}>`)
+      }
+      if (m[2].length > 0) {
+        d3.push(`<${m[2]}>`)
+      }
     } else {
       d1.push(node)
       d3.push(node)
@@ -58,6 +62,7 @@ function processCards (obj) {
         if (d[0][0] === '@') {
           ndesc.push(unpackDesc(d, obj.function))
         } else {
+          console.log(d)
           ndesc.push(d)
         }
       }

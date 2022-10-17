@@ -90,10 +90,10 @@ const searchResult = computed(() => {
           <v-divider></v-divider>
           <v-range-slider min="0" max="7" step="1" :ticks="starTick" show-ticks="always" v-model="starRange"></v-range-slider>
           <v-divider></v-divider>
-        <v-radio-group v-model="attrSelector" inline hide-details>
-          <v-radio value="none" label="全部"></v-radio>
-          <v-radio v-for="(k, i) in attr.$order" :key="`Attr-${i}`" :value="k" :label="tr[k]"></v-radio>
-        </v-radio-group>
+          <v-radio-group v-model="attrSelector" inline hide-details>
+            <v-radio value="none" label="全部"></v-radio>
+            <v-radio v-for="(k, i) in attr.$order" :key="`Attr-${i}`" :value="k" :label="tr[k]"></v-radio>
+          </v-radio-group>
         </template>
       </v-card-text>
     </v-card>

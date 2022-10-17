@@ -27,7 +27,7 @@ function putIndex (entry) {
 
 const searcher = new AhoCorasick(Object.keys(data))
 
-export function splitText (text) {
+function splitTextPiece (text) {
   let result = searcher.search(text)
     .map(res => {
       let r = ''
@@ -79,4 +79,20 @@ export function splitText (text) {
     })
   }
   return secs
+}
+
+export function splitText (text) {
+  const result = []
+  text.split(/(?=<.+?>)|(?<=<.+?>)/).forEach(s => {
+    const m = /<(.+?)>/.exec(s)
+    if (m) {
+      result.push(...splitTextPiece(m[1]).map(n => {
+        n.m = true
+        return n
+      }))
+    } else {
+      result.push(...splitTextPiece(s))
+    }
+  })
+  return result
 }

@@ -60,7 +60,7 @@ bus.on('requestClose', n => {
           </v-col>
         </v-row>
       </v-container>
-      <node-list :nodes="referNodes" class="right-panel" :brief="false" :closable="true"></node-list>
+      <node-list :nodes="referNodes" class="right-panel" :brief="true" :closable="true"></node-list>
     </v-main>
   </v-app>
 </template>

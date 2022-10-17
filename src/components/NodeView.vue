@@ -9,7 +9,7 @@ const props = defineProps({
   node: Object,
   brief: {
     type: Boolean,
-    default: true
+    default: false
   },
   closable: {
     type: Boolean,

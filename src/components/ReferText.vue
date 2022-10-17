@@ -30,17 +30,17 @@ function request (node) {
   <span>
     <span v-for="(node, idx) in nodes" :key="idx">
       <br v-if="node.t === 'br'">
-      <span v-else-if="node.t === 'str'">{{ node.s }}</span>
+      <span v-else-if="node.t === 'str'" :class="{ modified: node.m }">{{ node.s }}</span>
       <template v-else>
         <v-tooltip location="bottom" v-if="rdata[node.s]?.bref">
           <template v-slot:activator="{ props: p }">
-            <span v-bind="p" @click="request(node)" class="ref">
+            <span v-bind="p" @click="request(node)" :class="{ ref: true, modified: node.m }">
               {{ node.s }}
             </span>
           </template>
           <span>{{ rdata[node.s].bref }}</span>
         </v-tooltip>
-        <span v-else @click="request(node)" class="ref">
+        <span v-else @click="request(node)" :class="{ ref: true, modified: node.m }">
           {{ node.s }}
         </span>
       </template>
@@ -49,6 +49,10 @@ function request (node) {
 </template>
 
 <style scoped>
+.modified {
+  color: red;
+}
+
 .ref {
   cursor: pointer;
   font-weight: bold;
