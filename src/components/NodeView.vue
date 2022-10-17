@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import ReferText from './ReferText.vue'
 import CardNodeView from './CardNodeView.vue'
 import UnitNodeView from './UnitNodeView.vue'
-import bus from '../bus'
+import bus from '../bus.js'
 
 const props = defineProps({
   node: Object,

@@ -1,8 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import ReferText from './ReferText.vue'
-import raw from '../pubdata.js'
-const { attr, tr } = raw
+import { getUnit, attr, tr } from '../data.js'
 
 const props = defineProps({
   node: Object,
@@ -24,6 +23,33 @@ function attrOf (node) {
   return a
 }
 
+function brefTexts () {
+  const t = []
+  t.push(Object.keys(props.node.unit)
+    .map(k => `${k} ${props.node.unit[k]}`).join(' '))
+  attrOf(props.node).forEach(a => {
+    t.push(attr[a])
+  })
+  props.node.desc.forEach(d => {
+    t.push(d[isGold.value ? 1 : 0])
+  })
+  if (props.node.rmrk) {
+    t.push(props.node.rmrk)
+  }
+  return t
+}
+
+function calcValue () {
+  let sum = 0
+  for (const k in props.node.unit) {
+    if (!getUnit(k)) {
+      console.log(k)
+    }
+    sum += getUnit(k).valu * props.node.unit[k]
+  }
+  return sum
+}
+
 </script>
 
 <template>
@@ -34,29 +60,10 @@ function attrOf (node) {
   </v-card-title>
   <v-divider></v-divider>
   <template v-if="bref">
-    <v-card-text>
-      <refer-text :text="`${Object.keys(node.unit).map(k => `${k} ${node.unit[k]}`).join(' ')}`"></refer-text>
-    </v-card-text>
-    <template v-if="node.attr || node.desc.length > 0">
-      <v-divider> </v-divider>
-      <template v-for="(at, idx) in attrOf(node)" :key="`Attr-${idx}`">
-        <v-divider v-if="idx > 0"></v-divider>
-        <v-card-text>
-          <refer-text :text="attr[at]"></refer-text>
-        </v-card-text>
-      </template>
-      <v-divider v-if="Object.keys(node.attr || {}).length > 0 && node.desc.length > 0"></v-divider>
-      <template v-for="(desc, idx) in node.desc" :key="`Desc-${idx}`">
-        <v-divider v-if="idx > 0"></v-divider>
-        <v-card-text>
-          <refer-text :text="desc[isGold ? 1 : 0]"></refer-text>
-        </v-card-text>
-      </template>
-    </template>
-    <template v-if="node.rmrk">
-      <v-divider></v-divider>
+    <template v-for="(s, i) in brefTexts()" :key="`Bref-${i}`">
+      <v-divider v-if="i > 0"></v-divider>
       <v-card-text>
-        <refer-text :text="node.rmrk"></refer-text>
+        <refer-text :text="s"></refer-text>
       </v-card-text>
     </template>
   </template>
@@ -65,9 +72,11 @@ function attrOf (node) {
       单位
     </v-card-title>
     <v-card-text>
+      <v-chip>
+        <refer-text :text="`总价值 ${calcValue()}`"></refer-text>
+      </v-chip>
       <v-chip v-for="(n, k) in node.unit" :key="`Unit-${k}`">
-        <refer-text :text="k"></refer-text>
-        {{ n }}
+        <refer-text :text="`${k} ${n}`"></refer-text>
       </v-chip>
     </v-card-text>
     <v-divider></v-divider>

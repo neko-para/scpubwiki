@@ -1,7 +1,11 @@
 import AhoCorasick from 'ahocorasick'
 import raw from './pubdata.js'
-const { card, term, unit, upgrade } = raw
+const { card, term, unit, upgrade, attr: a, tr: t, info: _i, upgradeCategory: uc } = raw
 
+export const attr = a
+export const tr = t
+export const info = _i
+export const upgradeCategory = uc
 export const data = {}
 
 function putIndex (entry) {
@@ -95,4 +99,19 @@ export function splitText (text) {
     }
   })
   return result
+}
+
+export function getUnit (key) {
+  const d = data[key]
+  if (!d) {
+    console.log(key)
+    return null
+  }
+  if (d.type === 'disa') {
+    return d['unit'] || null
+  } else if (d.type === 'unit') {
+    return d
+  } else {
+    return null
+  }
 }

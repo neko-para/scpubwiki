@@ -281,6 +281,10 @@ name = "劫掠者"
 valu = 125
 
 [[unit]]
+name = "医疗运输机"
+valu = 200
+
+[[unit]]
 name = "秃鹫"
 valu = 75
 

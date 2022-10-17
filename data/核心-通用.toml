@@ -30,6 +30,8 @@ insert = "定点部署"
 origin = "原始虫群"
 dark = "黑暗容器"
 void = "虚影"
+spbd = "特殊建筑"
+spun = "特殊单位"
 
 [[term]]
 name = "定点部署"

@@ -1,7 +1,6 @@
 <script setup>
-import { onBeforeUpdate, computed } from 'vue'
+import { ref, onBeforeUpdate, computed } from 'vue'
 import NodeView from './NodeView.vue'
-import { ref } from 'vue'
 
 const perPage = 10
 const props = defineProps({

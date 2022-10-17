@@ -1,6 +1,6 @@
 <script setup>
 import ReferText from './ReferText.vue'
-import { data } from '../data.js'
+import { data, tr } from '../data.js'
 
 const props = defineProps({
   node: Object
@@ -28,10 +28,10 @@ const props = defineProps({
       <refer-text :text="`存在精英变种${node.name}(精英)`"></refer-text>
     </v-card-text>
   </template>
-  <template v-if="node.utyp === 'spbd'">
+  <template v-if="node.utyp !== 'normal'">
     <v-divider></v-divider>
     <v-card-text>
-      <refer-text :text="'特殊建筑'"></refer-text>
+      <refer-text :text="tr[node.utyp]"></refer-text>
     </v-card-text>
   </template>
   <template v-if="node.bref">
