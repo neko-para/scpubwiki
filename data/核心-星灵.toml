@@ -213,156 +213,172 @@ bref = "由水晶塔和虚空水晶塔提供, 用于集结词条和护盾充能�
 
 [[unit]]
 name = "水晶塔"
-valu = 0
+value = 0
 utyp = "spbd"
 bref = "每个为自身卡牌和相邻卡牌提供1能量强度"
 
 [[unit]]
 name = "虚空水晶塔"
-valu = 0
+value = 0
 utyp = "spbd"
 bref = '''每个为自身卡牌和相邻卡牌提供1能量强度
 卡牌出售时将自身转移给相邻(优先左侧)神族卡牌'''
 
 [[unit]]
 name = "追猎者"
-valu = 175
+value = 175
 
 [[unit]]
 name = "狂热者"
-valu = 100
+value = 100
 
 [[unit]]
 name = "使徒"
-valu = 150
+value = 150
 
 [[unit]]
 name = "龙骑士"
-valu = 175
+value = 175
 
 [[unit]]
 name = "机械哨兵"
-valu = 150
+value = 150
 
 [[unit]]
 name = "不朽者"
-valu = 375
+value = 375
 bref = "不巧者"
 
 [[unit]]
 name = "高阶圣堂武士"
-valu = 200
+value = 200
 bref = "战斗中能量消耗完后会尝试融合, 产生的执政官不享受升级"
 
 [[unit]]
 name = "折跃棱镜"
-valu = 250
+value = 250
 
 [[unit]]
 name = "黑暗圣堂武士"
-valu = 250
+value = 250
 
 [[unit]]
 name = "掠夺者"
-valu = 500
+value = 500
 
 [[unit]]
 name = "巨像"
-valu = 500
+value = 500
 
 [[unit]]
 name = "凯拉克斯"
-valu = 600
+value = 600
 
 [[unit]]
 name = "虚空辉光舰"
-valu = 400
+value = 400
 
 [[unit]]
 name = "执政官"
-valu = 450
+value = 450
 
 [[unit]]
 name = "航母"
-valu = 600
+value = 600
 
 [[unit]]
 name = "风暴战舰"
-valu = 425
+value = 425
 
 [[unit]]
 name = "侦察机"
-valu =  250
+value =  250
 
 [[unit]]
 name = "莫汗达尔"
-valu = 600
+value = 600
 
 [[unit]]
 name = "泰坦棱镜"
-valu = 500
+value = 500
 
 [[unit]]
 name = "菲尼克斯"
-valu = 1000
+value = 1000
 
 [[unit]]
 name = "旋风狂热者"
-valu = 100
+value = 100
 
 [[unit]]
 name = "科罗拉里昂"
-valu = 1500
+value = 1500
 
 [[unit]]
 name = "卡尔达利斯"
-valu = 800
+value = 800
 
 [[unit]]
 name = "仲裁者"
-valu = 1000
+value = 1000
 
 [[unit]]
 name = "英雄不朽者"
-valu = 900
+value = 900
 bref = "不是不朽者的精英变种"
 
 [[unit]]
 name = "阿塔尼斯"
-valu = 1000
+value = 1000
 
 [[unit]]
 name = "激励者"
-valu = 150
+value = 150
 
 [[unit]]
 name = "追猎者(精英)"
-valu = 350
+value = 350
 
 [[unit]]
 name = "狂热者(精英)"
-valu = 200
+value = 200
 
 [[unit]]
 name = "旋风狂热者(精英)"
-valu = 200
+value = 200
 
 [[unit]]
 name = "使徒(精英)"
-valu = 250
+value = 250
 
 [[unit]]
 name = "黑暗圣堂武士(精英)"
-valu = 375
+value = 375
 
 [[unit]]
 name = "巨像(精英)"
-valu = 800
+value = 800
 
 [[unit]]
 name = "虚空辉光舰(精英)"
-valu = 550
+value = 550
+health = 250
+shield = 150
+tag = "重甲, 机械单位"
+skill = [
+  "校准棱镜: 虚空辉光舰持续攻击时会提高攻击力, 最多对重甲单位和建筑+6伤害"
+]
+[[unit.weapon]]
+name = "棱镜光束"
+damage = "8, 重甲12"
+range = 6
+speed = 0.36
+target = "GA"
+[unit.armor]
+name = "星灵护板"
+defense = 0
+speed = 3.15
 
 [[unit]]
 name = "执政官(精英)"
-valu = 650
+value = 650

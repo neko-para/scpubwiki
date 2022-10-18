@@ -89,6 +89,28 @@ function processUnits (obj) {
     u.type = 'unit'
     u.race = u.race || obj.race
     u.utyp = u.utyp || 'normal'
+    if (u.shield && !u.sarmor) {
+      u.sarmor = {
+        name: '星灵等离子护盾',
+        defense: 0
+      }
+    }
+    if (u.tag) { // currently not all unit finished
+      u.tag = u.tag.split(',').map(x => x.trim())
+      u.skill = (u.skill || []).map(s => {
+        const m = /(.+):([\s\S]*)/.exec(s)
+        return {
+          name: m[1],
+          desc: m[2]
+        }
+      })
+      u.weapon = u.weapon || []
+      u.weapon.forEach(w => {
+        if (typeof (w.damage) === 'string') {
+          w.damage = w.damage.replace(/(\d+), (\D+)(\d+)/, '$1, vs $2 $3')
+        }
+      })
+    }
   })
 }
 

@@ -38,9 +38,9 @@ desc = [
 [[unit]]
 name = "幽魂"
 race = "T"
-valu = 275
+value = 275
 
 [[unit]]
 name = "沃拉尊"
 race = "N"
-valu = 0
+value = 0

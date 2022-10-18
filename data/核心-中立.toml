@@ -263,118 +263,146 @@ bref = "将卡牌从场上移除, 不触发出售效果, 不获得晶体矿"
 
 [[unit]]
 name = "零件"
-valu = 0
+value = 0
 utyp = "spun"
 bref = "用于制造"
 
 [[unit]]
-name = "原始蟑螂"
-valu = 100
-
-[[unit]]
 name = "精华"
-valu = 0
+value = 0
 utyp = "spun"
 bref = "用于供养和原始异龙消耗"
 
 [[unit]]
+name = "原始蟑螂"
+value = 100
+health = 120
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "酸性唾液"
+damage = 16
+range = 4
+speed = 1.43
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 0
+speed = 4.55
+
+[[unit]]
 name = "不死队"
-valu = 100
+value = 100
 
 [[unit]]
 name = "自动机炮"
-valu = 200
+value = 200
 
 [[unit]]
 name = "修理无人机"
-valu = 0
+value = 0
 
 [[unit]]
 name = "原始刺蛇"
-valu = 150
+value = 150
 
 [[unit]]
 name = "原始异龙"
-valu = 250
+value = 250
 
 [[unit]]
 name = "鲜血猎手"
-valu = 125
+value = 125
 
 [[unit]]
 name = "浩劫"
-valu = 200
+value = 200
 
 [[unit]]
 name = "暴掠龙"
-valu = 200
+value = 200
 
 [[unit]]
 name = "亚格卓拉"
-valu = 1000
+value = 1000
 
 [[unit]]
 name = "毁灭者"
-valu = 400
+value = 400
+health = 150
+shield = 100
+tag = "重甲, 机械单位"
+skill = [
+  "毁灭光束: 当毁灭者持续攻击时, 它的棱镜光束会分裂折射到附近的其他目标上, 最多攻击3个额外目标"
+]
+[[unit.weapon]]
+name = "毁灭光束"
+damage = "6, 重甲10"
+range = 6
+speed = 0.36
+target = "GA"
+[unit.armor]
+name = "星灵护板"
+defense = 0
+speed = 3.15
 
 [[unit]]
 name = "原始点火虫"
-valu = 300
+value = 300
 
 [[unit]]
 name = "原始雷兽"
-valu = 425
+value = 425
 
 [[unit]]
 name = "原始暴龙兽"
-valu = 600
+value = 600
 
 [[unit]]
 name = "马拉什"
-valu = 800
+value = 800
 
 [[unit]]
 name = "混合体毁灭者"
-valu = 500
+value = 500
 
 [[unit]]
 name = "阿拉纳克"
-valu = 1500
+value = 1500
 
 [[unit]]
 name = "天罚行者"
-valu = 500
+value = 500
 
 [[unit]]
 name = "德哈卡"
-valu = 750
+value = 750
 
 [[unit]]
 name = "德哈卡分身"
-valu = 300
+value = 300
 
 [[unit]]
 name = "尤尔兰"
-valu = 400
+value = 400
 
 [[unit]]
 name = "武装机器人"
-valu = 1000
+value = 1000
 
 [[unit]]
 name = "赛兰迪丝"
-valu = 1000
+value = 1000
 
 [[unit]]
 name = "莎拉·凯瑞甘"
-valu = 50
+value = 50
 
 [[unit]]
 name = "刀锋女王"
-valu = 100
+value = 100
 
 [[unit]]
 name = "虚空构造体"
-valu = 3000
+value = 3000
 
 

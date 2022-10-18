@@ -1,0 +1,26 @@
+
+[[card]]
+name = "1岗哨机枪"
+race = "N"
+ctyp = "建筑卡"
+unit = ""
+desc = [
+  "每回合结束时, 将每个自动机炮变为2岗哨机枪",
+  "任意卡牌进场时, 获得{2|3}岗哨机枪"
+]
+
+[[unit]]
+name = "岗哨机枪"
+race = "N"
+value = 100
+health = 125
+tag = "重甲, 机械单位, 建筑"
+[[unit.weapon]]
+name = "岗哨机枪"
+damage = 8
+range = 6
+speed = 0.57
+target = "GA"
+[unit.armor]
+name = "人类建筑钢板"
+defense = 1

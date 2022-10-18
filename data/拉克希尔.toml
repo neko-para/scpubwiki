@@ -39,16 +39,16 @@ desc = [
 
 [[unit]]
 name = "凤凰"
-valu = 250
+value = 250
 
 [[unit]]
 name = "天霸"
-valu = 600
+value = 600
 
 [[unit]]
 name = "先锋"
-valu = 375
+value = 375
 
 [[unit]]
 name = "黑暗执政官"
-valu = 450
+value = 450

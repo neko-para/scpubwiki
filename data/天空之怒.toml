@@ -39,9 +39,37 @@ desc = [
 [[unit]]
 name = "女妖"
 race = "T"
-valu = 250
+value = 250
+health = 140
+skill = []
+tag = "轻甲, 机械单位"
+[[unit.weapon]]
+name = "反冲火箭"
+damage = 12
+multiple = 2
+range = 6
+speed = 0.89
+target = "G"
+[unit.armor]
+name = "人类舰船钢板"
+defense = 0
+speed = 3.85
 
 [[unit]]
 name = "塔达林母舰"
 race = "N"
-valu = 500
+value = 500
+health = 800
+shield = 400
+tag = "重甲, 机械单位, 灵能单位, 重型单位, 英雄单位"
+[[unit.weapon]]
+name = "净化光束"
+damage = 24
+multiple = 6
+range = 7
+speed = 1.58
+target = "GA"
+[unit.armor]
+name = "星灵护板"
+defense = 4
+speed = 1.97

@@ -45,7 +45,7 @@ function calcValue () {
     if (!getUnit(k)) {
       console.log(k)
     }
-    sum += getUnit(k).valu * props.node.unit[k]
+    sum += getUnit(k).value * props.node.unit[k]
   }
   return sum
 }
