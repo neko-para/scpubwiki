@@ -38,8 +38,10 @@ desc = [
 
 [[unit]]
 name = "女妖"
+race = "T"
 valu = 250
 
 [[unit]]
 name = "塔达林母舰"
+race = "N"
 valu = 500

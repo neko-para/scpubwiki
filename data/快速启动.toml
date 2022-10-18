@@ -37,12 +37,15 @@ desc = [
 
 [[unit]]
 name = "火蝠"
+race = "T"
 valu = 125
 
 [[unit]]
 name = "先知"
+race = "P"
 valu = 300
 
 [[unit]]
 name = "火蝠(精英)"
+race = "T"
 valu = 300

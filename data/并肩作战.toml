@@ -40,9 +40,11 @@ desc = [
 
 [[unit]]
 name = "虚空裂隙"
+race = "N"
 valu = 0
 utyp = "spbd"
 
 [[unit]]
 name = "百夫长"
+race = "N"
 valu = 200

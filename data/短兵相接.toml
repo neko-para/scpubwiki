@@ -39,16 +39,20 @@ desc = [
 
 [[unit]]
 name = "幼雷兽"
+race = "Z"
 valu = 180
 
 [[unit]]
 name = "诺娃"
+race = "T"
 valu = 400
 
 [[unit]]
 name = "泽拉图"
+race = "P"
 valu = 1000
 
 [[unit]]
 name = "混合体巨兽"
+race = "N"
 valu = 1200
