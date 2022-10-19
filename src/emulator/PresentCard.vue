@@ -29,10 +29,23 @@ function unitInfo () {
   }
 }
 
+function color () {
+  if (!props.card) {
+    return 'white'
+  }
+  if (props.card.gold) {
+    return 'yellow'
+  }
+  if (props.card.darkgold) {
+    return 'amber darken-1'
+  }
+  return 'white'
+}
+
 </script>
 
 <template>
-  <v-card @mouseover="el = 5" @mouseout="el = 2" :elevation="el">
+  <v-card @mouseover="el = 5" @mouseout="el = 2" :color="color()" :elevation="el">
     <v-card-title>
       <refer-text v-if="card" :text="card.name"></refer-text>
       <span v-else>空</span>
@@ -43,7 +56,7 @@ function unitInfo () {
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn v-if="indexing" @click="$emit('choose')">这里</v-btn>
-      <v-btn :disabled="!card || indexing" @click="$emit('sell')">出售</v-btn>
+      <v-btn v-if="card" :disabled="indexing" @click="$emit('sell')">出售</v-btn>
     </v-card-actions>
   </v-card>
 </template>

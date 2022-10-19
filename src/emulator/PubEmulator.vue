@@ -61,6 +61,15 @@ function enter (i) {
   })
 }
 
+function combine (i) {
+  if (choosingPos.value !== -1) {
+    return
+  }
+  player.combine(hand.value[i])
+  hand.value[i] = null
+  refresh()
+}
+
 function sell (i) {
   if (choosingPos.value !== -1) {
     return
@@ -83,7 +92,7 @@ function goNextRound () {
 
 <template>
   <v-card>
-    <v-card-text>目前只支持所有人族卡牌, 不支持三连!</v-card-text>
+    <v-card-text>目前只支持所有人族卡牌!</v-card-text>
     <v-card-title>
       控制区
     </v-card-title>
@@ -116,14 +125,16 @@ function goNextRound () {
     <v-card-text>
       <v-row>
         <v-col v-for="i in 3" :key="`Hand-${i - 1}`">
-          <hand-card :card="hand[i - 1]" :entering="choosingPos === i - 1"
-            @enter="enter(i - 1)" @sell="sell(i - 1)"></hand-card>
+          <hand-card :card="hand[i - 1]" :entering="choosingPos === i - 1" :combining="player.canCombine(hand[i - 1])"
+            @enter="enter(i - 1)" @combine="combine(i - 1)" @sell="sell(i - 1)"
+            :key="`HC-${i - 1}-${counter}`"></hand-card>
         </v-col>
       </v-row>
       <v-row>
         <v-col v-for="i in 3">
-          <hand-card :card="hand[i + 2]" :entering="choosingPos === i + 2" 
-            @enter="enter(i + 2)" @sell="sell(i + 2)"></hand-card>
+          <hand-card :card="hand[i + 2]" :entering="choosingPos === i + 2" :combining="player.canCombine(hand[i + 2])"
+            @enter="enter(i + 2)" @combine="combine(i + 2)" @sell="sell(i + 2)"
+            :key="`HC-${i + 2}-${counter}`"></hand-card>
         </v-col>
       </v-row>
     </v-card-text>

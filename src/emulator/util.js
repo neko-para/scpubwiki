@@ -17,7 +17,7 @@ export function $ () {
     bind (ev, func) {
       this.bus.on(ev, func)
       this.clf.push(() => {
-        this.bus.off(ev, f)
+        this.bus.off(ev, func)
       })
       return this
     },

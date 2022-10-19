@@ -102,35 +102,34 @@ export class Player {
     }
   }
 
-  enter (cardt, pos) {
-    if (!(() => {
-      if (!this.present[pos]) {
+  insert (pos) {
+    if (!this.present[pos]) {
+      return true
+    }
+    for (let i = pos + 1; i < 7; i++) {
+      if (!this.present[i]) {
+        while (i > pos) {
+          this.present[i] = this.present[i - 1]
+          this.present[i].pos = i
+          i--
+        }
         return true
       }
-      for (let i = pos + 1; i < 7; i++) {
-        if (!this.present[i]) {
-          while (i > pos) {
-            this.present[i] = this.present[i - 1]
-            this.present[i].pos = i
-            i--
-          }
-          return true
-        }
-      }
-      for (let i = pos - 1; i >= 0; i--) {
-        if (!this.present[i]) {
-          while (i < pos) {
-            this.present[i] = this.present[i + 1]
-            this.present[i].pos = i
-            i++
-          }
-          return true
-        }
-      }
-      return false
-    })()) {
-      return false
     }
+    for (let i = pos - 1; i >= 0; i--) {
+      if (!this.present[i]) {
+        while (i < pos) {
+          this.present[i] = this.present[i + 1]
+          this.present[i].pos = i
+          i++
+        }
+        return true
+      }
+    }
+    return false
+  }
+
+  instantiate (cardt) {
     const card = {
       template: cardt,
       name: cardt.name,
@@ -140,8 +139,13 @@ export class Player {
 
       bus: mitt(),
       player: this,
-      pos,
+      pos: -1,
 
+      load_default_unit () {
+        for (const k in cardt.unit) {
+          card.unit.push(...Array(cardt.unit[k]).fill(k))
+        }
+      },
       take_unit (at) {
         const u = this.unit[at]
         this.unit[at] = this.unit[this.unit.length - 1]
@@ -178,11 +182,6 @@ export class Player {
     card.bus.on('*', (ev) => {
       this.log(`卡牌 ${card.pos} 接收到 ${ev}\n`)
     })
-
-    this.present[pos] = card
-    for (const k in cardt.unit) {
-      card.unit.push(...Array(cardt.unit[k]).fill(k))
-    }
 
     card.bus.on('obtain-unit', ({ unit }) => {
       card.unit.push(...unit)
@@ -223,6 +222,72 @@ export class Player {
         card.unit[i] = to
       })
     })
+    return card
+  }
+
+  findSame (cardt) {
+    const target = []
+    this.enumPresent(card => {
+      if (card.name === cardt.name && !card.gold) {
+        target.push(card.pos)
+      }
+    })
+    return target
+  }
+
+  canCombine (cardt) {
+    return cardt && this.findSame(cardt).length >= 2
+  }
+
+  combine (cardt) {
+    const poses = this.findSame(cardt)
+    if (poses.length < 2) {
+      return false
+    }
+
+    const cl = this.present[poses[0]]
+    const cr = this.present[poses[1]]
+
+    const card = this.instantiate(cardt)
+    card.gold = true
+    card.pos = poses[0]
+    card.unit = [
+      ...cl.unit,
+      ...cr.unit.filter(u => !infrs.includes(u))
+    ]
+
+    cl.desc()
+    cr.desc()
+
+    this.present[card.pos] = card
+    this.present[poses[1]] = null
+
+    card.desc = descs[cardt.name](this, card, true).clear()
+
+    this.bus.emit('post-enter', {
+      card
+    })
+
+    this.bus.emit('card-combined', {
+      card
+    })
+
+    return true
+  }
+
+  enter (cardt, pos) {
+    if (!this.insert(pos)) {
+      return false
+    }
+
+    const card = this.instantiate(cardt)
+    if (cardt.attr?.gold) {
+      card.darkgold = true
+    }
+    card.pos = pos
+    card.load_default_unit()
+
+    this.present[pos] = card
 
     card.desc = descs[cardt.name](this, card, false).clear()
 
@@ -238,6 +303,7 @@ export class Player {
   }
 
   sell (pos) {
+    this.present[pos].desc()
     this.bus.emit('card-sell', {
       selled: this.present[pos]
     })
