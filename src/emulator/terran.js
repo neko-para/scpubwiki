@@ -124,7 +124,7 @@ export default {
     }, ({ card }) => {
       return card.race === 'T'
     })),
-  科考小队: (p, c, g) => () => {
+  科考小队: (p, c, g) => {
     let rn = null
     return $()
     .for(c)
