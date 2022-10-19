@@ -372,7 +372,7 @@ export default {
   复制中心: (p, c, g) => $()
     .for(c)
     .bind('fast-prod', () => {
-      p.queryHand().filter(x => x).forEach(card => {
+      p.hand.filter(x => x).forEach(card => {
         const us = getCard(card).unit
         const r = []
         for (const k in us) {

@@ -28,12 +28,12 @@ export class Player {
   constructor () {
     this.bus = mitt()
     this.level = 1
+    this.hand = Array(6).fill(null)
     this.mineral = 0
     this.gas = 0
     this.present = Array(7).fill(null)
     this.flag = {} // 用于检测唯一
     this.refresh = () => {}
-    this.queryHand = () => Array(6).fill(null)
     this.cache = ''
 
     this.bus.on('*', (ev, param) => {
@@ -88,16 +88,17 @@ export class Player {
     return n
   }
 
-  async requestEnter (cardt, query) {
+  async requestEnter (pos, query) {
     if (this.presentCount() === 7) {
       return false
     }
+    const cardt = this.hand[pos]
     if (cardt.attr?.insert) {
-      return this.enter(cardt, await query())
+      return this.enter(pos, await query())
     } else {
       for (let i = 0; i < 7; i++) {
         if (!this.present[i]) {
-          return this.enter(cardt, i)
+          return this.enter(pos, i)
         }
       }
     }
@@ -239,15 +240,18 @@ export class Player {
     return target
   }
 
-  canCombine (cardt) {
+  canCombine (pos) {
+    const cardt = this.hand[pos]
     return cardt && !cardt.attr?.gold && this.findSame(cardt).length >= 2
   }
 
-  combine (cardt) {
+  combine (pos) {
+    const cardt = this.hand[pos]
     const poses = this.findSame(cardt)
     if (poses.length < 2) {
       return false
     }
+    this.hand[pos] = null
 
     const cl = this.present[poses[0]]
     const cr = this.present[poses[1]]
@@ -282,19 +286,21 @@ export class Player {
     return true
   }
 
-  enter (cardt, pos) {
-    if (!this.insert(pos)) {
+  enter (pos, into) {
+    if (!this.insert(into)) {
       return false
     }
+    const cardt = this.hand[pos]
+    this.hand[pos] = null
 
     const card = this.instantiate(cardt)
     if (cardt.attr?.gold) {
       card.darkgold = true
     }
-    card.pos = pos
+    card.pos = into
     card.load_default_unit()
 
-    this.present[pos] = card
+    this.present[into] = card
 
     card.desc = descs[cardt.name](this, card, false, msg => {
       card.announce = msg
@@ -318,5 +324,21 @@ export class Player {
       selled: this.present[pos]
     })
     this.present[pos] = null
+    this.mineral += 1
+  }
+
+  sell_hand (pos) {
+    this.hand[pos] = null
+    this.mineral += 1
+  }
+
+  obtain_hand (cardt) {
+    for (let i = 0; i < 6; i++) {
+      if (!this.hand[i]) {
+        this.hand[i] = cardt
+        return true
+      }
+    }
+    return false
   }
 }
