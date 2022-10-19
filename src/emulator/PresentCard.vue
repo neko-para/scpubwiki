@@ -20,11 +20,15 @@ const units = computed(() => {
 
 function unitInfo () {
   const ks = Object.keys(units.value)
-  if (ks.length > 5) {
-    return ks.slice(0, 5).map(k => `${k} ${units.value[k]}`).join('\n')
+  if (ks.length > 6) {
+    return ks.slice(0, 5).map(k => `${k} ${units.value[k]}`).join('\n') + '...'
   } else {
     return ks.map(k => `${k} ${units.value[k]}`).join('\n')
   }
+}
+
+function fullUnitInfo () {
+  return Object.keys(units.value).map(k => `${k} ${units.value[k]}`).join('\n')
 }
 
 function color () {
@@ -49,6 +53,17 @@ function color () {
         <refer-text :text="card.name"></refer-text>
       </v-card-title>
       <v-card-text>
+        <span style="cursor: pointer">
+          {{ card.unit.length }} / 200
+          <v-overlay activator="parent" location-strategy="connected" scroll-strategy="block">
+            <v-card>
+              <v-card-text>
+                <refer-text :text="fullUnitInfo()"></refer-text>
+              </v-card-text>
+            </v-card>
+          </v-overlay>
+        </span>
+        <br>
         <refer-text :text="unitInfo()"></refer-text>
       </v-card-text>
       <v-card-text v-if="card.announce">

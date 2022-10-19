@@ -1,35 +1,25 @@
 import mitt from 'mitt'
 import descs from './data.js'
-import { data, getCard } from '../data'
+import { data, getCard, getUnit } from '../data'
+import { Pool as _Pool } from './pool.js'
 
-const poolCount = {
-  1: 18, 2: 15, 3: 13, 4: 11, 5: 9, 6: 6
-}
+export const Pool = _Pool
 
 export const infrs = ['反应堆', '科技实验室', '高级科技实验室']
 
-export class Pool {
-  constructor () {
-    this.pool = []
-    for (const k in data) {
-      const c = getCard(k)
-      if (c.attr?.rare) {
-        if (Math.random() <= 0.15) {
-          this.pool.push(c)
-        }
-      } else {
-        this.pool.push(...Array(poolCount[c.level]).fill(c))
-      }
-    }
-  }
-}
+const upgrades = [
+  null, 5, 7, 8, 9, 11
+]
 
 export class Player {
   constructor () {
     this.bus = mitt()
-    this.level = 1
     this.hand = Array(6).fill(null)
-    this.mineral = 0
+    this.level = 1
+    this.upgrade_cost = upgrades[1]
+    this.round = 1
+    this.mineral = 3
+    this.max_mineral = 3
     this.gas = 0
     this.present = Array(7).fill(null)
     this.flag = {} // 用于检测唯一
@@ -76,6 +66,14 @@ export class Player {
         }
       }
     }
+  }
+
+  calculateValue () {
+    let sum = 0
+    this.enumPresent(card => {
+      sum += card.calculateValue()
+    })
+    return sum
   }
 
   presentCount () {
@@ -181,6 +179,13 @@ export class Player {
           pos = idx + 1
         }
         return res
+      },
+      calculateValue () {
+        let sum = 0
+        this.unit.forEach(u => {
+          sum += getUnit(u).value
+        })
+        return sum
       }
     }
     
@@ -283,6 +288,7 @@ export class Player {
       card
     })
 
+    this.refresh()
     return true
   }
 
@@ -315,6 +321,7 @@ export class Player {
       card
     })
 
+    this.refresh()
     return true
   }
 
@@ -325,20 +332,55 @@ export class Player {
     })
     this.present[pos] = null
     this.mineral += 1
+    this.refresh()
   }
 
   sell_hand (pos) {
     this.hand[pos] = null
     this.mineral += 1
+    this.refresh()
   }
 
   obtain_hand (cardt) {
     for (let i = 0; i < 6; i++) {
       if (!this.hand[i]) {
         this.hand[i] = cardt
+        this.refresh()
         return true
       }
     }
     return false
+  }
+
+  next_round () {
+    this.bus.emit('round-end')
+    this.round++
+    if (this.upgrade_cost > 0) {
+      this.upgrade_cost--
+    }
+    if (this.max_mineral < 10) {
+      this.max_mineral++
+    }
+    this.mineral = this.max_mineral
+    if (this.gas < 6) {
+      this.gas++
+    }
+    this.bus.emit('round-start')
+    this.refresh()
+  }
+
+  do_refresh () {
+    this.bus.emit('refresh')
+    this.refresh()
+  }
+
+  do_upgrade () {
+    if (this.mineral >= this.upgrade_cost) {
+      this.mineral -= this.upgrade_cost
+      this.level++
+      this.upgrade_cost = upgrades[this.level]
+      this.bus.emit('upgrade-pub')
+      this.refresh()
+    }
   }
 }

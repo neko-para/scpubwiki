@@ -52,7 +52,6 @@ function combine (i) {
     return
   }
   player.combine(i)
-  refresh()
 }
 
 function sell (i) {
@@ -60,23 +59,6 @@ function sell (i) {
     return
   }
   player.sell_hand(i)
-  refresh()
-}
-
-function sellP (i) {
-  player.sell(i)
-  refresh()
-}
-
-function goNextRound () {
-  player.bus.emit('round-end')
-  player.bus.emit('round-start')
-  refresh()
-}
-
-function goRefresh () {
-  player.bus.emit('refresh')
-  refresh()
 }
 
 </script>
@@ -84,28 +66,32 @@ function goRefresh () {
 <template>
   <v-card>
     <v-card-text>目前只支持所有人族卡牌!</v-card-text>
-    <v-card-title>
-      控制区
+    <v-card-title :key="`CT-${counter}`">
+      控制区 回合 {{ player.round }} 等级 {{ player.level }}
     </v-card-title>
+    <v-card-text :key="`IF-${counter}`">
+      晶体矿 {{ player.mineral }} / {{ player.max_mineral }} 瓦斯 {{ player.gas }} / 6
+    </v-card-text>
     <v-card-actions>
-      <v-btn @click="goNextRound()">下一回合</v-btn>
-      <v-btn @click="goRefresh()">刷新</v-btn>
+      <v-btn @click="player.next_round()">下一回合</v-btn>
+      <v-btn @click="player.do_refresh()">刷新</v-btn>
+      <v-btn :disabled="player.level === 6 || player.mineral < player.upgrade_cost" @click="player.do_upgrade()" :key="`Upgrade-${counter}`">升级 {{ player.upgrade_cost }}</v-btn>
     </v-card-actions>
-    <v-card-title>
-      进场区
+    <v-card-title :key="`PT-${counter}`">
+      进场区 {{ player.calculateValue() }}
     </v-card-title>
     <v-card-text>
       <v-row>
         <v-col v-for="i in 4" :key="`Present-${i - 1}`">
           <present-card :card="player.present[i - 1]" :indexing="choosingPos !== -1"
-            @sell="sellP(i - 1)" @choose="choose(i - 1)"
+            @sell="player.sell(i)(i - 1)" @choose="choose(i - 1)"
             :key="`PC-${i - 1}-${counter}`"></present-card>
         </v-col>
       </v-row>
       <v-row>
         <v-col v-for="i in 3" :key="`Present-${i + 3}`">
           <present-card :card="player.present[i + 3]" :indexing="choosingPos !== -1"
-            @sell="sellP(i + 3)" @choose="choose(i + 3)"
+            @sell="player.sell(i)(i + 3)" @choose="choose(i + 3)"
             :key="`PC-${i + 3}-${counter}`"></present-card>
         </v-col>
         <v-col></v-col>
