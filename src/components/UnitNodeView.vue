@@ -86,23 +86,6 @@ function calcArmor (a) {
         </template>
       </v-card>
     </v-card-text>
-    <template v-if="node.skill.length > 0">
-      <v-divider></v-divider>
-      <v-card-title>
-        技能
-      </v-card-title>
-      <v-card-text>
-        <v-card>
-          <template v-for="(s, i) in node.skill" :key="`Skil-${i}`">
-            <v-divider v-if="i > 0"></v-divider>
-            <v-card-title>{{ s.name }}</v-card-title>
-            <v-card-text>
-              <refer-text :text="s.desc"></refer-text>
-            </v-card-text>
-          </template>
-        </v-card>
-      </v-card-text>
-    </template>
   </template>
   <template v-if="node.name.endsWith('(精英)')">
     <v-divider></v-divider>

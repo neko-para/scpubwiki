@@ -41,7 +41,6 @@ name = "女妖"
 race = "T"
 value = 250
 health = 140
-skill = []
 tag = "轻甲, 机械单位"
 [[unit.weapon]]
 name = "反冲火箭"

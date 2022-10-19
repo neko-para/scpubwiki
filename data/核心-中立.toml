@@ -203,6 +203,7 @@ rmrk = '''
 [[card]]
 name = "6刀锋女王"
 attr.gold = true
+pool = false
 unit = "1刀锋女王"
 desc = [
   "唯一: 与你战斗的玩家虚空投影加成效果降低30%(最低为0)"
@@ -331,9 +332,6 @@ value = 400
 health = 150
 shield = 100
 tag = "重甲, 机械单位"
-skill = [
-  "毁灭光束: 当毁灭者持续攻击时, 它的棱镜光束会分裂折射到附近的其他目标上, 最多攻击3个额外目标"
-]
 [[unit.weapon]]
 name = "毁灭光束"
 damage = "6, 重甲10"

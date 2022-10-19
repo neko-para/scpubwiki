@@ -250,11 +250,6 @@ name = "收割者"
 value = 100
 health = 60
 tag = "轻甲, 生物单位"
-skill = [
-  "KD8型炸弹(14): 短暂延迟后发生爆炸, 造成5点伤害并击退附近的单位",
-  "喷气背包: 使收割者能够翻越悬崖",
-  "战斗药剂: 脱离战斗后能够迅速恢复生命值"
-]
 [[unit.weapon]]
 name = "P-45型电磁手枪"
 damage = 4
@@ -306,9 +301,6 @@ name = "陆战队员"
 value = 50
 health = 45
 tag = "轻甲, 生物单位"
-skill = [
-  "强化剂: 向该单位注入效力强劲的强化剂, 使其攻击和移动速度在数秒内得到显著提升, 但会消耗10点生命值"
-]
 [[unit.weapon]]
 name = "C-14型电磁枪"
 damage = 6
@@ -325,9 +317,6 @@ name = "响尾蛇战车"
 value = 250
 health = 200
 tag = "重甲, 机械单位"
-skill = [
-  "移动射击: 响尾蛇战车可以在移动中使用轨道炮"
-]
 [[unit.weapon]]
 name = "处决者电磁炮"
 damage = "20, 重甲40"
@@ -345,11 +334,6 @@ value = 125
 health = 60
 power = 200
 tag = "轻甲, 生物单位"
-skill = [
-  '''
-治疗: 治疗一个友方生物单位
-每消耗4点能量可恢复13点生命值'''
-]
 [unit.armor]
 name = "人类步兵护甲"
 defense = 1
@@ -382,9 +366,6 @@ name = "歌利亚"
 value = 200
 health = 150
 tag = "重甲, 机械单位"
-skill = [
-  "多重锁定武器系统: 歌利亚武装机器人能够同时瞄准空中和地面目标"
-]
 [[unit.weapon]]
 name = "机关炮"
 damage = 18
@@ -408,12 +389,6 @@ name = "寡妇雷"
 value = 100
 health = 90
 tag = "轻甲, 机械单位"
-skill = [
-  '''
-哨兵导弹: 攻击临近的空中和地面单位, 对首要目标造成125(+35对护盾)点伤害, 并对附近的其它单位造成40(+25对护盾)点溅射伤害
-该单位在重新装填时会被暴露''',
-  "钻地之爪: 该单位潜地的速度加快"
-]
 [unit.armor]
 name = "人类战车钢板"
 defense = 1
@@ -424,12 +399,6 @@ name = "劫掠者"
 value = 125
 health = 125
 tag = "重甲, 生物单位"
-skill = [
-  "强化剂: 向该单位注入效力强劲的强化剂, 使其攻击和移动速度在数秒内得到显著提升, 但会消耗10点生命值",
-  '''
-震荡弹: 被劫掠者击中的目标会暂时减速
-重型单位对该效果免疫'''
-]
 [[unit.weapon]]
 name = "惩罚者榴弹"
 damage = "10, 重甲20"
@@ -447,12 +416,6 @@ value = 200
 health = 150
 power = 200
 tag = "重甲, 机械单位"
-skill = [
-  '''
-治疗: 治疗一个友方生物单位
-每1点能量恢复4点生命值''',
-  "后燃推进系统(14): 提高医疗运输机的移动速度, 持续6秒"
-]
 rmrk = "自动模式不会使用后燃推进系统"
 [unit.armor]
 name = "人类舰船钢板"
@@ -462,26 +425,109 @@ speed = 3.5
 [[unit]]
 name = "秃鹫"
 value = 75
+health = 75
+tag = "轻甲, 机械单位"
+rmrk = "蜘蛛雷伤害70, 但是一直不埋地看不清护甲和血量"
+[[unit.weapon]]
+name = "碎片榴弹"
+damage = "10, 轻甲25"
+range = 6
+speed = 1.21
+target = "G"
+[unit.armor]
+name = "人类战车钢板"
+defense = 1
+speed = 5.95
 
 [[unit]]
 name = "飓风"
 value = 250
+health = 120
+tag = "重甲, 机械单位"
+[[unit.weapon]]
+name = "台风飞弹舱"
+damage = 18
+range = 5
+speed = 0.71
+target = "GA"
+[unit.armor]
+name = "人类战车钢板"
+defense = 1
+speed = 4.72
 
 [[unit]]
 name = "铁鸦"
 value = 300
+health = 140
+magic = 200
+tag = "轻甲, 机械单位"
+rmrk = "初始能量100, 自动模式不会使用制造自动机炮"
+[unit.armor]
+name = "人类舰船钢板"
+defense = 1
+speed = 4.13
 
 [[unit]]
 name = "战狼"
 value = 300
+health = 280
+tag = "重甲, 机械单位"
+[[unit.weapon]]
+name = "轨道枪"
+damage = 23
+range = 6
+speed = 0.93
+target = "G"
+[unit.armor]
+name = "人类战车钢板"
+defense = 1
+speed = 3.94
 
 [[unit]]
 name = "维京战机"
 value = 225
+health = 135
+tag = "轻甲, 机械单位"
+[[unit.weapon]]
+name = "格林机关炮"
+damage = "12, 机械单位20"
+range = 6
+speed = 0.71
+target = "G"
+[[unit.weapon]]
+name = "兰泽尔飞雷"
+damage = "10, 重甲14"
+multiple = 2
+range = 9
+speed = 1.43
+target = "A"
+[unit.armor]
+name = "人类舰船钢板"
+defense = 0
+speed = "3.15(机甲模式), 3.85(战机模式)"
 
 [[unit]]
 name = "解放者"
 value = 300
+health = 180
+tag = "重甲, 机械单位"
+[[unit.weapon]]
+name = "列克星敦火箭"
+damage = 5
+multiple = 2
+range = 5
+speed = 1.29
+target = "A"
+[[unit.weapon]]
+name = "康科德火炮"
+damage = 75
+range = 12
+speed = 1.14
+target = "G"
+[unit.armor]
+name = "人类舰船钢板"
+defense = 0
+speed = "4.72"
 
 [[unit]]
 name = "斯台特曼"
@@ -499,9 +545,6 @@ value = 250
 name = "黄昏之翼"
 value = 275
 health = 155
-skill = [
-  "冲击波导弹巢: 使女妖的攻击可以沿直线社畜多枚飞弹"
-]
 tag = "轻甲, 机械单位"
 [[unit.weapon]]
 name = "尖啸飞弹"
@@ -556,9 +599,6 @@ name = "陆战队员(精英)"
 value = 125
 health = 90
 tag = "轻甲, 生物单位"
-skill = [
-  "强化剂: 向该单位注入效力强劲的强化剂, 使其攻击和移动速度在数秒内得到显著提升, 但会消耗10点生命值"
-]
 [[unit.weapon]]
 name = "电磁枪"
 damage = 12

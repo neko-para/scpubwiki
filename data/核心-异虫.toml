@@ -170,6 +170,7 @@ rmrk = '''
 
 [[card]]
 name = "0虫卵"
+pool = false
 unit = ""
 desc = [
   "每回合开始时, 如果相邻两侧的卡牌时虫族卡牌, 摧毁这张牌, 获得1晶体矿并孵化其中的生物单位"
@@ -213,9 +214,6 @@ name = "异龙"
 value = 150
 health = 120
 tag = "轻甲, 生物单位"
-skill = [
-  "组织再生: 异龙恢复速度比大多数异虫单位更快"
-]
 [[unit.weapon]]
 name = "刃虫"
 damage = 9

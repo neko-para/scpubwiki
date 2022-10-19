@@ -42,6 +42,13 @@ function processCards (obj) {
     c.type = 'card'
     c.pack = c.pack || obj.pack
     c.race = c.race || obj.race
+    if (!('pool' in c)) {
+      if ('pool' in obj) {
+        c.pool = obj.pool
+      } else {
+        c.pool = true
+      }
+    }
     c.level = Number(m[1])
     c.name = m[2]
 
@@ -97,13 +104,6 @@ function processUnits (obj) {
     }
     if (u.tag) { // currently not all unit finished
       u.tag = u.tag.split(',').map(x => x.trim())
-      u.skill = (u.skill || []).map(s => {
-        const m = /(.+):([\s\S]*)/.exec(s)
-        return {
-          name: m[1],
-          desc: m[2]
-        }
-      })
       u.weapon = u.weapon || []
       u.weapon.forEach(w => {
         if (typeof (w.damage) === 'string') {

@@ -365,9 +365,6 @@ value = 550
 health = 250
 shield = 150
 tag = "重甲, 机械单位"
-skill = [
-  "校准棱镜: 虚空辉光舰持续攻击时会提高攻击力, 最多对重甲单位和建筑+6伤害"
-]
 [[unit.weapon]]
 name = "棱镜光束"
 damage = "8, 重甲12"

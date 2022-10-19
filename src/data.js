@@ -104,12 +104,25 @@ export function splitText (text) {
 export function getUnit (key) {
   const d = data[key]
   if (!d) {
-    console.log(key)
     return null
   }
   if (d.type === 'disa') {
     return d['unit'] || null
   } else if (d.type === 'unit') {
+    return d
+  } else {
+    return null
+  }
+}
+
+export function getCard (key) {
+  const d = data[key]
+  if (!d) {
+    return null
+  }
+  if (d.type === 'disa') {
+    return d['card'] || null
+  } else if (d.type === 'card') {
     return d
   } else {
     return null
