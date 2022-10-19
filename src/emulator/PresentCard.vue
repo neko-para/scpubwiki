@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import bus from '../bus.js'
+import { infrs } from './emulator.js'
 import ReferText from '../components/ReferText.vue'
 const props = defineProps({
   card: Object,
@@ -8,8 +8,6 @@ const props = defineProps({
 })
 
 const el = ref(2)
-
-const bref = ref(false)
 
 const units = computed(() => {
   const u = {}
@@ -46,17 +44,36 @@ function color () {
 
 <template>
   <v-card @mouseover="el = 5" @mouseout="el = 2" :color="color()" :elevation="el">
-    <v-card-title>
-      <refer-text v-if="card" :text="card.name"></refer-text>
-      <span v-else>空</span>
-    </v-card-title>
-    <v-card-text v-if="card">
-      <refer-text :text="unitInfo()"></refer-text>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn v-if="indexing" @click="$emit('choose')">这里</v-btn>
-      <v-btn v-if="card" :disabled="indexing" @click="$emit('sell')">出售</v-btn>
-    </v-card-actions>
+    <template v-if="card">
+      <v-card-title>
+        <refer-text :text="card.name"></refer-text>
+      </v-card-title>
+      <v-card-text>
+        <refer-text :text="unitInfo()"></refer-text>
+      </v-card-text>
+      <v-card-text v-if="card.announce">
+        <refer-text :text="card.announce"></refer-text>
+      </v-card-text>
+      <v-card-text v-if="card.infr_type() !== -1">
+        <refer-text :text="infrs[card.infr_type()]"></refer-text>
+      </v-card-text>
+      <v-card-text v-if="card.power() > 0">
+        <refer-text :text="`能量强度 ${card.power()}`"></refer-text>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn v-if="indexing" @click="$emit('choose')">这里</v-btn>
+        <v-btn :disabled="indexing" @click="$emit('sell')">出售</v-btn>
+      </v-card-actions>
+    </template>
+    <template v-else>
+      <v-card-title>
+        <span>空</span>
+      </v-card-title>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn v-if="indexing" @click="$emit('choose')">这里</v-btn>
+      </v-card-actions>
+    </template>
   </v-card>
 </template>

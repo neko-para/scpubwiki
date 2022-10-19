@@ -14,6 +14,7 @@ const player = new Player()
 player.logger = str => {
   console.log('Emulator: ' + str)
 }
+player.refresh = refresh
 
 const hand = ref(Array(6).fill(null))
 const choosingPos = ref(-1)
@@ -88,6 +89,12 @@ function goNextRound () {
   player.bus.emit('round-start')
   refresh()
 }
+
+function goRefresh () {
+  player.bus.emit('refresh')
+  refresh()
+}
+
 </script>
 
 <template>
@@ -98,6 +105,7 @@ function goNextRound () {
     </v-card-title>
     <v-card-actions>
       <v-btn @click="goNextRound()">下一回合</v-btn>
+      <v-btn @click="goRefresh()">刷新</v-btn>
     </v-card-actions>
     <v-card-title>
       进场区

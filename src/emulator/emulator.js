@@ -6,7 +6,7 @@ const poolCount = {
   1: 18, 2: 15, 3: 13, 4: 11, 5: 9, 6: 6
 }
 
-const infrs = ['反应堆', '科技实验室', '高级科技实验室']
+export const infrs = ['反应堆', '科技实验室', '高级科技实验室']
 
 export class Pool {
   constructor () {
@@ -32,6 +32,7 @@ export class Player {
     this.gas = 0
     this.present = Array(7).fill(null)
     this.flag = {} // 用于检测唯一
+    this.refresh = () => {}
     this.queryHand = () => Array(6).fill(null)
     this.cache = ''
 
@@ -165,6 +166,9 @@ export class Player {
           return infrs.indexOf(this.unit[idx])
         }
       },
+      power () {
+        return this.locate('水晶塔', this.unit.length).length + this.locate('虚空水晶塔', this.unit.length).length
+      },
       locate (u, cnt, pos = 0) {
         const res = []
         while (cnt-- > 0) {
@@ -236,7 +240,7 @@ export class Player {
   }
 
   canCombine (cardt) {
-    return cardt && this.findSame(cardt).length >= 2
+    return cardt && !cardt.attr?.gold && this.findSame(cardt).length >= 2
   }
 
   combine (cardt) {
@@ -262,7 +266,10 @@ export class Player {
     this.present[card.pos] = card
     this.present[poses[1]] = null
 
-    card.desc = descs[cardt.name](this, card, true).clear()
+    card.desc = descs[cardt.name](this, card, true, msg => {
+      card.announce = msg
+      this.refresh()
+    }).clear()
 
     this.bus.emit('post-enter', {
       card
@@ -289,7 +296,10 @@ export class Player {
 
     this.present[pos] = card
 
-    card.desc = descs[cardt.name](this, card, false).clear()
+    card.desc = descs[cardt.name](this, card, false, msg => {
+      card.announce = msg
+      this.refresh()
+    }).clear()
 
     this.bus.emit('card-enter', {
       card

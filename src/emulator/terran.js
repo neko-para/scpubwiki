@@ -1,19 +1,24 @@
 import { getUnit, getCard } from '../data.js'
 import { shuffle, $, 获得, 左侧, 右侧, 相邻两侧 } from './util.js'
 
-function 任务 (card, count, result, check = () => true, renew = null) {
+function 任务 (announce, card, count, result, check = () => true, renew = null) {
   let n = 0
   if (renew) {
     renew(() => {
       n = 0
     })
   }
+  announce(`任务: 0 / ${count}`)
   return (...arg) => {
-    if (n < count && check(...arg) && ++n === count) {
-      result()
-      card.player.bus.emit('task-done', {
-        card
-      })
+    if (n < count && check(...arg)) {
+      n++
+      announce(`任务: ${n} / ${count}`)
+      if (n === count) {
+        result()
+        card.player.bus.emit('task-done', {
+          card
+        })
+      }
     }
   }
 }
@@ -40,9 +45,9 @@ function 科挂 (player, count, result) {
 }
 
 export default {
-  死神火车: (p, c, g) => $()
+  死神火车: (p, c, g, a) => $()
     .for(p)
-    .bind('card-enter', 任务(c, 2, () => {
+    .bind('card-enter', 任务(a, c, 2, () => {
       p.mineral += g ? 2 : 1
     })),
   好兄弟: (p, c, g) => $()
@@ -51,9 +56,9 @@ export default {
       获得(c, '陆战队员', g ? 6 : 4)
     })
     .bind('round-end', 反应堆(c, g, '陆战队员')),
-  挖宝奇兵: (p, c, g) => $()
+  挖宝奇兵: (p, c, g, a) => $()
     .for(p)
-    .bind('refresh', 任务(c, 5, () => {
+    .bind('refresh', 任务(a, c, 5, () => {
       p.bus.emit('discover-card', {
         filter: c => {
           return c.level === g.level
@@ -109,11 +114,11 @@ export default {
     .for(c)
     .bind('fast-prod', () => 获得(c, '劫掠者', g ? 5 : 3))
     .bind('round-end', 反应堆(c, g, '劫掠者')),
-  飙车流: (p, c, g) => $()
+  飙车流: (p, c, g, a) => $()
     .for(c)
     .bind('fast-prod', () => 获得(c, '秃鹫', g ? 5 : 3))
     .for(p)
-    .bind('card-enter', 任务(c, 3, () => {
+    .bind('card-enter', 任务(a, c, 3, () => {
       左侧(c, card => {
         if (card.race === 'T') {
           p.bus.emit('upgrade-infr', {
@@ -124,7 +129,7 @@ export default {
     }, ({ card }) => {
       return card.race === 'T'
     })),
-  科考小队: (p, c, g) => {
+  科考小队: (p, c, g, a) => {
     let rn = null
     return $()
     .for(c)
@@ -138,7 +143,7 @@ export default {
       })
     })
     .for(p)
-    .bind('refresh', 任务(c, 2, () => 获得(c, '歌利亚', g ? 2 : 1),
+    .bind('refresh', 任务(a, c, 2, () => 获得(c, '歌利亚', g ? 2 : 1),
       () => true, renew => {
         rn = renew
       }))
@@ -301,11 +306,11 @@ export default {
         }
       })
     }),
-  帝国舰队: (p, c, g) => {
+  帝国舰队: (p, c, g, a) => {
     let rn = null
     return $()
     .for(p)
-    .bind('card-sell', 任务(c, 3, () => {
+    .bind('card-sell', 任务(a, c, 3, () => {
         获得(c, '战列巡航舰', g ? 2 : 1)
         rn()
       }, () => true, renew => { rn = renew }))
@@ -328,6 +333,7 @@ export default {
       相邻两侧(c, card => {
         const idx = card.unit.indexOf('水晶塔')
         if (idx !== -1) {
+          console.log(idx)
           card.take_unit(idx)
           n += g ? 8 : 4
         }
@@ -340,7 +346,7 @@ export default {
     .bind('round-end', 反应堆(c, g, '诺娃'))
     .for(p)
     .bind('task-done', () => 获得(c, '诺娃', g ? 2 : 1)),
-  a: (p, c, g) => $()
+  以火治火: (p, c, g) => $()
     .for(c)
     .bind('round-end', () => {
       p.enumPresent(card => {
