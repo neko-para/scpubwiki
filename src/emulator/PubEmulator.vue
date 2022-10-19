@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import HandCard from './HandCard.vue'
 import PresentCard from './PresentCard.vue'
 import bus from '../bus.js'
-import { Player } from './emulator.js'
+import { Player } from '../../emulator'
 
 const counter = ref(0)
 function refresh () {

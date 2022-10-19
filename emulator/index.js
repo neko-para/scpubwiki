@@ -1,6 +1,6 @@
 import mitt from 'mitt'
-import descs from './core.js'
-import { data, getCard } from '../data.js'
+import descs from './data.js'
+import { data, getCard } from '../data'
 
 const poolCount = {
   1: 18, 2: 15, 3: 13, 4: 11, 5: 9, 6: 6

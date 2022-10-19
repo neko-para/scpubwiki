@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",
-    "generate": "node generate.js",
+    "generate": "node data/generate.js",
     "dev": "vite",
     "preview": "vite preview"
   },

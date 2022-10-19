@@ -4,7 +4,7 @@ import NodeList from './components/NodeList.vue'
 import AboutDialog from './components/AboutDialog.vue'
 import SearchView from './components/SearchView.vue'
 import PubEmulator from './emulator/PubEmulator.vue'
-import { data } from './data.js'
+import { data } from '../data'
 import bus from './bus.js'
 
 const showEmulator = ref(false)

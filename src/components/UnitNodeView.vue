@@ -1,6 +1,6 @@
 <script setup>
 import ReferText from './ReferText.vue'
-import { data, tr } from '../data.js'
+import { data, tr } from '../../data'
 
 const props = defineProps({
   node: Object

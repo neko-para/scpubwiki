@@ -1,4 +1,4 @@
-import { getUnit, getCard } from '../data.js'
+import { getUnit, getCard } from '../data'
 import { shuffle, $, 获得, 左侧, 右侧, 相邻两侧 } from './util.js'
 
 function 任务 (announce, card, count, result, check = () => true, renew = null) {

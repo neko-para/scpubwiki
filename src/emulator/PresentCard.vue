@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { infrs } from './emulator.js'
+import { infrs } from '../../emulator'
 import ReferText from '../components/ReferText.vue'
 const props = defineProps({
   card: Object,

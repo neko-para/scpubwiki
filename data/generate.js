@@ -191,7 +191,7 @@ async function main () {
       ...tr
     }
   }
-  await fs.writeFile("./src/pubdata.js", `export default ${JSON.stringify(result, null, 2)}`)
+  await fs.writeFile("data/pubdata.js", `export default ${JSON.stringify(result, null, 2)}`)
 }
 
 main()

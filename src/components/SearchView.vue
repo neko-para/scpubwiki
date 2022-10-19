@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import NodeList from './NodeList.vue'
-import { data, attr, info, upgradeCategory, tr } from '../data.js'
+import { data, attr, info, upgradeCategory, tr } from '../../data'
 
 const categorySelector = ref('card')
 const packSelector = ref('none')

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import ReferText from './ReferText.vue'
-import { getUnit, attr, tr } from '../data.js'
+import { getUnit, attr, tr } from '../../data'
 
 const props = defineProps({
   node: Object,

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import bus from '../bus.js'
-import { data, splitText } from '../data.js'
+import { data, splitText } from '../../data'
 
 const props = defineProps({
   text: String
