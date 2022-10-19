@@ -3,8 +3,11 @@ import { ref, computed } from 'vue'
 import NodeList from './components/NodeList.vue'
 import AboutDialog from './components/AboutDialog.vue'
 import SearchView from './components/SearchView.vue'
+import PubEmulator from './emulator/PubEmulator.vue'
 import { data } from './data.js'
 import bus from './bus.js'
+
+const showEmulator = ref(false)
 
 const refers = ref([])
 
@@ -43,7 +46,6 @@ bus.on('requestClose', n => {
 })
 
 function goUp() {
-  console.log(123)
   document.getElementById('topAnchor').scrollIntoView({behavior: 'smooth'})
 }
 
@@ -54,11 +56,17 @@ function goUp() {
     <v-app-bar>
       <v-app-bar-title>星际酒馆 非官方Wiki</v-app-bar-title>
       <v-spacer></v-spacer>
+      <v-btn @click="showEmulator = true">模拟器(测试版)</v-btn>
       <about-dialog></about-dialog>
     </v-app-bar>
     <v-main>
       <div id="topAnchor"></div>
       <v-container>
+        <v-row v-if="showEmulator">
+          <v-col cols="10">
+            <pub-emulator></pub-emulator>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col cols="10">
             <search-view></search-view>

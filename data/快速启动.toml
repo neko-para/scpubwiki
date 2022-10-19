@@ -49,3 +49,15 @@ value = 300
 name = "火蝠(精英)"
 race = "T"
 value = 300
+health = 275
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "烈焰风暴火焰喷射器"
+damage = "10, 轻甲20"
+range = 2
+speed = 1
+target = "G"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 3
+speed = 3.5

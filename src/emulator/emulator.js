@@ -30,28 +30,44 @@ export class Player {
     this.level = 1
     this.mineral = 0
     this.gas = 0
-    this.hand = Array(6).fill(null)
     this.present = Array(7).fill(null)
     this.flag = {} // 用于检测唯一
+    this.queryHand = () => Array(6).fill(null)
+    this.cache = ''
 
-    this.bus.on('round-start', () => {
-      this.flag = {}
-    })
     this.bus.on('*', (ev, param) => {
       param = param || {}
+      this.log(`玩家接收到 ${ev}  -  `, true)
       if ('card' in param) {
         if (param.card) {
+          this.log(`转发至第${param.card.pos}张卡牌`)
           param.card.bus.emit(ev, param)
+        } else {
+          this.log('舍弃')
         }
       } else {
+        this.log(`通知所有卡牌`)
         this.enumPresent(c => {
           c.bus.emit(ev, param)
         })
       }
     })
+    this.bus.on('round-start', () => {
+      this.flag = {}
+    })
   }
 
-  enumPresent(func) {
+  log (str, caching = false) {
+    this.cache += str
+    if (!caching) {
+      if (this.logger) {
+        this.logger(this.cache)
+      }
+      this.cache = ''
+    }
+  }
+
+  enumPresent (func) {
     for (let i = 0; i < 7; i++) {
       if (this.present[i]) {
         if (func(this.present[i])) {
@@ -61,7 +77,60 @@ export class Player {
     }
   }
 
+  presentCount () {
+    let n = 0
+    this.present.forEach(p => {
+      if (p) {
+        n++
+      }
+    })
+    return n
+  }
+
+  async requestEnter (cardt, query) {
+    if (this.presentCount() === 7) {
+      return false
+    }
+    if (cardt.attr?.insert) {
+      return this.enter(cardt, await query())
+    } else {
+      for (let i = 0; i < 7; i++) {
+        if (!this.present[i]) {
+          return this.enter(cardt, i)
+        }
+      }
+    }
+  }
+
   enter (cardt, pos) {
+    if (!(() => {
+      if (!this.present[pos]) {
+        return true
+      }
+      for (let i = pos + 1; i < 7; i++) {
+        if (!this.present[i]) {
+          while (i > pos) {
+            this.present[i] = this.present[i - 1]
+            this.present[i].pos = i
+            i--
+          }
+          return true
+        }
+      }
+      for (let i = pos - 1; i >= 0; i--) {
+        if (!this.present[i]) {
+          while (i < pos) {
+            this.present[i] = this.present[i + 1]
+            this.present[i].pos = i
+            i++
+          }
+          return true
+        }
+      }
+      return false
+    })()) {
+      return false
+    }
     const card = {
       template: cardt,
       name: cardt.name,
@@ -105,6 +174,11 @@ export class Player {
         return res
       }
     }
+    
+    card.bus.on('*', (ev) => {
+      this.log(`卡牌 ${card.pos} 接收到 ${ev}\n`)
+    })
+
     this.present[pos] = card
     for (const k in cardt.unit) {
       card.unit.push(...Array(cardt.unit[k]).fill(k))
@@ -159,6 +233,8 @@ export class Player {
     this.bus.emit('post-enter', {
       card
     })
+
+    return true
   }
 
   sell (pos) {

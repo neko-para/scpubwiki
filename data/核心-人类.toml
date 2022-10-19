@@ -540,14 +540,70 @@ speed = "4.72"
 [[unit]]
 name = "斯台特曼"
 value = 200
+health = 150
+magic = 250
+tag = "轻甲, 生物单位, 英雄单位"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 1
+speed = 3.15
 
 [[unit]]
 name = "思旺"
 value = 200
+health = 200
+tag = "重甲, 生物单位, 英雄单位"
+rmrk = "可以部署热辣贝蒂"
+[[unit.weapon]]
+name = "震荡榴弹"
+damage = 25
+multiple = 1
+range = 5
+speed = 0.86
+target = "G"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 1
+speed = 3.15
+
+[[unit]]
+name = "热辣贝蒂"
+value = 0
+health = 750
+tag = "重甲, 机械单位, 建筑"
+rmrk = "若由思旺召唤, 则持续32秒, 含有召唤标签"
+[[unit.weapon]]
+name = "火焰喷射器"
+damage = 14
+range = 6
+speed = 1.43
+target = "G"
+[unit.armor]
+name = "人类建筑钢板"
+defense = 1
 
 [[unit]]
 name = "怨灵战机"
 value = 250
+health = 180
+tag = "重甲, 机械单位"
+[[unit.weapon]]
+name = "脉冲激光炮"
+damage = 13
+range = 5
+speed = 1.21
+target = "G"
+[[unit.weapon]]
+name = "双子飞弹"
+damage = "8, 重甲15"
+multiple = 2
+range = 5
+speed = 0.89
+target = "A"
+[unit.armor]
+name = "人类舰船钢板"
+defense = 0
+speed = 5.25
 
 [[unit]]
 name = "黄昏之翼"
@@ -569,38 +625,168 @@ speed = 3.85
 [[unit]]
 name = "泰凯斯"
 value = 500
+health = 240
+tag = "轻甲, 生物单位, 英雄单位"
+[[unit.weapon]]
+name = "重机枪"
+damage = 14
+range = 5
+speed = 0.18
+target = "GA"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 2
+speed = 3.15
 
 [[unit]]
 name = "牛头人陆战队员"
 value = 550
+health = 350
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "电磁枪"
+damage = 24
+range = 6
+speed = 0.61
+target = "GA"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 1
+speed = 3.29
 
 [[unit]]
 name = "鱼人陆战队员"
 value = 75
+health = 70
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "C-14电磁枪"
+damage = 16
+range = 6
+speed = 0.61
+target = "GA"
+[unit.armor]
+name = "未知"
+defense = 0
+speed = 3.15
 
 [[unit]]
 name = "雷神"
 value = 500
+health = 400
+tag = "重甲, 机械单位, 重型单位"
+[[unit.weapon]]
+name = "雷神之锤"
+damage = 30
+multiple = 2
+range = 7
+speed = 0.91
+target = "G"
+[[unit.weapon]]
+name = "250毫米口径惩罚者火炮"
+damage = "25, 重型单位35"
+range = 11
+speed = 0.91
+target = "A"
+[[unit.weapon]]
+name = "标枪导弹发射筒"
+damage = "6, 轻甲12"
+multiple = 4
+range = 10
+speed = 2.14
+target = "A"
+[unit.armor]
+name = "人类战车钢板"
+defense = 1
+speed = 2.62
 
 [[unit]]
 name = "雷诺(指挥官)"
 value = 800
+health = 350
+tag = "轻甲, 生物单位, 英雄单位"
+[[unit.weapon]]
+name = "电磁枪"
+damage = "20, 重甲30"
+range = 8
+speed = 0.61
+target = "GA"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 2
+speed = 3.15
 
 [[unit]]
 name = "雷诺(狙击手)"
 value = 650
+health = 175
+tag = "轻甲, 生物单位, 英雄单位"
+[[unit.weapon]]
+name = "突击步枪"
+damage = 50
+range = 9
+speed = 1.25
+target = "GA"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 0
+speed = 3.15
 
 [[unit]]
 name = "沃菲尔德将军"
 value = 0
+health = 200
+tag = "轻甲, 生物单位, 英雄单位"
+[[unit.weapon]]
+name = "T-200模块化突击加农炮"
+damage = 10
+range = 6
+speed = 0.93
+target = "GA"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 1
+speed = 3.15
 
 [[unit]]
 name = "帝盾卫兵"
 value = 250
+health = 200
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "惩罚者榴弹"
+damage = "20, 重甲40"
+multiple = 1
+range = 7
+speed = 0.96
+target = "G"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 1
+speed = 3.15
 
 [[unit]]
 name = "战列巡航舰"
 value = 700
+health = 550
+tag = "重甲, 机械单位, 重型单位"
+rmrk = "大和炮冷却21秒, 伤害240"
+[[unit.weapon]]
+name = "空对地激光炮组"
+damage = 8
+range = 6
+speed = 0.16
+target = "G"
+[[unit.weapon]]
+name = "空对空激光炮组"
+damage = 6
+range = 6
+speed = 0.16
+target = "A"
+[unit.armor]
+name = "人类舰船钢板"
+defense = 3
+speed = 2.62
 
 [[unit]]
 name = "陆战队员(精英)"
@@ -621,19 +807,101 @@ speed = 3.15
 [[unit]]
 name = "劫掠者(精英)"
 value = 250
+health = 250
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "惩罚者榴弹"
+damage = "12, 重甲30"
+range = 6
+speed = 1.07
+target = "G"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 1
+speed = 3.15
 
 [[unit]]
 name = "歌利亚(精英)"
 value = 300
+health = 200
+tag = "重甲, 机械单位"
+[[unit.weapon]]
+name = "格林机关炮"
+damage = 24
+range = 6
+speed = 1.07
+target = "G"
+[[unit.weapon]]
+name = "兰泽尔飞雷"
+damage = "14, 重甲28"
+multiple = 2
+range = 6
+speed = 1.07
+target = "A"
+[unit.armor]
+name = "人类战车钢板"
+defense = 1
+speed = 3.76
 
 [[unit]]
 name = "战狼(精英)"
 value = 450
+health = 400
+tag = "重甲, 机械单位"
+[[unit.weapon]]
+name = "龙卷风发射器"
+damage = 10
+multiple = 6
+range = 7
+speed = 0.93
+target = "G"
+[unit.armor]
+name = "人类战车钢板"
+defense = 2
+speed = 3.94
 
 [[unit]]
 name = "维京战机(精英)"
 value = 225
+health = 180
+tag = "轻甲, 机械单位"
+[[unit.weapon]]
+name = "格林机关炮"
+damage = 18
+range = 6
+speed = 0.71
+target = "G"
+[[unit.weapon]]
+name = "兰泽尔飞雷"
+damage = "14, 重甲20"
+multiple = 2
+range = 9
+speed = 1.43
+target = "A"
+[unit.armor]
+name = "人类舰船钢板"
+defense = 0
+speed = "3.15(机甲模式), 3.85(战机模式)"
 
 [[unit]]
 name = "攻城坦克(精英)"
 value = 625
+health = 225
+tag = "重甲, 机械单位"
+[[unit.weapon]]
+name = "90毫米口径火炮"
+damage = "25, 重甲35"
+range = 7
+speed = 0.74
+target = "G"
+[[unit.weapon]]
+name = "弧光震击炮"
+damage = "60, 重甲100"
+range = 13
+speed = 2.14
+target = "G"
+[unit.armor]
+name = "人类战车钢板"
+defense = 1
+speed = 3.15
+

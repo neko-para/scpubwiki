@@ -53,6 +53,18 @@ value = 3000
 name = "恶蝠游骑兵"
 race = "T"
 value = 650
+health = 400
+tag = "轻甲, 生物单位, 机械单位"
+[[unit.weapon]]
+name = "爆燃汽油喷射器"
+damage = 36
+range = 2
+speed = 1.43
+target = "G"
+[unit.armor]
+name = "人类战车钢板"
+defense = 3
+speed = 3.15
 
 [[unit]]
 name = "死亡之握水晶"
