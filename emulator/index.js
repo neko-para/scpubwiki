@@ -1,6 +1,6 @@
 import emitter from '../async-emitter.js'
 import descs from './data.js'
-import { data, getCard, getUnit } from '../data'
+import { getUnit } from '../data'
 import { Pool as _Pool } from './pool.js'
 
 export const Pool = _Pool
@@ -11,10 +11,141 @@ const upgrades = [
   null, 5, 7, 8, 9, 11
 ]
 
+class Card {
+  constructor (cardt, player) {
+    this.bus = new emitter(),
+    this.template = cardt,
+    this.name = cardt.name,
+    this.race = cardt.race,
+    this.level = cardt.level,
+    this.unit = [],
+
+    this.player = player,
+    this.pos = -1
+
+    this.bus.on('*<', async (ev) => {
+      player.log(`卡牌 ${this.pos} 接收到 ${ev}\n`)
+    })
+
+    this.bus.on('obtain-unit', async ({ unit }) => {
+      await player.step(`卡牌 ${this.pos} ${this.name} 即将获得 ${unit.join(', ')}`)
+      this.unit.push(...unit)
+    })
+
+    this.bus.on('round-end', async () => {
+      if (this.infr_type() === 2) {
+        await player.step(`卡牌 ${this.pos} ${this.name} 即将触发快速生产`)
+        await player.bus.async_emit('fast-prod', {
+          card: this
+        })
+      }
+    })
+
+    this.bus.on('switch-infr', async () => {
+      const idx = this.find_infr ()
+      if (idx !== -1) {
+        const f = infrs.indexOf(this.unit[idx])
+        if (f < 2) {
+          await player.step(`卡牌 ${this.pos} ${this.name} 即将切换挂件`)
+          await player.bus.async_emit('transform-unit', {
+            card: this,
+            index: [ idx ],
+            to: infrs[1 - f]
+          })
+          await player.step(`卡牌 ${this.pos} ${this.name} 即将触发快速生产`)
+          await player.bus.async_emit('fast-prod', {
+            card: this
+          })
+        }
+      }
+    })
+
+    this.bus.on('upgrade-infr', async () => {
+      const idx = this.find_infr ()
+      if (idx !== -1) {
+        const f = infrs.indexOf(this.unit[idx])
+        if (f < 2) {
+          await player.step(`卡牌 ${this.pos} ${this.name} 即将将挂件变为高科`)
+          await player.bus.async_emit('transform-unit', {
+            card: this,
+            index: [ idx ],
+            to: '高级科技实验室'
+          })
+          await player.step(`卡牌 ${this.pos} ${this.name} 即将触发快速生产`)
+          await player.bus.async_emit('fast-prod', {
+            card: this
+          })
+        }
+      }
+    })
+
+    this.bus.on('transform-unit', async ({ index, to }) => {
+      await player.step(`卡牌 ${this.pos} ${this.name} 即将 ${index.join(', ')} 处的单位变为 ${to}`)
+      index.forEach(i => {
+        this.unit[i] = to
+      })
+    })
+  }
+  
+  async load_default_unit () {
+    await this.player.step(`卡牌 ${this.pos} ${this.name} 即将添加默认单位`)
+    for (const k in this.template.unit) {
+      this.unit.push(...Array(this.template.unit[k]).fill(k))
+    }
+  }
+
+  take_unit (at) {
+    const u = this.unit[at]
+    this.unit[at] = this.unit[this.unit.length - 1]
+    this.unit.pop()
+    return u
+  }
+
+  find_infr () {
+    return this.unit.findIndex((v) => {
+      return infrs.includes(v)
+    })
+  }
+
+  infr_type () {
+    const idx = this.find_infr()
+    if (idx === -1) {
+      return -1
+    } else {
+      return infrs.indexOf(this.unit[idx])
+    }
+  }
+
+  power () {
+    return this.locate('水晶塔', this.unit.length).length + this.locate('虚空水晶塔', this.unit.length).length
+  }
+
+  locate (u, cnt, pos = 0) {
+    const res = []
+    while (cnt-- > 0) {
+      const idx = this.unit.indexOf(u, pos)
+      if (idx === -1) {
+        return res
+      }
+      res.push(idx)
+      pos = idx + 1
+    }
+    return res
+  }
+
+  calculateValue () {
+    let sum = 0
+    this.unit.forEach(u => {
+      sum += getUnit(u).value
+    })
+    return sum
+  }
+}
+
 export class Player {
   constructor () {
     this.bus = new emitter()
-    
+
     this.level = 1
     this.upgrade_cost = upgrades[1]
     this.round = 1
@@ -28,28 +159,36 @@ export class Player {
     this.flag = {} // 用于检测唯一
 
     this.refresh = () => {}
+    this.stepper = null
     this.cache = ''
 
-    this.bus.on('*<', (ev, param) => {
+    this.bus.on('*<', async (ev, param) => {
       param = param || {}
       this.log(`玩家接收到 ${ev}  -  `, true)
       if ('card' in param) {
         if (param.card) {
           this.log(`转发至第${param.card.pos}张卡牌`)
-          param.card.bus.emit(ev, param)
+          await param.card.bus.async_emit(ev, param)
         } else {
           this.log('舍弃')
         }
       } else {
         this.log(`通知所有卡牌`)
-        this.enumPresent(c => {
-          c.bus.emit(ev, param)
+        await this.enumPresent(async c => {
+          await c.bus.async_emit(ev, param)
         })
       }
     })
     this.bus.on('round-start', () => {
       this.flag = {}
     })
+  }
+
+  async step (msg) {
+    if (this.stepper) {
+      await this.refresh()
+      await this.stepper(msg)
+    }
   }
 
   log (str, caching = false) {
@@ -62,10 +201,10 @@ export class Player {
     }
   }
 
-  enumPresent (func) {
+  async enumPresent (func) {
     for (let i = 0; i < 7; i++) {
       if (this.present[i]) {
-        if (func(this.present[i])) {
+        if (await func(this.present[i])) {
           return
         }
       }
@@ -82,11 +221,7 @@ export class Player {
 
   presentCount () {
     let n = 0
-    this.present.forEach(p => {
-      if (p) {
-        n++
-      }
-    })
+    this.enumPresent(() => n++)
     return n
   }
 
@@ -96,147 +231,47 @@ export class Player {
     }
     const cardt = this.hand[pos]
     if (cardt.attr?.insert) {
+      await this.step(`即将请求定点部署位置`)
       return this.enter(pos, await query())
     } else {
       for (let i = 0; i < 7; i++) {
         if (!this.present[i]) {
+          await this.step(`即将进场到 ${i} 处`)
           return this.enter(pos, i)
         }
       }
     }
   }
 
-  insert (pos) {
+  async insert (pos) {
     if (!this.present[pos]) {
       return true
     }
     for (let i = pos + 1; i < 7; i++) {
       if (!this.present[i]) {
+        await this.step(`即将将 ${pos} 到 ${i - 1} 的卡牌右移`)
         while (i > pos) {
           this.present[i] = this.present[i - 1]
           this.present[i].pos = i
           i--
         }
+        this.present[pos] = null
         return true
       }
     }
     for (let i = pos - 1; i >= 0; i--) {
       if (!this.present[i]) {
+        await this.step(`即将将 ${i + 1} 到 ${pos} 的卡牌左移`)
         while (i < pos) {
           this.present[i] = this.present[i + 1]
           this.present[i].pos = i
           i++
         }
+        this.present[pos] = null
         return true
       }
     }
     return false
-  }
-
-  instantiate (cardt) {
-    const card = {
-      template: cardt,
-      name: cardt.name,
-      race: cardt.race,
-      level: cardt.level,
-      unit: [],
-
-      bus: new emitter(),
-      player: this,
-      pos: -1,
-
-      load_default_unit () {
-        for (const k in cardt.unit) {
-          card.unit.push(...Array(cardt.unit[k]).fill(k))
-        }
-      },
-      take_unit (at) {
-        const u = this.unit[at]
-        this.unit[at] = this.unit[this.unit.length - 1]
-        this.unit.pop()
-        return u
-      },
-      find_infr () {
-        return this.unit.findIndex((v) => {
-          return infrs.includes(v)
-        })
-      },
-      infr_type () {
-        const idx = this.find_infr()
-        if (idx === -1) {
-          return -1
-        } else {
-          return infrs.indexOf(this.unit[idx])
-        }
-      },
-      power () {
-        return this.locate('水晶塔', this.unit.length).length + this.locate('虚空水晶塔', this.unit.length).length
-      },
-      locate (u, cnt, pos = 0) {
-        const res = []
-        while (cnt-- > 0) {
-          const idx = this.unit.indexOf(u, pos)
-          if (idx === -1) {
-            return res
-          }
-          res.push(idx)
-          pos = idx + 1
-        }
-        return res
-      },
-      calculateValue () {
-        let sum = 0
-        this.unit.forEach(u => {
-          sum += getUnit(u).value
-        })
-        return sum
-      }
-    }
-    
-    card.bus.on('*<', (ev) => {
-      this.log(`卡牌 ${card.pos} 接收到 ${ev}\n`)
-    })
-
-    card.bus.on('obtain-unit', ({ unit }) => {
-      card.unit.push(...unit)
-    })
-    card.bus.on('round-end', () => {
-      if (card.infr_type() === 2) {
-        this.bus.emit('fast-prod', {
-          card
-        })
-      }
-    })
-    card.bus.on('switch-infr', () => {
-      const idx = card.find_infr ()
-      if (idx !== -1) {
-        const f = infrs.indexOf(card.unit[idx])
-        if (f < 2) {
-          card.unit[idx] = infrs[1 - f]
-          this.bus.emit('fast-prod', {
-            card
-          })
-        }
-      }
-    })
-    card.bus.on('upgrade-infr', () => {
-      const idx = card.find_infr ()
-      if (idx !== -1) {
-        const f = infrs.indexOf(card.unit[idx])
-        if (f < 2) {
-          card.unit[idx] = '高级科技实验室'
-          this.bus.emit('fast-prod', {
-            card
-          })
-        }
-      }
-    })
-    card.bus.on('transform-unit', ({ index, to }) => {
-      index.forEach(i => {
-        card.unit[i] = to
-      })
-    })
-    return card
   }
 
   findSame (cardt) {
@@ -254,18 +289,19 @@ export class Player {
     return cardt && !cardt.attr?.gold && this.findSame(cardt).length >= 2
   }
 
-  combine (pos) {
+  async combine (pos) {
     const cardt = this.hand[pos]
     const poses = this.findSame(cardt)
     if (poses.length < 2) {
       return false
     }
+    await this.step(`即将移除 ${pos} 处手牌`)
     this.hand[pos] = null
 
     const cl = this.present[poses[0]]
     const cr = this.present[poses[1]]
 
-    const card = this.instantiate(cardt)
+    const card = new Card(cardt, this)
     card.gold = true
     card.pos = poses[0]
     card.unit = [
@@ -276,88 +312,110 @@ export class Player {
     cl.desc()
     cr.desc()
 
+    await this.step(`即将三连卡牌`)
     this.present[card.pos] = card
     this.present[poses[1]] = null
 
-    card.desc = descs[cardt.name](this, card, true, msg => {
+    await this.step(`即将绑定卡牌描述效果`)
+    card.desc = descs[cardt.name](this, card, true, async msg => {
+      await this.step(`卡牌 ${pos} ${cardt.name} 即将更新卡面描述`)
       card.announce = msg
-      this.refresh()
+      await this.refresh()
     }).clear()
 
-    this.bus.emit('post-enter', {
+    await this.step(`即将广播卡牌三连消息`)
+    await this.bus.async_emit('card-combined', {
       card
     })
 
-    this.bus.emit('card-combined', {
+    await this.step(`即将触发进场效果`)
+    await this.bus.async_emit('post-enter', {
       card
     })
 
-    this.refresh()
+    await this.refresh()
     return true
   }
 
-  enter (pos, into) {
-    if (!this.insert(into)) {
+  async enter (pos, into) {
+    if (!await this.insert(into)) {
       return false
     }
     const cardt = this.hand[pos]
+
+    await this.step(`即将移除 ${pos} 处手牌`)
     this.hand[pos] = null
 
-    const card = this.instantiate(cardt)
+    const card = new Card(cardt, this)
     if (cardt.attr?.gold) {
       card.darkgold = true
     }
     card.pos = into
-    card.load_default_unit()
 
+    await card.load_default_unit()
+
+    await this.step(`即将进场卡牌`)
     this.present[into] = card
 
-    card.desc = descs[cardt.name](this, card, false, msg => {
+    await this.step(`即将绑定卡牌描述效果`)
+    card.desc = descs[cardt.name](this, card, false, async msg => {
+      await this.step(`卡牌 ${pos} ${cardt.name} 即将更新卡面描述`)
       card.announce = msg
-      this.refresh()
+      await this.refresh()
     }).clear()
 
-    this.bus.emit('card-enter', {
+    await this.step(`即将广播卡牌进场消息`)
+    await this.bus.async_emit('card-enter', {
       card
     })
 
-    this.bus.emit('post-enter', {
+    await this.step(`即将触发进场效果`)
+    await this.bus.async_emit('post-enter', {
       card
     })
 
-    this.refresh()
+    await this.refresh()
     return true
   }
 
-  sell (pos) {
+  async sell (pos) {
     this.present[pos].desc()
-    this.bus.emit('card-sell', {
+
+    await this.step(`即将广播卡牌出售消息`)
+    await this.bus.async_emit('card-sell', {
       selled: this.present[pos]
     })
+
+    await this.step(`卡牌 ${pos} ${this.present[pos].name} 即将出售`)
     this.present[pos] = null
     this.mineral += 1
-    this.refresh()
+    await this.refresh()
   }
 
-  sell_hand (pos) {
+  async sell_hand (pos) {
+    await this.step(`手牌 ${pos} ${this.hand[pos].name} 即将出售`)
     this.hand[pos] = null
     this.mineral += 1
-    this.refresh()
+    await this.refresh()
   }
 
-  obtain_hand (cardt) {
+  async obtain_hand (cardt) {
     for (let i = 0; i < 6; i++) {
       if (!this.hand[i]) {
+        await this.step(`卡牌 ${cardt.name} 即将置入手牌`)
         this.hand[i] = cardt
-        this.refresh()
+        await this.refresh()
         return true
       }
     }
     return false
   }
 
-  next_round () {
-    this.bus.emit('round-end')
+  async next_round () {
+    await this.step(`即将广播回合结束信息`)
+    await this.bus.async_emit('round-end')
+    
+    await this.step(`即将更新信息`)
     this.round++
     if (this.upgrade_cost > 0) {
       this.upgrade_cost--
@@ -369,22 +427,28 @@ export class Player {
     if (this.gas < 6) {
       this.gas++
     }
-    this.bus.emit('round-start')
-    this.refresh()
+    
+    await this.step(`即将广播回合开始信息`)
+    await this.bus.async_emit('round-start')
+    await this.refresh()
   }
 
-  do_refresh () {
-    this.bus.emit('refresh')
-    this.refresh()
+  async do_refresh () {
+    await this.step(`即将刷新还不存在的商店`)
+    await this.bus.async_emit('refresh')
+    await this.refresh()
   }
 
-  do_upgrade () {
+  async do_upgrade () {
     if (this.mineral >= this.upgrade_cost) {
+      await this.step(`即将升级酒馆`)
       this.mineral -= this.upgrade_cost
       this.level++
       this.upgrade_cost = upgrades[this.level]
-      this.bus.emit('upgrade-pub')
-      this.refresh()
+      
+      await this.step(`即将广播酒馆升级信息`)
+      await this.bus.async_emit('upgrade-pub')
+      await this.refresh()
     }
   }
 }
