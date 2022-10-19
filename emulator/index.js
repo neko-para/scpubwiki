@@ -1,4 +1,4 @@
-import mitt from 'mitt'
+import emitter from '../async-emitter.js'
 import descs from './data.js'
 import { data, getCard, getUnit } from '../data'
 import { Pool as _Pool } from './pool.js'
@@ -13,20 +13,24 @@ const upgrades = [
 
 export class Player {
   constructor () {
-    this.bus = mitt()
-    this.hand = Array(6).fill(null)
+    this.bus = new emitter()
+    
     this.level = 1
     this.upgrade_cost = upgrades[1]
     this.round = 1
     this.mineral = 3
     this.max_mineral = 3
     this.gas = 0
+
+    this.hand = Array(6).fill(null)
     this.present = Array(7).fill(null)
+
     this.flag = {} // 用于检测唯一
+
     this.refresh = () => {}
     this.cache = ''
 
-    this.bus.on('*', (ev, param) => {
+    this.bus.on('*<', (ev, param) => {
       param = param || {}
       this.log(`玩家接收到 ${ev}  -  `, true)
       if ('card' in param) {
@@ -137,7 +141,7 @@ export class Player {
       level: cardt.level,
       unit: [],
 
-      bus: mitt(),
+      bus: new emitter(),
       player: this,
       pos: -1,
 
@@ -189,7 +193,7 @@ export class Player {
       }
     }
     
-    card.bus.on('*', (ev) => {
+    card.bus.on('*<', (ev) => {
       this.log(`卡牌 ${card.pos} 接收到 ${ev}\n`)
     })
 

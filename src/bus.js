@@ -1,5 +1,5 @@
-import mitt from 'mitt'
+import emitter from '../async-emitter.js'
 
-const bus = mitt()
+const bus = new emitter()
 
 export default bus

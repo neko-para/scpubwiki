@@ -13,7 +13,6 @@
     "@ltd/j-toml": "^1.35.2",
     "@mdi/font": "5.9.55",
     "ahocorasick": "^1.0.2",
-    "mitt": "^3.0.0",
     "roboto-fontface": "*",
     "vue": "^3.2.37",
     "vuetify": "^3.0.0-beta.0",
