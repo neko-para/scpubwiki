@@ -41,6 +41,18 @@ desc = [
 name = "幼雷兽"
 race = "Z"
 value = 180
+health = 200
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "巨刃"
+damage = 25
+range = "melee"
+speed = 0.61
+target = "G"
+[unit.armor]
+name = "异虫骨板"
+defense = 2
+speed = 4.13
 
 [[unit]]
 name = "诺娃"

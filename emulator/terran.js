@@ -34,14 +34,13 @@ function 反应堆 (card, gold, unit) {
   }
 }
 
-function 科挂 (card, count, result) {
+export function 科挂 (card, count, result) {
   return async () => card.player.asyncEnumPresent(async c => {
-    if (c.infr_type() > 0) {
-      if (--count <= 0) {
-        await card.player.step(`卡牌 ${card.pos} ${card.name} 即将触发科挂效果`)
-        await result()
-        return true
-      }
+    count -= c.locateX(u => ['科技实验室', '高级科技实验室'].includes(u)).length
+    if (--count <= 0) {
+      await card.player.step(`卡牌 ${card.pos} ${card.name} 即将触发科挂效果`)
+      await result()
+      return true
     }
   })
 }

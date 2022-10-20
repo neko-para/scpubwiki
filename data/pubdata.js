@@ -1680,8 +1680,8 @@ export default {
       },
       "desc": [
         [
-          "每回合结束时, 将<1>蟑螂变为破坏者",
-          "每回合结束时, 将<2>蟑螂变为破坏者"
+          "每回合开始时, 将<1>蟑螂变为破坏者",
+          "每回合开始时, 将<2>蟑螂变为破坏者"
         ],
         [
           "出售时, 注卵<2>蟑螂",
@@ -2055,9 +2055,9 @@ export default {
       "level": 6
     },
     {
-      "name": "斯图科夫",
+      "name": "斯托科夫",
       "unit": {
-        "斯图科夫": 1
+        "斯托科夫": 1
       },
       "desc": [
         [
@@ -2078,8 +2078,8 @@ export default {
       "unit": {},
       "desc": [
         [
-          "每回合开始时, 如果相邻两侧的卡牌时虫族卡牌, 摧毁这张牌, 获得1晶体矿并孵化其中的生物单位",
-          "每回合开始时, 如果相邻两侧的卡牌时虫族卡牌, 摧毁这张牌, 获得1晶体矿并孵化其中的生物单位"
+          "每回合开始时, 如果相邻两侧的卡牌是虫族卡牌, 摧毁这张牌, 获得1晶体矿并孵化其中的生物单位",
+          "每回合开始时, 如果相邻两侧的卡牌是虫族卡牌, 摧毁这张牌, 获得1晶体矿并孵化其中的生物单位"
         ]
       ],
       "rmrk": "是金色卡牌",
@@ -2960,6 +2960,25 @@ export default {
       "name": "幼雷兽",
       "race": "Z",
       "value": 180,
+      "health": 200,
+      "tag": [
+        "重甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "巨刃",
+          "damage": 25,
+          "range": "melee",
+          "speed": 0.61,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫骨板",
+        "defense": 2,
+        "speed": 4.13
+      },
       "type": "unit",
       "utyp": "normal"
     },
@@ -3033,6 +3052,25 @@ export default {
       "name": "火蝠",
       "race": "T",
       "value": 125,
+      "health": 100,
+      "tag": [
+        "重甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "毁灭之炎喷射器",
+          "damage": "8, vs 轻甲 12",
+          "range": 2,
+          "speed": 1,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "人类步兵护甲",
+        "defense": 0,
+        "speed": 3.15
+      },
       "type": "unit",
       "utyp": "normal"
     },
@@ -3127,6 +3165,26 @@ export default {
       "name": "被感染的女妖",
       "race": "Z",
       "value": 200,
+      "health": 140,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "反冲火箭",
+          "damage": 12,
+          "multiple": 2,
+          "range": 6,
+          "speed": 0.89,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫飞行单位甲壳",
+        "defense": 0,
+        "speed": 3.85
+      },
       "type": "unit",
       "utyp": "normal"
     },
@@ -3134,6 +3192,28 @@ export default {
       "name": "末日巨兽",
       "race": "Z",
       "value": 3000,
+      "health": 3500,
+      "tag": [
+        "重甲",
+        "生物单位",
+        "机械单位",
+        "重型单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "末日巨兽巨刃",
+          "damage": 80,
+          "range": 1,
+          "speed": 0.71,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "人类战车钢板",
+        "defense": 5,
+        "speed": 2.62
+      },
       "type": "unit",
       "utyp": "normal"
     },
@@ -4488,6 +4568,25 @@ export default {
     {
       "name": "跳虫",
       "value": 25,
+      "health": 35,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "利爪",
+          "damage": 5,
+          "range": "melee",
+          "speed": 0.5,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 0,
+        "speed": 6.58
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4495,6 +4594,24 @@ export default {
     {
       "name": "爆虫",
       "value": 65,
+      "health": 30,
+      "tag": [
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "不稳定爆裂",
+          "damage": 27,
+          "range": "melee",
+          "speed": 0.14,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 0,
+        "speed": 4.13
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4528,6 +4645,24 @@ export default {
     {
       "name": "破坏者",
       "value": 200,
+      "health": 120,
+      "tag": [
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "等离子发射",
+          "damage": 16,
+          "range": 6,
+          "speed": 1.14,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 1,
+        "speed": 3.85
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4535,6 +4670,25 @@ export default {
     {
       "name": "刺蛇",
       "value": 150,
+      "health": 90,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "骨针",
+          "damage": 12,
+          "range": 5,
+          "speed": 0.59,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 0,
+        "speed": 3.94
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4542,6 +4696,32 @@ export default {
     {
       "name": "被感染的陆战队员",
       "value": 100,
+      "health": 75,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "被感染的步枪",
+          "damage": 10,
+          "range": 4,
+          "speed": 0.61,
+          "target": "GA"
+        },
+        {
+          "name": "感染火箭",
+          "damage": "16, vs 重型单位 24",
+          "range": 6,
+          "speed": 0.95,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 0,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4575,6 +4755,26 @@ export default {
     {
       "name": "雷兽",
       "value": 500,
+      "health": 500,
+      "tag": [
+        "重甲",
+        "生物单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "巨刃",
+          "damage": 25,
+          "range": 1,
+          "speed": 0.61,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 5,
+        "speed": 4.96
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4582,6 +4782,35 @@ export default {
     {
       "name": "虫后",
       "value": 150,
+      "health": 175,
+      "magic": 300,
+      "tag": [
+        "生物单位",
+        "灵能单位"
+      ],
+      "rmrk": "初始150能量",
+      "weapon": [
+        {
+          "name": "利爪",
+          "damage": "4, vs 重甲 6",
+          "multiple": 2,
+          "range": 5,
+          "speed": 0.71,
+          "target": "G"
+        },
+        {
+          "name": "强酸脊刺",
+          "damage": 9,
+          "range": 7,
+          "speed": 0.71,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 1,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4589,9 +4818,20 @@ export default {
     {
       "name": "菌毯肿瘤",
       "value": 0,
+      "health": 50,
+      "tag": [
+        "轻甲",
+        "生物单位",
+        "建筑"
+      ],
+      "armor": {
+        "name": "异虫建筑护甲",
+        "defense": 0
+      },
       "type": "unit",
       "race": "Z",
-      "utyp": "normal"
+      "utyp": "normal",
+      "weapon": []
     },
     {
       "name": "守卫",
@@ -4629,6 +4869,25 @@ export default {
     {
       "name": "潜伏者",
       "value": 300,
+      "health": 200,
+      "tag": [
+        "重甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "脊刺",
+          "damage": "20, vs 重甲 30",
+          "range": 10,
+          "speed": 1.43,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 1,
+        "speed": 4.55
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4636,13 +4895,47 @@ export default {
     {
       "name": "感染者",
       "value": 250,
+      "health": 90,
+      "magic": 200,
+      "tag": [
+        "重甲",
+        "生物单位",
+        "灵能单位"
+      ],
+      "rmrk": "初始100能量",
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 0,
+        "speed": 3.5
+      },
       "type": "unit",
       "race": "Z",
-      "utyp": "normal"
+      "utyp": "normal",
+      "weapon": []
     },
     {
       "name": "畸变体",
       "value": 400,
+      "health": 400,
+      "tag": [
+        "重甲",
+        "生物单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "致疾冲撞",
+          "damage": "20, vs 重甲 40",
+          "range": 1.5,
+          "speed": 0.86,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫骨板",
+        "defense": 2,
+        "speed": 4.13
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4650,6 +4943,25 @@ export default {
     {
       "name": "腐化者",
       "value": 250,
+      "health": 200,
+      "tag": [
+        "重甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "寄生孢子",
+          "damage": "14, vs 重型单位 20",
+          "range": 6,
+          "speed": 1.36,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "异虫飞行生物甲壳",
+        "defense": 2,
+        "speed": 4.72
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4657,6 +4969,26 @@ export default {
     {
       "name": "巢虫领主",
       "value": 500,
+      "health": 225,
+      "tag": [
+        "重甲",
+        "生物单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "巢虫侵袭",
+          "damage": 20,
+          "range": 10,
+          "speed": 1.79,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "异虫飞行生物甲壳",
+        "defense": 1,
+        "speed": 2.63
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4664,6 +4996,27 @@ export default {
     {
       "name": "飞蛇",
       "value": 400,
+      "health": 150,
+      "magic": 200,
+      "tag": [
+        "重甲",
+        "生物单位",
+        "灵能单位"
+      ],
+      "weapon": [
+        {
+          "name": "酸性孢子",
+          "damage": "10, vs 重甲 15",
+          "range": 6,
+          "speed": 1.07,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "异虫飞行生物甲壳",
+        "defense": 1,
+        "speed": 4.13
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4671,6 +5024,25 @@ export default {
     {
       "name": "爆蚊",
       "value": 37,
+      "health": 25,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "自杀",
+          "damage": 110,
+          "range": "melee",
+          "speed": 0.59,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "异虫飞行生物甲壳",
+        "defense": 0,
+        "speed": 5.25
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4678,6 +5050,36 @@ export default {
     {
       "name": "莽兽",
       "value": 1000,
+      "health": 1200,
+      "tag": [
+        "重甲",
+        "生物单位",
+        "重型单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "残杀",
+          "damage": 50,
+          "multiple": 2,
+          "range": 1,
+          "speed": 2.14,
+          "target": "G"
+        },
+        {
+          "name": "凶残喷吐",
+          "damage": 44,
+          "multiple": 1,
+          "range": 6,
+          "speed": 0.54,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "异虫骨板",
+        "defense": 2,
+        "speed": 2.8
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4685,6 +5087,35 @@ export default {
     {
       "name": "利维坦",
       "value": 2000,
+      "health": 1500,
+      "magic": 250,
+      "tag": [
+        "生物单位",
+        "重型单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "触须",
+          "damage": 20,
+          "range": 7,
+          "speed": 0.43,
+          "target": "G"
+        },
+        {
+          "name": "愤怒虫群",
+          "damage": "9, vs 重型单位 15",
+          "multiple": 4,
+          "range": 9,
+          "speed": 1.07,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "异虫飞行生物甲壳",
+        "defense": 2,
+        "speed": 2.8
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4692,6 +5123,36 @@ export default {
     {
       "name": "扎加拉",
       "value": 400,
+      "health": 500,
+      "tag": [
+        "轻甲",
+        "生物单位",
+        "灵能单位",
+        "英雄单位"
+      ],
+      "rmrk": "初始0能量",
+      "weapon": [
+        {
+          "name": "利爪",
+          "damage": 8,
+          "multiple": 2,
+          "range": 3,
+          "speed": 0.71,
+          "target": "G"
+        },
+        {
+          "name": "强酸脊刺",
+          "damage": 18,
+          "range": 7,
+          "speed": 0.71,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 2,
+        "speed": 2.1
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4699,6 +5160,26 @@ export default {
     {
       "name": "斯托科夫",
       "value": 500,
+      "health": 500,
+      "tag": [
+        "重甲",
+        "生物单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "腐蚀飞弹",
+          "damage": 30,
+          "range": 7,
+          "speed": 1.07,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 1,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4706,6 +5187,25 @@ export default {
     {
       "name": "跳虫(精英)",
       "value": 75,
+      "health": 120,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "利爪",
+          "damage": 16,
+          "range": "melee",
+          "speed": 0.5,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 0,
+        "speed": 6.58
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4713,6 +5213,24 @@ export default {
     {
       "name": "爆虫(精英)",
       "value": 150,
+      "health": 75,
+      "tag": [
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "不稳定爆裂",
+          "damage": 40.5,
+          "range": "melee",
+          "speed": 0.14,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 0,
+        "speed": 4.62
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4746,6 +5264,24 @@ export default {
     {
       "name": "破坏者(精英)",
       "value": 400,
+      "health": 220,
+      "tag": [
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "等离子发射",
+          "damage": 16,
+          "range": 8,
+          "speed": 0.57,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 1,
+        "speed": 3.85
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4753,6 +5289,25 @@ export default {
     {
       "name": "刺蛇(精英)",
       "value": 275,
+      "health": 160,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "骨针",
+          "damage": 16,
+          "range": 6,
+          "speed": 0.61,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 1,
+        "speed": 4.38
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4760,6 +5315,25 @@ export default {
     {
       "name": "异龙(精英)",
       "value": 300,
+      "health": 180,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "刃虫",
+          "damage": 18,
+          "range": 3,
+          "speed": 1.09,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "异虫飞行生物甲壳",
+        "defense": 0,
+        "speed": 5.25
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4767,6 +5341,26 @@ export default {
     {
       "name": "雷兽(精英)",
       "value": 700,
+      "health": 600,
+      "tag": [
+        "重甲",
+        "生物单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "巨刃",
+          "damage": 25,
+          "range": 1,
+          "speed": 0.61,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 5,
+        "speed": 4.13
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"

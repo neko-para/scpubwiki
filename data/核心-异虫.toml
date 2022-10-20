@@ -11,7 +11,7 @@ desc = [
 name = "1蟑螂小队"
 unit = "3蟑螂, 1爆虫"
 desc = [
-  "每回合结束时, 将{1|2}蟑螂变为破坏者",
+  "每回合开始时, 将{1|2}蟑螂变为破坏者",
   "出售时, 注卵{2|4}蟑螂"
 ]
 
@@ -159,8 +159,8 @@ desc = [
 ]
 
 [[card]]
-name = "6斯图科夫"
-unit = "1斯图科夫"
+name = "6斯托科夫"
+unit = "1斯托科夫"
 desc = [
   "唯一: {偶数次|任意}六星以下的非虫族卡牌进场时, 将其中的非英雄单位注卵"
 ]
@@ -173,7 +173,7 @@ name = "0虫卵"
 pool = false
 unit = ""
 desc = [
-  "每回合开始时, 如果相邻两侧的卡牌时虫族卡牌, 摧毁这张牌, 获得1晶体矿并孵化其中的生物单位"
+  "每回合开始时, 如果相邻两侧的卡牌是虫族卡牌, 摧毁这张牌, 获得1晶体矿并孵化其中的生物单位"
 ]
 rmrk = "是金色卡牌"
 
@@ -188,10 +188,34 @@ bref = "向相邻两侧虫族卡牌添加单位"
 [[unit]]
 name = "跳虫"
 value = 25
+health = 35
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "利爪"
+damage = 5
+range = "melee"
+speed = 0.5
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 0
+speed = 6.58
 
 [[unit]]
 name = "爆虫"
 value = 65
+health = 30
+tag = "生物单位"
+[[unit.weapon]]
+name = "不稳定爆裂"
+damage = 27
+range = "melee"
+speed = 0.14
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 0
+speed = 4.13
 
 [[unit]]
 name = "蟑螂"
@@ -212,14 +236,56 @@ speed = 4.2
 [[unit]]
 name = "破坏者"
 value = 200
+health = 120
+tag = "生物单位"
+[[unit.weapon]]
+name = "等离子发射"
+damage = 16
+range = 6
+speed = 1.14
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 1
+speed = 3.85
 
 [[unit]]
 name = "刺蛇"
 value = 150
+health = 90
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "骨针"
+damage = 12
+range = 5
+speed = 0.59
+target = "GA"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 0
+speed = 3.94
 
 [[unit]]
 name = "被感染的陆战队员"
 value = 100
+health = 75
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "被感染的步枪"
+damage = 10
+range = 4
+speed = 0.61
+target = "GA"
+[[unit.weapon]]
+name = "感染火箭"
+damage = "16, 重型单位24"
+range = 6
+speed = 0.95
+target = "A"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 0
+speed = 3.15
 
 [[unit]]
 name = "异龙"
@@ -240,14 +306,52 @@ speed = 5.6
 [[unit]]
 name = "雷兽"
 value = 500
+health = 500
+tag = "重甲, 生物单位, 重型单位"
+[[unit.weapon]]
+name = "巨刃"
+damage = 25
+range = 1
+speed = 0.61
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 5
+speed = 4.96
 
 [[unit]]
 name = "虫后"
 value = 150
+health = 175
+magic = 300
+tag = "生物单位, 灵能单位"
+rmrk = "初始150能量"
+[[unit.weapon]]
+name = "利爪"
+damage = "4, 重甲6"
+multiple = 2
+range = 5
+speed = 0.71
+target = "G"
+[[unit.weapon]]
+name = "强酸脊刺"
+damage = 9
+range = 7
+speed = 0.71
+target = "A"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 1
+speed = 3.15
 
 [[unit]]
 name = "菌毯肿瘤"
 value = 0
+health = 50
+tag = "轻甲, 生物单位, 建筑"
+[unit.armor]
+name = "异虫建筑护甲"
+defense = 0
 
 [[unit]]
 name = "守卫"
@@ -274,54 +378,232 @@ speed = 4.55
 [[unit]]
 name = "潜伏者"
 value = 300
+health = 200
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "脊刺"
+damage = "20, 重甲30"
+range = 10
+speed = 1.43
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 1
+speed = 4.55
 
 [[unit]]
 name = "感染者"
 value = 250
+health = 90
+magic = 200
+tag = "重甲, 生物单位, 灵能单位"
+rmrk = "初始100能量"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 0
+speed = 3.5
 
 [[unit]]
 name = "畸变体"
 value = 400
+health = 400
+tag = "重甲, 生物单位, 重型单位"
+[[unit.weapon]]
+name = "致疾冲撞"
+damage = "20, 重甲40"
+range = 1.5
+speed = 0.86
+target = "G"
+[unit.armor]
+name = "异虫骨板"
+defense = 2
+speed = 4.13
 
 [[unit]]
 name = "腐化者"
 value = 250
+health = 200
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "寄生孢子"
+damage = "14, 重型单位20"
+range = 6
+speed = 1.36
+target = "A"
+[unit.armor]
+name = "异虫飞行生物甲壳"
+defense = 2
+speed = 4.72
 
 [[unit]]
 name = "巢虫领主"
 value = 500
+health = 225
+tag = "重甲, 生物单位, 重型单位"
+[[unit.weapon]]
+name = "巢虫侵袭"
+damage = 20
+range = 10
+speed = 1.79
+target = "A"
+[unit.armor]
+name = "异虫飞行生物甲壳"
+defense = 1
+speed = 2.63
 
 [[unit]]
 name = "飞蛇"
 value = 400
+health = 150
+magic = 200
+tag = "重甲, 生物单位, 灵能单位"
+[[unit.weapon]]
+name = "酸性孢子"
+damage = "10, 重甲15"
+range = 6
+speed = 1.07
+target = "A"
+[unit.armor]
+name = "异虫飞行生物甲壳"
+defense = 1
+speed = 4.13
 
 [[unit]]
 name = "爆蚊"
 value = 37
+health = 25
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "自杀"
+damage = 110
+range = "melee"
+speed = 0.59
+target = "A"
+[unit.armor]
+name = "异虫飞行生物甲壳"
+defense = 0
+speed = 5.25
+
 
 [[unit]]
 name = "莽兽"
 value = 1000
+health = 1200
+tag = "重甲, 生物单位, 重型单位, 英雄单位"
+[[unit.weapon]]
+name = "残杀"
+damage = 50
+multiple = 2
+range = 1
+speed = 2.14
+target = "G"
+[[unit.weapon]]
+name = "凶残喷吐"
+damage = 44
+multiple = 1
+range = 6
+speed = 0.54
+target = "A"
+[unit.armor]
+name = "异虫骨板"
+defense = 2
+speed = 2.8
 
 [[unit]]
 name = "利维坦"
 value = 2000
+health = 1500
+magic = 250
+tag = "生物单位, 重型单位, 英雄单位"
+[[unit.weapon]]
+name = "触须"
+damage = 20
+range = 7
+speed = 0.43
+target = "G"
+[[unit.weapon]]
+name = "愤怒虫群"
+damage = "9, 重型单位15"
+multiple = 4
+range = 9
+speed = 1.07
+target = "A"
+[unit.armor]
+name = "异虫飞行生物甲壳"
+defense = 2
+speed = 2.8
 
 [[unit]]
 name = "扎加拉"
 value = 400
+health = 500
+tag = "轻甲, 生物单位, 灵能单位, 英雄单位"
+rmrk = "初始0能量"
+[[unit.weapon]]
+name = "利爪"
+damage = 8
+multiple = 2
+range = 3
+speed = 0.71
+target = "G"
+[[unit.weapon]]
+name = "强酸脊刺"
+damage = 18
+range = 7
+speed = 0.71
+target = "A"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 2
+speed = 2.1
 
 [[unit]]
 name = "斯托科夫"
 value = 500
+health = 500
+tag = "重甲, 生物单位, 英雄单位"
+[[unit.weapon]]
+name = "腐蚀飞弹"
+damage = 30
+range = 7
+speed = 1.07
+target = "GA"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 1
+speed = 3.15
 
 [[unit]]
 name = "跳虫(精英)"
 value = 75
+health = 120
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "利爪"
+damage = 16
+range = "melee"
+speed = 0.5
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 0
+speed = 6.58
 
 [[unit]]
 name = "爆虫(精英)"
 value = 150
+health = 75
+tag = "生物单位"
+[[unit.weapon]]
+name = "不稳定爆裂"
+damage = 40.5
+range = "melee"
+speed = 0.14
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 0
+speed = 4.62
 
 [[unit]]
 name = "蟑螂(精英)"
@@ -342,15 +624,63 @@ speed = 4.2
 [[unit]]
 name = "破坏者(精英)"
 value = 400
+health = 220
+tag = "生物单位"
+[[unit.weapon]]
+name = "等离子发射"
+damage = 16
+range = 8
+speed = 0.57
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 1
+speed = 3.85
 
 [[unit]]
 name = "刺蛇(精英)"
 value = 275
+health = 160
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "骨针"
+damage = 16
+range = 6
+speed = 0.61
+target = "GA"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 1
+speed = 4.38
 
 [[unit]]
 name = "异龙(精英)"
 value = 300
+health = 180
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "刃虫"
+damage = 18
+range = 3
+speed = 1.09
+target = "GA"
+[unit.armor]
+name = "异虫飞行生物甲壳"
+defense = 0
+speed = 5.25
 
 [[unit]]
 name = "雷兽(精英)"
 value = 700
+health = 600
+tag = "重甲, 生物单位, 重型单位"
+[[unit.weapon]]
+name = "巨刃"
+damage = 25
+range = 1
+speed = 0.61
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 5
+speed = 4.13

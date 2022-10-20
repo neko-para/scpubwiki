@@ -16,6 +16,7 @@ export function $ () {
     },
     bind (ev, func) {
       this.bus.on(ev, func)
+      console.log(ev, this.bus)
       this.clf.push(() => {
         this.bus.off(ev, func)
       })
@@ -51,6 +52,12 @@ export function 转换 (card, index, to) {
     card,
     index,
     to
+  })
+}
+
+export function 摧毁 (card) {
+  return card.player.bus.async_emit('destroy-card', {
+    destroyed: card
   })
 }
 

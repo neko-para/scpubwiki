@@ -39,6 +39,18 @@ desc = [
 name = "火蝠"
 race = "T"
 value = 125
+health = 100
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "毁灭之炎喷射器"
+damage = "8, 轻甲12"
+range = 2
+speed = 1
+target = "G"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 0
+speed = 3.15
 
 [[unit]]
 name = "先知"

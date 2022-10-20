@@ -43,11 +43,36 @@ rmrk = "原文的刷新描述没有唯一, 此处根据实际效果添加该标�
 name = "被感染的女妖"
 race = "Z"
 value = 200
+health = 140
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "反冲火箭"
+damage = 12
+multiple = 2
+range = 6
+speed = 0.89
+target = "G"
+[unit.armor]
+name = "异虫飞行单位甲壳"
+defense = 0
+speed = 3.85
 
 [[unit]]
 name = "末日巨兽"
 race = "Z"
 value = 3000
+health = 3500
+tag = "重甲, 生物单位, 机械单位, 重型单位, 英雄单位"
+[[unit.weapon]]
+name = "末日巨兽巨刃"
+damage = 80
+range = 1
+speed = 0.71
+target = "G"
+[unit.armor]
+name = "人类战车钢板"
+defense = 5
+speed = 2.62
 
 [[unit]]
 name = "恶蝠游骑兵"

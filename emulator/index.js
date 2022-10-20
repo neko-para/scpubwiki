@@ -12,7 +12,7 @@ const upgrades = [
   null, 5, 7, 8, 9, 11
 ]
 
-class Card {
+export class Card {
   constructor (cardt, player) {
     this.bus = new emitter(),
     this.template = cardt,
@@ -91,6 +91,17 @@ class Card {
 
     this.bus.on('wrap-in', ({ unit }) => 获得(this, unit))
 
+    this.bus.on('incubate', ({ unit }) => 相邻两侧(this, async c => {
+      if (c.race === 'Z') {
+        await this.player.bus.async_emit('incubate-into', {
+          card: c,
+          unit
+        })
+      }
+    }))
+
+    this.bus.on('incubate-into', ({ unit }) => 获得(this, unit))
+
     this.bus.on('card-selled', async () => {
       const n = this.locate('虚空水晶塔').length
       await 相邻两侧(this, async card => {
@@ -104,7 +115,7 @@ class Card {
       })
     })
   }
-  
+
   async load_default_unit () {
     await this.player.step(`卡牌 ${this.pos} ${this.name} 即将添加默认单位`)
     for (const k in this.template.unit) {
@@ -198,34 +209,30 @@ export class Player {
     this.present = Array(7).fill(null)
 
     this.flag = {} // 用于检测唯一
+    this.glob = {} // 用于跨回合状态, 如毛子
 
     this.refresh = () => {}
     this.stepper = null
     this.cache = ''
 
-    this.bus.on('*<', (ev, param) => {
+    this.bus.on('*<', async (ev, param) => {
       param = param || {}
-      this.log(`玩家接收到 ${ev}  -  `, true)
       if ('card' in param) {
         if (param.card) {
-          this.log(`转发至第${param.card.pos}张卡牌`)
-        } else {
-          this.log('舍弃')
+          await this.bus.async_emit(`${ev}-before$`, param)
         }
       } else {
-        this.log(`通知所有卡牌`)
+        await this.bus.async_emit(`${ev}-before-dispatch$`, param)
       }
     })
     this.bus.on('*', async (ev, param) => {
       param = param || {}
       if ('card' in param) {
         if (param.card) {
-          await param.card.bus.async_emit(`${ev}-before$`, param)
           await param.card.bus.async_emit(ev, param)
-          await param.card.bus.async_emit(`${ev}-after$`, param)
+          await this.bus.async_emit(`${ev}-after$`, param)
         }
       } else {
-        await this.bus.async_emit(`${ev}-before-dispatch$`, param)
         await this.asyncEnumPresent(async c => {
           await c.bus.async_emit(ev, param)
         })
@@ -253,6 +260,13 @@ export class Player {
         unit,
         card: info.to
       })
+    })
+    this.bus.on('destroy-card', async ({ destroyed: card }) => {
+      await this.step(`卡牌 ${card.pos} ${card.name} 即将移除`)
+      this.present[card.pos] = null
+
+      await card.desc()
+      await this.refresh()
     })
   }
 
@@ -478,6 +492,15 @@ export class Player {
     })
     await card.desc()
     await this.refresh()
+  }
+
+  async destroy (pos) {
+    const card = this.present[pos]
+
+    await this.step(`即将广播卡牌摧毁消息`)
+    await this.bus.async_emit('destroy-card', {
+      destroyed: card
+    })
   }
 
   async sell_hand (pos) {
