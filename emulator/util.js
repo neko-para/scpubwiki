@@ -48,7 +48,7 @@ export function 转换 (card, index, to) {
   if (index.length === 0) {
     return
   }
-  return p.bus.async_emit('transform-unit', {
+  return card.player.bus.async_emit('transform-unit', {
     card,
     index,
     to
