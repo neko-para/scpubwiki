@@ -199,7 +199,7 @@ export default {
           count: 1
         }
         await card.bus.async_emit('regroup-count', { info })
-        while (info.count-- > 0) {
+        for (let i = 0; i < info.count; i++) {
           await 集结部队(card, i)
           await 集结部队(card, i)
         }
