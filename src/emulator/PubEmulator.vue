@@ -89,7 +89,7 @@ function sell (i) {
 
 <template>
   <v-card>
-    <v-card-text>目前只支持所有人族卡牌! 注意不要在单步调试的时候尝试连续获取多个卡牌, 最好关闭单步调试后去获取卡牌</v-card-text>
+    <v-card-text>目前只支持所有人族和神族卡牌! 注意不要在单步调试的时候尝试连续获取多个卡牌, 最好关闭单步调试后去获取卡牌</v-card-text>
     <v-card-actions>
       <v-btn :disabled="steping" color="red" @click="installStep()">开启单步调试</v-btn>
       <v-btn :disabled="!steping" color="red" @click="stopStep()">停止单步调试</v-btn>
