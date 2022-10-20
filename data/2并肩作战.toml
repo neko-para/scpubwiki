@@ -43,6 +43,7 @@ name = "虚空裂隙"
 race = "N"
 value = 0
 utyp = "spbd"
+tag = ""
 
 [[unit]]
 name = "百夫长"
