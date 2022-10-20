@@ -44,6 +44,19 @@ value = 125
 name = "先知"
 race = "P"
 value = 300
+health = 100
+shield = 60
+magic = 200
+[[unit.weapon]]
+name = "脉冲光束"
+damage = "15, 轻甲22"
+range = 4
+speed = 0.61
+target = "G"
+[unit.armor]
+name = "星灵护板"
+defense = 0
+speed = 5.6
 
 [[unit]]
 name = "火蝠(精英)"

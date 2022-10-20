@@ -1,9 +1,9 @@
-import { getUnit } from '../data'
+import { getUnit, data } from '../data'
 import { shuffle, $, 获得, 获得N, 相邻两侧, 转换 } from './util.js'
 
 async function 折跃(card, unit) {
   await card.player.step(`卡牌 ${card.pos} ${card.name} 即将折跃 ${unit.join(', ')}`)
-  await card.player.async_emit('wrap', {
+  await card.player.bus.async_emit('wrap', {
     unit,
     info: {
       to: null
@@ -13,7 +13,7 @@ async function 折跃(card, unit) {
 
 async function 集结部队(card, id) {
   await card.player.step(`卡牌 ${card.pos} ${card.name} 即将重新集结部队, 描述 ${id}`)
-  await card.player.async_emit('regroup', {
+  await card.player.bus.async_emit('regroup', {
     card,
     id
   })
@@ -28,7 +28,7 @@ function 集结(card, power, id) {
     if (card.power() >= power) {
       n++
     }
-    if (card.player.阿塔尼斯) {
+    if (card.player.flag.阿塔尼斯) {
       n++
     }
     while (n--) {
@@ -44,7 +44,7 @@ export default {
       ...Array(g ? 2 : 1).fill('狂热者'),
       ...Array(g ? 4 : 2).fill('追猎者')
     ])),
-  发电站: () => () => {},
+  发电站: () => $(),
   供能中心: (p, c, g) => $()
     .for(p)
     .bind('upgrade-pub', () => 获得N(c, '水晶塔', g ? 2 : 1)),
@@ -86,7 +86,7 @@ export default {
     }),
   重回战场: (p, c, g) => $()
     .for(c)
-    .bind('post-enter', () => p.enumPresent(async card => {
+    .bind('post-enter', () => p.asyncEnumPresent(async card => {
       if (card.race === 'P') {
         const idx = card.locateX(unit => getUnit(unit).tag.includes('生物单位'))
         for (const i of idx.slice(0, g ? 2 : 1)) {
@@ -156,9 +156,10 @@ export default {
       }
     })
     .for(p)
-    .bind('wrap-after-dispatch', () => delete p.flag.莫汗达尔),
-  光复艾尔: (p, c, g) => $()
+    .bind('wrap-after-dispatch$', () => delete p.flag.莫汗达尔),
+  光复艾尔: (p, c, g, a) => $()
     .for(p)
+    .bind('post-enter', () => a(`泰坦棱镜已展开`))
     .bind('card-sell', async ({ selled: card }) => {
       if (card === c || c.info.已收起 || p.flag.光复艾尔) {
         return
@@ -166,18 +167,20 @@ export default {
       if (card.race === 'P') {
         const unit = []
         card.unit = card.unit.filter(u => {
-          if (getUnit(u).utyp === 'spbd' && u !== '水晶塔') {
+          const uu = getUnit(u)
+          if (uu.utyp !== 'normal' && u !== '水晶塔') {
             return true
-          } else {
+          } else if (g || !uu.tag.includes('英雄单位')) {
             unit.push(u)
           }
         })
         c.info.已收起 = 1
+        await a(`泰坦棱镜已收起`)
         p.flag.光复艾尔 = 1
         await 获得(c, unit)
       }
     })
-    .bind('card-sell-after-dispatch', () => {
+    .bind('card-sell-after-dispatch$', () => {
       p.flag.光复艾尔 = 0
     }),
   菲尼克斯: (p, c, g) => $()
@@ -191,7 +194,7 @@ export default {
   酒馆后勤处: (p, c, g) => $()
     .for(c)
     .bind('post-enter', async () => {
-      await p.enumPresent(async card => {
+      await p.asyncEnumPresent(async card => {
         const info = {
           count: 1
         }
@@ -231,12 +234,12 @@ export default {
       }
     })
     .for(p)
-    .bind('round-end-before-dispatch', () => p.flag.阿塔尼斯 = 1),
+    .bind('round-end-before-dispatch$', () => p.flag.阿塔尼斯 = 1),
   净化之光: (p, c, g) => $()
     .for(c)
     .bind('round-end', () => 获得N(c, '虚空辉光舰', g ? 2 : 1))
     .bind('round-end', 集结(c, 4, 0))
-    .bind('regroup', () => p.enumPresent(async card => 转换(card, card.locate('虚空辉光舰', g ? 2 : 1), '虚空辉光舰(精英)'))),
+    .bind('regroup', () => p.asyncEnumPresent(async card => 转换(card, card.locate('虚空辉光舰', g ? 2 : 1), '虚空辉光舰(精英)'))),
   生物质发电: (p, c, g) => $()
     .for(p)
     .bind('card-sell', async ({ selled }) => {
@@ -265,7 +268,7 @@ export default {
     }),
   英雄叉: (p, c, g) => $()
     .for(c)
-    .bind('wrap-in-before', ({ unit }) => {
+    .bind('wrap-in-before$', ({ unit }) => {
       for (let i = 0; i < unit.length; i++) {
         if (unit[i] === '狂热者(精英)') {
           unit[i] = '卡尔达利斯'

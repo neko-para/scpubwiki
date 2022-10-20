@@ -36,17 +36,15 @@ function 反应堆 (card, gold, unit) {
 }
 
 function 科挂 (card, count, result) {
-  return async () => {
-    card.player.enumPresent(async c => {
-      if (c.infr_type() > 0) {
-        if (--count <= 0) {
-          await card.player.step(`卡牌 ${card.pos} ${card.name} 即将触发科挂效果`)
-          await result()
-          return true
-        }
+  return async () => card.player.asyncEnumPresent(async c => {
+    if (c.infr_type() > 0) {
+      if (--count <= 0) {
+        await card.player.step(`卡牌 ${card.pos} ${card.name} 即将触发科挂效果`)
+        await result()
+        return true
       }
-    })
-  }
+    }
+  })
 }
 
 export default {
@@ -89,7 +87,7 @@ export default {
           if (index % 3 === 0) {
             return
           }
-          if (getUnit(unit).utyp === 'spbd') {
+          if (getUnit(unit).utyp !== 'normal') {
             return
           }
           taked.push(unit)
@@ -161,7 +159,7 @@ export default {
     .bind('round-end', 科挂(c, 5, () => 获得N(c, '攻城坦克', g ? 2 : 1))),
   枪兵坦克: (p, c, g) => $()
     .for(c)
-    .bind('round-end', () => p.enumPresent(async card => {
+    .bind('round-end', () => p.asyncEnumPresent(async card => {
       if (card.infr_type() === 0) {
         await 获得N(card, '陆战队员', g ? 4 : 2)
       }
@@ -188,7 +186,7 @@ export default {
   泰凯斯: (p, c, g) => $()
     .for(c)
     .bind('round-end', 反应堆(c, g, '陆战队员(精英)'))
-    .bind('round-end', () => p.enumPresent(async card => {
+    .bind('round-end', () => p.asyncEnumPresent(async card => {
       if (card.race === 'T') {
         for (const u of ['陆战队员', '劫掠者']) {
           await 转换(card, card.locate(u, g ? 5 : 3), u + '(精英)')
@@ -231,7 +229,7 @@ export default {
   钢铁洪流: (p, c, g) => $()
     .for(c)
     .bind('fast-prod', () => 获得N(c, '雷神', g ? 2 : 1))
-    .bind('round-end', 科挂(c, 5, () => p.enumPresent(async card => {
+    .bind('round-end', 科挂(c, 5, () => p.asyncEnumPresent(async card => {
       for (const u of ['攻城坦克', '战狼']) {
         await 转换(card, card.locate(u, g ? 2 : 1), u + '(精英)')
       }
@@ -254,7 +252,7 @@ export default {
           p.flag.沃菲尔德++
           const unit = []
           card.unit = card.unit.filter(u => {
-            if (getUnit(u).utyp === 'spbd') {
+            if (getUnit(u).utyp !== 'normal') {
               return true
             } else {
               unit.push(u)
@@ -265,7 +263,7 @@ export default {
       }
     })
     .for(c)
-    .bind('round-end', () => p.enumPresent(async card => 转换(card, card.locate('陆战队员(精英)', g ? 2 : 1), '帝盾卫兵'))),
+    .bind('round-end', () => p.asyncEnumPresent(async card => 转换(card, card.locate('陆战队员(精英)', g ? 2 : 1), '帝盾卫兵'))),
   帝国舰队: (p, c, g, a) => {
     let rn = null
     return $()
@@ -303,12 +301,12 @@ export default {
     .bind('task-done', () => 获得N(c, '诺娃', g ? 2 : 1)),
   以火治火: (p, c, g) => $()
     .for(c)
-    .bind('round-end', () => p.enumPresent(async card => {
+    .bind('round-end', () => p.asyncEnumPresent(async card => {
       if (card.infr_type() === 0) {
         await 获得N(card, '火蝠', g ? 2 : 1)
       }
     }))
-    .bind('fast-prod', () => p.enumPresent(async card => {
+    .bind('fast-prod', () => p.asyncEnumPresent(async card => {
       if (card.race === 'T') {
         await 转换(card, card.locate('火蝠', g ? 3 : 2), '火蝠(精英)')
       }
@@ -321,7 +319,7 @@ export default {
         const r = []
         for (const k in us) {
           const u = getUnit(k)
-          if (u.utyp === 'spbd') {
+          if (u.utyp !== 'normal') {
             continue
           }
           if (u.tag.includes('英雄单位') || !u.tag.includes('生物单位')) {

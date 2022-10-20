@@ -27,26 +27,34 @@ export default class AsyncEmitter {
   }
 
   emit (name, param) {
-    for (const f of this.map.get('*<') || []) {
-      f(name, param)
+    if (name[name.length - 1] !== '$') {
+      for (const f of this.map.get('*<') || []) {
+        f(name, param)
+      }
     }
     for (const f of this.map.get(name) || []) {
       f(param)
     }
-    for (const f of this.map.get('*') || []) {
-      f(name, param)
+    if (name[name.length - 1] !== '$') {
+      for (const f of this.map.get('*') || []) {
+        f(name, param)
+      }
     }
   }
   
   async async_emit (name, param) {
-    for (const f of this.map.get('*<') || []) {
-      await f(name, param)
+    if (name[name.length - 1] !== '$') {
+      for (const f of this.map.get('*<') || []) {
+        await f(name, param)
+      }
     }
     for (const f of this.map.get(name) || []) {
       await f(param)
     }
-    for (const f of this.map.get('*>') || []) {
-      await f(name, param)
+    if (name[name.length - 1] !== '$') {
+      for (const f of this.map.get('*') || []) {
+        await f(name, param)
+      }
     }
   }
 }

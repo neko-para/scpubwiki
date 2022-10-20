@@ -196,6 +196,18 @@ value = 65
 [[unit]]
 name = "蟑螂"
 value = 100
+health = 145
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "酸性唾液"
+damage = 16
+range = 4
+speed = 1.43
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 1
+speed = 4.2
 
 [[unit]]
 name = "破坏者"
@@ -314,6 +326,18 @@ value = 150
 [[unit]]
 name = "蟑螂(精英)"
 value = 200
+health = 250
+tag = "重甲, 生物单位"
+[[unit.weapon]]
+name = "酸性唾液"
+damage = 28
+range = 4
+speed = 1.43
+target = "G"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 1
+speed = 4.2
 
 [[unit]]
 name = "破坏者(精英)"

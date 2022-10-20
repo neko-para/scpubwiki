@@ -2,7 +2,7 @@ import emitter from '../async-emitter.js'
 import descs from './data.js'
 import { getUnit } from '../data'
 import { Pool as _Pool } from './pool.js'
-import { shuffle, 获得 } from './util.js'
+import { shuffle, 相邻两侧, 获得, 获得N } from './util.js'
 
 export const Pool = _Pool
 
@@ -90,6 +90,19 @@ class Card {
     })
 
     this.bus.on('wrap-in', ({ unit }) => 获得(this, unit))
+
+    this.bus.on('card-selled', async () => {
+      const n = this.locate('虚空水晶塔').length
+      await 相邻两侧(this, async card => {
+        if (card.race === 'P' && n > 0) {
+          await this.player.step(`即将转移 ${n} 虚空水晶塔到卡牌 ${card.pos} ${card.name}`)
+          for (let i = 0; i < n; i++) {
+            this.take_unit('虚空水晶塔')
+          }
+          await 获得N(card, '虚空水晶塔', n)
+        }
+      })
+    })
   }
   
   async load_default_unit () {
@@ -107,7 +120,7 @@ class Card {
   }
 
   take_unit (u) {
-    return take_at(this.unit.indexOf(u))
+    return this.take_at(this.unit.indexOf(u))
   }
 
   find_infr () {
@@ -125,8 +138,20 @@ class Card {
     }
   }
 
-  power () {
+  self_power () {
     return this.locate('水晶塔').length + this.locate('虚空水晶塔').length
+  }
+
+  power () {
+    let n = this.self_power()
+    
+    if (this.pos > 0 && this.player.present[this.pos - 1]) {
+      n += this.player.present[this.pos - 1].self_power()
+    }
+    if (this.pos < 6 && this.player.present[this.pos + 1]) {
+      n += this.player.present[this.pos + 1].self_power()
+    }
+    return n
   }
 
   locateX (pred, cnt = -1) {
@@ -195,22 +220,22 @@ export class Player {
       param = param || {}
       if ('card' in param) {
         if (param.card) {
-          await param.card.bus.async_emit(`${ev}-before`, param)
+          await param.card.bus.async_emit(`${ev}-before$`, param)
           await param.card.bus.async_emit(ev, param)
-          await param.card.bus.async_emit(`${ev}-after`, param)
+          await param.card.bus.async_emit(`${ev}-after$`, param)
         }
       } else {
-        await this.bus.async_emit(`${ev}-before-dispatch`, param)
-        await this.enumPresent(async c => {
+        await this.bus.async_emit(`${ev}-before-dispatch$`, param)
+        await this.asyncEnumPresent(async c => {
           await c.bus.async_emit(ev, param)
         })
-        await this.bus.async_emit(`${ev}-after-dispatch`, param)
+        await this.bus.async_emit(`${ev}-after-dispatch$`, param)
       }
     })
     this.bus.on('round-start', () => {
       this.flag = {}
     })
-    this.bus.on('wrap-after-dispatch', async ({ unit, info }) => {
+    this.bus.on('wrap-after-dispatch$', async ({ unit, info }) => {
       if (info.to === null) {
         const choice = []
         this.enumPresent(card => {
@@ -248,7 +273,17 @@ export class Player {
     }
   }
 
-  async enumPresent (func) {
+  enumPresent (func) {
+    for (let i = 0; i < 7; i++) {
+      if (this.present[i]) {
+        if (func(this.present[i])) {
+          return
+        }
+      }
+    }
+  }
+
+  async asyncEnumPresent (func) {
     for (let i = 0; i < 7; i++) {
       if (this.present[i]) {
         if (await func(this.present[i])) {

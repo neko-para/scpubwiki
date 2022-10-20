@@ -46,11 +46,36 @@ value = 180
 name = "诺娃"
 race = "T"
 value = 400
+health = 300
+tag = "生物单位, 灵能单位"
+[[unit.weapon]]
+name = "激光刀"
+damage = "20, 轻甲40"
+range = "melee"
+speed = 0.71
+target = "G"
+[unit.armor]
+name = "人类步兵护甲"
+defense = 1
+speed = 4.55
 
 [[unit]]
 name = "泽拉图"
 race = "P"
 value = 1000
+health = 400
+shield = 300
+tag = "轻甲, 生物单位, 灵能单位, 英雄单位"
+[[unit.weapon]]
+name = "大师曲光战刃"
+damage = "45, 重甲70"
+range = 1
+speed = 0.57
+target = "G"
+[unit.armor]
+name = "星灵护甲"
+defense = 2
+speed = 4.2
 
 [[unit]]
 name = "混合体巨兽"

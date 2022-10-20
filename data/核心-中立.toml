@@ -266,12 +266,14 @@ bref = "将卡牌从场上移除, 不触发出售效果, 不获得晶体矿"
 name = "零件"
 value = 0
 utyp = "spun"
+tag = ""
 bref = "用于制造"
 
 [[unit]]
 name = "精华"
 value = 0
 utyp = "spun"
+tag = ""
 bref = "用于供养和原始异龙消耗"
 
 [[unit]]

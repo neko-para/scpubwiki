@@ -38,7 +38,7 @@ function sendToHand(card) {
   <v-card :elevation="elv" @mouseover="elv = 20" @mouseout="elv = 5">
     <v-card-actions v-if="props.node.type === 'card' || props.closable">
       <v-spacer></v-spacer>
-      <v-btn v-if="node.type === 'card' && node.pool && node.race === 'T'" @click="sendToHand(node)">获取</v-btn>
+      <v-btn v-if="node.type === 'card' && node.pool && ['T', 'P'].includes(node.race)" @click="sendToHand(node)">获取</v-btn>
       <v-btn v-if="node.type === 'card'" @click="bref = !bref">
         {{ bref ? '展开' : '收起' }}
       </v-btn>

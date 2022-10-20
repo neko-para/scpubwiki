@@ -1,99 +1,6 @@
 export default {
   "card": [
     {
-      "name": "英雄叉",
-      "race": "P",
-      "unit": {
-        "卡尔达利斯": 1,
-        "水晶塔": 2
-      },
-      "desc": [
-        [
-          "折跃单位到此卡牌时, 将所有折跃的狂热者(精英)变为卡尔达利斯",
-          "折跃单位到此卡牌时, 将所有折跃的狂热者(精英)变为卡尔达利斯"
-        ]
-      ],
-      "type": "card",
-      "pack": "军备竞赛",
-      "pool": true,
-      "level": 2
-    },
-    {
-      "name": "机械感染",
-      "attr": {
-        "gold": true
-      },
-      "race": "Z",
-      "unit": {
-        "被感染的女妖": 6
-      },
-      "desc": [
-        [
-          "每回合开始时, 若雷兽数量≥4, 则获得1末日巨兽并抹除卡牌描述",
-          "每回合开始时, 若雷兽数量≥4, 则获得1末日巨兽并抹除卡牌描述"
-        ],
-        [
-          "每回合结束时, 孵化1被感染的女妖",
-          "每回合结束时, 孵化1被感染的女妖"
-        ]
-      ],
-      "type": "card",
-      "pack": "军备竞赛",
-      "pool": true,
-      "level": 3
-    },
-    {
-      "name": "黑色行动",
-      "race": "T",
-      "unit": {
-        "恶蝠游骑兵": 2,
-        "反应堆": 1
-      },
-      "desc": [
-        [
-          "快速生产: 获得<1>恶蝠游骑兵",
-          "快速生产: 获得<2>恶蝠游骑兵"
-        ],
-        [
-          "反应堆生产修理无人机",
-          "反应堆生产修理无人机"
-        ],
-        [
-          "每回合结束时, 此卡牌将所有陆战队员精英化",
-          "每回合结束时, 此卡牌将所有陆战队员精英化"
-        ]
-      ],
-      "type": "card",
-      "pack": "军备竞赛",
-      "pool": true,
-      "level": 4
-    },
-    {
-      "name": "死亡之握",
-      "attr": {
-        "void": true
-      },
-      "race": "N",
-      "unit": {
-        "死亡之握水晶": 1
-      },
-      "desc": [
-        [
-          "唯一: 每回合结束时, 获得每张当前未购买卡牌中的<1>非英雄单位",
-          "唯一: 每回合结束时, 获得每张当前未购买卡牌中的<2>非英雄单位"
-        ],
-        [
-          "唯一: 刷新时, 复制此卡牌<1>非英雄单位",
-          "唯一: 刷新时, 复制此卡牌<2>非英雄单位"
-        ]
-      ],
-      "rmrk": "原文的刷新描述没有唯一, 此处根据实际效果添加该标签, 可能是一个bug",
-      "type": "card",
-      "pack": "军备竞赛",
-      "pool": true,
-      "level": 6
-    },
-    {
       "name": "黄昏之翼",
       "race": "T",
       "unit": {
@@ -273,88 +180,6 @@ export default {
       "level": 5
     },
     {
-      "name": "以火治火",
-      "race": "T",
-      "unit": {
-        "火蝠": 6,
-        "反应堆": 1
-      },
-      "desc": [
-        [
-          "每回合开始时, 所有具有反应堆的人族卡牌获得<1>火蝠",
-          "每回合开始时, 所有具有反应堆的人族卡牌获得<2>火蝠"
-        ],
-        [
-          "快速生产: 所有人族卡牌将<2>火蝠精英化",
-          "快速生产: 所有人族卡牌将<3>火蝠精英化"
-        ]
-      ],
-      "type": "card",
-      "pack": "快速启动",
-      "pool": true,
-      "level": 3
-    },
-    {
-      "name": "六脉神剑",
-      "race": "T",
-      "unit": {
-        "先知": 4,
-        "水晶塔": 1
-      },
-      "desc": [
-        [
-          "任意卡牌进场时, 若先知数量小于能量强度, 则折跃<1>先知",
-          "任意卡牌进场时, 若先知数量小于能量强度, 则折跃<2>先知"
-        ]
-      ],
-      "type": "card",
-      "pack": "快速启动",
-      "pool": true,
-      "level": 3
-    },
-    {
-      "name": "优质基因",
-      "attr": {
-        "insert": true
-      },
-      "race": "Z",
-      "unit": {
-        "巢虫领主": 2,
-        "雷兽": 1
-      },
-      "desc": [
-        [
-          "每回合结束时, 摧毁所有虫卵牌并且所有虫族卡牌获得1虫卵牌中价值最高的<非英雄>单位",
-          "每回合结束时, 摧毁所有虫卵牌并且所有虫族卡牌获得1虫卵牌中价值最高的单位"
-        ]
-      ],
-      "type": "card",
-      "pack": "快速启动",
-      "pool": true,
-      "level": 4
-    },
-    {
-      "name": "埃蒙仆从",
-      "attr": {
-        "void": true
-      },
-      "race": "N",
-      "unit": {
-        "刺蛇(精英)": 2,
-        "旋风狂热者(精英)": 2
-      },
-      "desc": [
-        [
-          "每回合结束时, 尝试同时摧毁1张虫族和神族卡牌, 使所有具有虚空投影的卡牌获得<2>混合体毁灭者",
-          "每回合结束时, 尝试同时摧毁1张虫族和神族卡牌, 使所有具有虚空投影的卡牌获得<3>混合体毁灭者"
-        ]
-      ],
-      "type": "card",
-      "pack": "快速启动",
-      "pool": true,
-      "level": 4
-    },
-    {
       "name": "死亡之翼",
       "unit": {
         "凤凰": 4
@@ -449,6 +274,352 @@ export default {
       "race": "N",
       "pool": true,
       "level": 4
+    },
+    {
+      "name": "雷兽窟",
+      "race": "Z",
+      "unit": {
+        "幼雷兽": 5
+      },
+      "desc": [
+        [
+          "每回合开始时, 将<1>幼雷兽变为雷兽",
+          "每回合开始时, 将<2>幼雷兽变为雷兽"
+        ],
+        [
+          "每回合结束时, 孵化<1>幼雷兽",
+          "每回合结束时, 孵化<2>幼雷兽"
+        ]
+      ],
+      "type": "card",
+      "pack": "短兵相接",
+      "pool": true,
+      "level": 3
+    },
+    {
+      "name": "帝国敢死队",
+      "race": "T",
+      "unit": {
+        "诺娃": 3,
+        "反应堆": 1
+      },
+      "desc": [
+        [
+          "快速生产: 获得2诺娃",
+          "快速生产: 获得2诺娃"
+        ],
+        [
+          "反应堆生产诺娃",
+          "反应堆生产诺娃"
+        ],
+        [
+          "任意任务完成时, 获得<1>诺娃",
+          "任意任务完成时, 获得<2>诺娃"
+        ]
+      ],
+      "type": "card",
+      "pack": "短兵相接",
+      "pool": true,
+      "level": 5
+    },
+    {
+      "name": "黑暗教长",
+      "race": "P",
+      "unit": {
+        "泽拉图": 1,
+        "虚空水晶塔": 1
+      },
+      "desc": [
+        [
+          "进场时, 获得暗影战士升级",
+          "进场时, 获得暗影战士升级"
+        ],
+        [
+          "集结(5): 获得<1>黑暗圣堂武士(精英)",
+          "集结(5): 获得<2>黑暗圣堂武士(精英)"
+        ]
+      ],
+      "type": "card",
+      "pack": "短兵相接",
+      "pool": true,
+      "level": 5
+    },
+    {
+      "name": "混合体巨兽",
+      "attr": {
+        "void": true
+      },
+      "race": "N",
+      "unit": {
+        "混合体巨兽": 2
+      },
+      "desc": [
+        [
+          "每回合结束时, 若场上有4个种族的卡牌, 则获得<1>混合体巨兽",
+          "每回合结束时, 若场上有4个种族的卡牌, 则获得<2>混合体巨兽"
+        ]
+      ],
+      "type": "card",
+      "pack": "短兵相接",
+      "pool": true,
+      "level": 6
+    },
+    {
+      "name": "以火治火",
+      "race": "T",
+      "unit": {
+        "火蝠": 6,
+        "反应堆": 1
+      },
+      "desc": [
+        [
+          "每回合开始时, 所有具有反应堆的人族卡牌获得<1>火蝠",
+          "每回合开始时, 所有具有反应堆的人族卡牌获得<2>火蝠"
+        ],
+        [
+          "快速生产: 所有人族卡牌将<2>火蝠精英化",
+          "快速生产: 所有人族卡牌将<3>火蝠精英化"
+        ]
+      ],
+      "type": "card",
+      "pack": "快速启动",
+      "pool": true,
+      "level": 3
+    },
+    {
+      "name": "六脉神剑",
+      "race": "T",
+      "unit": {
+        "先知": 4,
+        "水晶塔": 1
+      },
+      "desc": [
+        [
+          "任意卡牌进场时, 若先知数量小于能量强度, 则折跃<1>先知",
+          "任意卡牌进场时, 若先知数量小于能量强度, 则折跃<2>先知"
+        ]
+      ],
+      "type": "card",
+      "pack": "快速启动",
+      "pool": true,
+      "level": 3
+    },
+    {
+      "name": "优质基因",
+      "attr": {
+        "insert": true
+      },
+      "race": "Z",
+      "unit": {
+        "巢虫领主": 2,
+        "雷兽": 1
+      },
+      "desc": [
+        [
+          "每回合结束时, 摧毁所有虫卵牌并且所有虫族卡牌获得1虫卵牌中价值最高的<非英雄>单位",
+          "每回合结束时, 摧毁所有虫卵牌并且所有虫族卡牌获得1虫卵牌中价值最高的单位"
+        ]
+      ],
+      "type": "card",
+      "pack": "快速启动",
+      "pool": true,
+      "level": 4
+    },
+    {
+      "name": "埃蒙仆从",
+      "attr": {
+        "void": true
+      },
+      "race": "N",
+      "unit": {
+        "刺蛇(精英)": 2,
+        "旋风狂热者(精英)": 2
+      },
+      "desc": [
+        [
+          "每回合结束时, 尝试同时摧毁1张虫族和神族卡牌, 使所有具有虚空投影的卡牌获得<2>混合体毁灭者",
+          "每回合结束时, 尝试同时摧毁1张虫族和神族卡牌, 使所有具有虚空投影的卡牌获得<3>混合体毁灭者"
+        ]
+      ],
+      "type": "card",
+      "pack": "快速启动",
+      "pool": true,
+      "level": 4
+    },
+    {
+      "name": "基因突变",
+      "attr": {
+        "insert": true
+      },
+      "race": "Z",
+      "unit": {
+        "破坏者(精英)": 1,
+        "破坏者": 2
+      },
+      "desc": [
+        [
+          "进场和出售时, 相邻两侧虫族卡牌将价值最低的<1>个单位变为价值最高的非英雄单位",
+          "进场和出售时, 相邻两侧虫族卡牌将价值最低的<2>个单位变为价值最高的非英雄单位"
+        ]
+      ],
+      "type": "card",
+      "pack": "独辟蹊径",
+      "pool": true,
+      "level": 3
+    },
+    {
+      "name": "复制中心",
+      "race": "T",
+      "unit": {
+        "幽魂": 2,
+        "歌利亚(精英)": 2,
+        "反应堆": 1
+      },
+      "desc": [
+        [
+          "快速生产: 获得每张暂存卡牌的<1>非英雄生物单位",
+          "快速生产: 获得每张暂存卡牌的<2>非英雄生物单位"
+        ]
+      ],
+      "type": "card",
+      "pack": "独辟蹊径",
+      "pool": true,
+      "level": 4
+    },
+    {
+      "name": "晋升仪式",
+      "attr": {
+        "insert": true
+      },
+      "race": "P",
+      "unit": {
+        "不朽者": 2,
+        "狂热者(精英)": 2,
+        "水晶塔": 2
+      },
+      "desc": [
+        [
+          "集结(4): 将<1>不朽者变为英雄不朽者并将<1>生物单位变为高阶圣堂武士",
+          "集结(4): 将<2>不朽者变为英雄不朽者并将<2>生物单位变为高阶圣堂武士"
+        ]
+      ],
+      "type": "card",
+      "pack": "独辟蹊径",
+      "pool": true,
+      "level": 4
+    },
+    {
+      "name": "风暴英雄",
+      "attr": {
+        "gold": true
+      },
+      "race": "N",
+      "unit": {
+        "沃拉尊": 1
+      },
+      "desc": [
+        [
+          "获得升级时, 随机获得1英雄(包含: 马拉什, 阿拉纳克, 利维坦, 虚空构造体, 科罗拉里昂)",
+          "获得升级时, 随机获得1英雄(包含: 马拉什, 阿拉纳克, 利维坦, 虚空构造体, 科罗拉里昂)"
+        ]
+      ],
+      "type": "card",
+      "pack": "独辟蹊径",
+      "pool": true,
+      "level": 5
+    },
+    {
+      "name": "英雄叉",
+      "race": "P",
+      "unit": {
+        "卡尔达利斯": 1,
+        "水晶塔": 2
+      },
+      "desc": [
+        [
+          "折跃单位到此卡牌时, 将所有折跃的狂热者(精英)变为卡尔达利斯",
+          "折跃单位到此卡牌时, 将所有折跃的狂热者(精英)变为卡尔达利斯"
+        ]
+      ],
+      "type": "card",
+      "pack": "军备竞赛",
+      "pool": true,
+      "level": 2
+    },
+    {
+      "name": "机械感染",
+      "attr": {
+        "gold": true
+      },
+      "race": "Z",
+      "unit": {
+        "被感染的女妖": 6
+      },
+      "desc": [
+        [
+          "每回合开始时, 若雷兽数量≥4, 则获得1末日巨兽并抹除卡牌描述",
+          "每回合开始时, 若雷兽数量≥4, 则获得1末日巨兽并抹除卡牌描述"
+        ],
+        [
+          "每回合结束时, 孵化1被感染的女妖",
+          "每回合结束时, 孵化1被感染的女妖"
+        ]
+      ],
+      "type": "card",
+      "pack": "军备竞赛",
+      "pool": true,
+      "level": 3
+    },
+    {
+      "name": "黑色行动",
+      "race": "T",
+      "unit": {
+        "恶蝠游骑兵": 2,
+        "反应堆": 1
+      },
+      "desc": [
+        [
+          "快速生产: 获得<1>恶蝠游骑兵",
+          "快速生产: 获得<2>恶蝠游骑兵"
+        ],
+        [
+          "反应堆生产修理无人机",
+          "反应堆生产修理无人机"
+        ],
+        [
+          "每回合结束时, 此卡牌将所有陆战队员精英化",
+          "每回合结束时, 此卡牌将所有陆战队员精英化"
+        ]
+      ],
+      "type": "card",
+      "pack": "军备竞赛",
+      "pool": true,
+      "level": 4
+    },
+    {
+      "name": "死亡之握",
+      "attr": {
+        "void": true
+      },
+      "race": "N",
+      "unit": {
+        "死亡之握水晶": 1
+      },
+      "desc": [
+        [
+          "唯一: 每回合结束时, 获得每张当前未购买卡牌中的<1>非英雄单位",
+          "唯一: 每回合结束时, 获得每张当前未购买卡牌中的<2>非英雄单位"
+        ],
+        [
+          "唯一: 刷新时, 复制此卡牌<1>非英雄单位",
+          "唯一: 刷新时, 复制此卡牌<2>非英雄单位"
+        ]
+      ],
+      "rmrk": "原文的刷新描述没有唯一, 此处根据实际效果添加该标签, 可能是一个bug",
+      "type": "card",
+      "pack": "军备竞赛",
+      "pool": true,
+      "level": 6
     },
     {
       "name": "原始蟑螂",
@@ -2281,11 +2452,11 @@ export default {
           "获得升级时, 展开泰坦棱镜"
         ],
         [
-          "唯一: 泰坦棱镜展开时, 获得出售的神族卡牌的<非英雄>单位和水晶塔(不包括虚空水晶塔), 同时收起",
-          "唯一: 泰坦棱镜展开时, 获得出售的神族卡牌的单位和水晶塔(不包括虚空水晶塔), 同时收起"
+          "泰坦棱镜展开时, 获得出售的神族卡牌的<非英雄>单位和水晶塔(不包括虚空水晶塔), 同时收起",
+          "泰坦棱镜展开时, 获得出售的神族卡牌的单位和水晶塔(不包括虚空水晶塔), 同时收起"
         ]
       ],
-      "rmrk": "原文没有唯一, 此处根据实际效果添加该标签",
+      "rmrk": "最左侧展开泰坦棱镜的光复艾尔执行效果\n对于 光复艾尔, 金光复艾尔\n出售含有英雄单位的卡牌时, 金光复艾尔不会获得英雄单位(存疑)",
       "type": "card",
       "pack": "核心",
       "race": "P",
@@ -2407,177 +2578,6 @@ export default {
       "type": "card",
       "pack": "核心",
       "race": "P",
-      "pool": true,
-      "level": 6
-    },
-    {
-      "name": "基因突变",
-      "attr": {
-        "insert": true
-      },
-      "race": "Z",
-      "unit": {
-        "破坏者(精英)": 1,
-        "破坏者": 2
-      },
-      "desc": [
-        [
-          "进场和出售时, 相邻两侧虫族卡牌将价值最低的<1>个单位变为价值最高的非英雄单位",
-          "进场和出售时, 相邻两侧虫族卡牌将价值最低的<2>个单位变为价值最高的非英雄单位"
-        ]
-      ],
-      "type": "card",
-      "pack": "独辟蹊径",
-      "pool": true,
-      "level": 3
-    },
-    {
-      "name": "复制中心",
-      "race": "T",
-      "unit": {
-        "幽魂": 2,
-        "歌利亚(精英)": 2,
-        "反应堆": 1
-      },
-      "desc": [
-        [
-          "快速生产: 获得每张暂存卡牌的<1>非英雄生物单位",
-          "快速生产: 获得每张暂存卡牌的<2>非英雄生物单位"
-        ]
-      ],
-      "type": "card",
-      "pack": "独辟蹊径",
-      "pool": true,
-      "level": 4
-    },
-    {
-      "name": "晋升仪式",
-      "attr": {
-        "insert": true
-      },
-      "race": "P",
-      "unit": {
-        "不朽者": 2,
-        "狂热者(精英)": 2,
-        "水晶塔": 2
-      },
-      "desc": [
-        [
-          "集结(4): 将<1>不朽者变为英雄不朽者并将<1>生物单位变为高阶圣堂武士",
-          "集结(4): 将<2>不朽者变为英雄不朽者并将<2>生物单位变为高阶圣堂武士"
-        ]
-      ],
-      "type": "card",
-      "pack": "独辟蹊径",
-      "pool": true,
-      "level": 4
-    },
-    {
-      "name": "风暴英雄",
-      "attr": {
-        "gold": true
-      },
-      "race": "N",
-      "unit": {
-        "沃拉尊": 1
-      },
-      "desc": [
-        [
-          "获得升级时, 随机获得1英雄(包含: 马拉什, 阿拉纳克, 利维坦, 虚空构造体, 科罗拉里昂)",
-          "获得升级时, 随机获得1英雄(包含: 马拉什, 阿拉纳克, 利维坦, 虚空构造体, 科罗拉里昂)"
-        ]
-      ],
-      "type": "card",
-      "pack": "独辟蹊径",
-      "pool": true,
-      "level": 5
-    },
-    {
-      "name": "雷兽窟",
-      "race": "Z",
-      "unit": {
-        "幼雷兽": 5
-      },
-      "desc": [
-        [
-          "每回合开始时, 将<1>幼雷兽变为雷兽",
-          "每回合开始时, 将<2>幼雷兽变为雷兽"
-        ],
-        [
-          "每回合结束时, 孵化<1>幼雷兽",
-          "每回合结束时, 孵化<2>幼雷兽"
-        ]
-      ],
-      "type": "card",
-      "pack": "短兵相接",
-      "pool": true,
-      "level": 3
-    },
-    {
-      "name": "帝国敢死队",
-      "race": "T",
-      "unit": {
-        "诺娃": 3,
-        "反应堆": 1
-      },
-      "desc": [
-        [
-          "快速生产: 获得2诺娃",
-          "快速生产: 获得2诺娃"
-        ],
-        [
-          "反应堆生产诺娃",
-          "反应堆生产诺娃"
-        ],
-        [
-          "任意任务完成时, 获得<1>诺娃",
-          "任意任务完成时, 获得<2>诺娃"
-        ]
-      ],
-      "type": "card",
-      "pack": "短兵相接",
-      "pool": true,
-      "level": 5
-    },
-    {
-      "name": "黑暗教长",
-      "race": "P",
-      "unit": {
-        "泽拉图": 1,
-        "虚空水晶塔": 1
-      },
-      "desc": [
-        [
-          "进场时, 获得暗影战士升级",
-          "进场时, 获得暗影战士升级"
-        ],
-        [
-          "集结(5): 获得<1>黑暗圣堂武士(精英)",
-          "集结(5): 获得<2>黑暗圣堂武士(精英)"
-        ]
-      ],
-      "type": "card",
-      "pack": "短兵相接",
-      "pool": true,
-      "level": 5
-    },
-    {
-      "name": "混合体巨兽",
-      "attr": {
-        "void": true
-      },
-      "race": "N",
-      "unit": {
-        "混合体巨兽": 2
-      },
-      "desc": [
-        [
-          "每回合结束时, 若场上有4个种族的卡牌, 则获得<1>混合体巨兽",
-          "每回合结束时, 若场上有4个种族的卡牌, 则获得<2>混合体巨兽"
-        ]
-      ],
-      "type": "card",
-      "pack": "短兵相接",
       "pool": true,
       "level": 6
     },
@@ -2853,54 +2853,6 @@ export default {
   ],
   "unit": [
     {
-      "name": "被感染的女妖",
-      "race": "Z",
-      "value": 200,
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "末日巨兽",
-      "race": "Z",
-      "value": 3000,
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "恶蝠游骑兵",
-      "race": "T",
-      "value": 650,
-      "health": 400,
-      "tag": [
-        "轻甲",
-        "生物单位",
-        "机械单位"
-      ],
-      "weapon": [
-        {
-          "name": "爆燃汽油喷射器",
-          "damage": 36,
-          "range": 2,
-          "speed": 1.43,
-          "target": "G"
-        }
-      ],
-      "armor": {
-        "name": "人类战车钢板",
-        "defense": 3,
-        "speed": 3.15
-      },
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "死亡之握水晶",
-      "race": "N",
-      "value": 1000,
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
       "name": "女妖",
       "race": "T",
       "value": 250,
@@ -2977,46 +2929,6 @@ export default {
       "utyp": "normal"
     },
     {
-      "name": "火蝠",
-      "race": "T",
-      "value": 125,
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "先知",
-      "race": "P",
-      "value": 300,
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "火蝠(精英)",
-      "race": "T",
-      "value": 300,
-      "health": 275,
-      "tag": [
-        "重甲",
-        "生物单位"
-      ],
-      "weapon": [
-        {
-          "name": "烈焰风暴火焰喷射器",
-          "damage": "10, vs 轻甲 20",
-          "range": 2,
-          "speed": 1,
-          "target": "G"
-        }
-      ],
-      "armor": {
-        "name": "人类步兵护甲",
-        "defense": 3,
-        "speed": 3.5
-      },
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
       "name": "凤凰",
       "value": 250,
       "type": "unit",
@@ -3045,9 +2957,225 @@ export default {
       "utyp": "normal"
     },
     {
+      "name": "幼雷兽",
+      "race": "Z",
+      "value": 180,
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "诺娃",
+      "race": "T",
+      "value": 400,
+      "health": 300,
+      "tag": [
+        "生物单位",
+        "灵能单位"
+      ],
+      "weapon": [
+        {
+          "name": "激光刀",
+          "damage": "20, vs 轻甲 40",
+          "range": "melee",
+          "speed": 0.71,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "人类步兵护甲",
+        "defense": 1,
+        "speed": 4.55
+      },
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "泽拉图",
+      "race": "P",
+      "value": 1000,
+      "health": 400,
+      "shield": 300,
+      "tag": [
+        "轻甲",
+        "生物单位",
+        "灵能单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "大师曲光战刃",
+          "damage": "45, vs 重甲 70",
+          "range": 1,
+          "speed": 0.57,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 2,
+        "speed": 4.2
+      },
+      "type": "unit",
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
+    },
+    {
+      "name": "混合体巨兽",
+      "race": "N",
+      "value": 1200,
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "火蝠",
+      "race": "T",
+      "value": 125,
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "先知",
+      "race": "P",
+      "value": 300,
+      "health": 100,
+      "shield": 60,
+      "magic": 200,
+      "weapon": [
+        {
+          "name": "脉冲光束",
+          "damage": "15, 轻甲22",
+          "range": 4,
+          "speed": 0.61,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 0,
+        "speed": 5.6
+      },
+      "type": "unit",
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
+    },
+    {
+      "name": "火蝠(精英)",
+      "race": "T",
+      "value": 300,
+      "health": 275,
+      "tag": [
+        "重甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "烈焰风暴火焰喷射器",
+          "damage": "10, vs 轻甲 20",
+          "range": 2,
+          "speed": 1,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "人类步兵护甲",
+        "defense": 3,
+        "speed": 3.5
+      },
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "幽魂",
+      "race": "T",
+      "value": 275,
+      "health": 160,
+      "tag": [
+        "生物单位",
+        "灵能单位"
+      ],
+      "weapon": [
+        {
+          "name": "AGR-14型电磁枪",
+          "damage": "18, vs 重甲 23",
+          "range": 8,
+          "speed": 0.71,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "人类步兵护甲",
+        "defense": 0,
+        "speed": 3.85
+      },
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "沃拉尊",
+      "race": "N",
+      "value": 0,
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "被感染的女妖",
+      "race": "Z",
+      "value": 200,
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "末日巨兽",
+      "race": "Z",
+      "value": 3000,
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "恶蝠游骑兵",
+      "race": "T",
+      "value": 650,
+      "health": 400,
+      "tag": [
+        "轻甲",
+        "生物单位",
+        "机械单位"
+      ],
+      "weapon": [
+        {
+          "name": "爆燃汽油喷射器",
+          "damage": 36,
+          "range": 2,
+          "speed": 1.43,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "人类战车钢板",
+        "defense": 3,
+        "speed": 3.15
+      },
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
+      "name": "死亡之握水晶",
+      "race": "N",
+      "value": 1000,
+      "type": "unit",
+      "utyp": "normal"
+    },
+    {
       "name": "零件",
       "value": 0,
       "utyp": "spun",
+      "tag": "",
       "bref": "用于制造",
       "type": "unit",
       "race": "N"
@@ -3056,6 +3184,7 @@ export default {
       "name": "精华",
       "value": 0,
       "utyp": "spun",
+      "tag": "",
       "bref": "用于供养和原始异龙消耗",
       "type": "unit",
       "race": "N"
@@ -4373,6 +4502,25 @@ export default {
     {
       "name": "蟑螂",
       "value": 100,
+      "health": 145,
+      "tag": [
+        "重甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "酸性唾液",
+          "damage": 16,
+          "range": 4,
+          "speed": 1.43,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 1,
+        "speed": 4.2
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4572,6 +4720,25 @@ export default {
     {
       "name": "蟑螂(精英)",
       "value": 200,
+      "health": 250,
+      "tag": [
+        "重甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "酸性唾液",
+          "damage": 28,
+          "range": 4,
+          "speed": 1.43,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "异虫地面单位甲壳",
+        "defense": 1,
+        "speed": 4.2
+      },
       "type": "unit",
       "race": "Z",
       "utyp": "normal"
@@ -4623,85 +4790,377 @@ export default {
     {
       "name": "追猎者",
       "value": 175,
+      "health": 80,
+      "shield": 80,
+      "tag": [
+        "重甲",
+        "机械单位"
+      ],
+      "weapon": [
+        {
+          "name": "粒子碎裂炮",
+          "damage": "13, vs 重甲 18",
+          "range": 6,
+          "speed": 1.34,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 4.13
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "狂热者",
       "value": 100,
+      "health": 100,
+      "shield": 50,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "灵能利刃",
+          "damage": 8,
+          "multiple": 2,
+          "range": "melee",
+          "speed": 0.86,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 4.2
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "使徒",
       "value": 150,
+      "health": 70,
+      "shield": 70,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "刃炮",
+          "damage": "10, vs 轻甲 23",
+          "range": 4,
+          "speed": 1.61,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.5
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "龙骑士",
       "value": 175,
+      "health": 120,
+      "shield": 80,
+      "tag": [
+        "重甲",
+        "机械单位"
+      ],
+      "weapon": [
+        {
+          "name": "相位碎裂炮",
+          "damage": "14, vs 重甲 22",
+          "range": 5,
+          "speed": 0.89,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 4.13
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "机械哨兵",
       "value": 150,
+      "health": 40,
+      "shield": 40,
+      "magic": 200,
+      "tag": [
+        "轻甲",
+        "机械单位",
+        "灵能单位"
+      ],
+      "rmrk": "初始能量100\n显示没有武器, 但是可以攻击",
+      "weapon": [
+        {
+          "name": "未知",
+          "damage": 6,
+          "range": "未知",
+          "speed": "未知",
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "不朽者",
       "value": 375,
+      "health": 200,
+      "shield": 100,
+      "tag": [
+        "重甲",
+        "机械单位"
+      ],
       "bref": "不巧者",
+      "weapon": [
+        {
+          "name": "相位碎裂炮",
+          "damage": "20, vs 重甲 50",
+          "range": 6,
+          "speed": 1.04,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "高阶圣堂武士",
       "value": 200,
-      "bref": "战斗中能量消耗完后会尝试融合, 产生的执政官不享受升级",
+      "health": 40,
+      "shield": 40,
+      "magic": 200,
+      "tag": [
+        "轻甲",
+        "生物单位",
+        "灵能单位"
+      ],
+      "bref": "初始能量100\n战斗中能量消耗完后会尝试融合, 产生的执政官不享受升级",
+      "weapon": [
+        {
+          "name": "灵能波",
+          "damage": 9,
+          "range": 7,
+          "speed": 1.25,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 0,
+        "speed": 3.5
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "折跃棱镜",
       "value": 250,
+      "health": 80,
+      "shield": 100,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "灵能单位"
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 0,
+        "speed": 5.36
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      },
+      "weapon": []
     },
     {
       "name": "黑暗圣堂武士",
       "value": 250,
+      "health": 40,
+      "shield": 60,
+      "tag": [
+        "轻甲",
+        "生物单位",
+        "灵能单位"
+      ],
+      "weapon": [
+        {
+          "name": "曲光战刃",
+          "damage": 45,
+          "range": "melee",
+          "speed": 1.21,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.94
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "掠夺者",
       "value": 500,
+      "health": 200,
+      "shield": 150,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "金甲虫",
+          "damage": "100, vs 建筑 150",
+          "range": 9,
+          "speed": 1.43,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 2.8
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "巨像",
       "value": 500,
+      "health": 200,
+      "shield": 150,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "热能射线枪",
+          "damage": "10, vs 轻甲 15",
+          "multiple": 2,
+          "range": 9,
+          "speed": 1.07,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "凯拉克斯",
       "value": 600,
+      "health": 200,
+      "shield": 200,
+      "tag": [
+        "生物单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "仆从机轰炸",
+          "damage": "15, vs 重甲 30",
+          "multiple": 2,
+          "range": 6,
+          "speed": 1.07,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.5
+      },
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 1
+      },
       "type": "unit",
       "race": "P",
       "utyp": "normal"
@@ -4709,55 +5168,270 @@ export default {
     {
       "name": "虚空辉光舰",
       "value": 400,
+      "health": 150,
+      "shield": 100,
+      "tag": [
+        "重甲",
+        "机械单位"
+      ],
+      "weapon": [
+        {
+          "name": "棱镜光束",
+          "damage": "6, vs 重甲 10",
+          "range": 6,
+          "speed": 0.36,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 0,
+        "speed": 3.85
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "执政官",
       "value": 450,
+      "health": 10,
+      "shield": 350,
+      "tag": [
+        "灵能单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "灵能冲击波",
+          "damage": "25, vs 生物单位 35",
+          "range": 3,
+          "speed": 1.25,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 0,
+        "speed": 3.94
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "航母",
       "value": 600,
+      "health": 300,
+      "shield": 150,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "拦截机",
+          "damage": 5,
+          "multiple": 2,
+          "range": 8,
+          "speed": 2.14,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 2,
+        "speed": 2.62
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "风暴战舰",
       "value": 425,
+      "health": 200,
+      "shield": 100,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "谐振盘",
+          "damage": 60,
+          "range": 10,
+          "speed": 2,
+          "target": "G"
+        },
+        {
+          "name": "动能过载",
+          "damage": 60,
+          "range": 10,
+          "speed": 2,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 2,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "侦察机",
       "value": 250,
+      "health": 100,
+      "shield": 60,
+      "tag": [
+        "重甲",
+        "机械单位"
+      ],
+      "rmrk": "大主教座驾",
+      "weapon": [
+        {
+          "name": "光子冲击炮",
+          "damage": 8,
+          "range": 4,
+          "speed": 1.21,
+          "target": "G"
+        },
+        {
+          "name": "反物质飞弹",
+          "damage": "12, vs 重甲 19",
+          "multiple": 2,
+          "range": 4,
+          "speed": 0.89,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 0,
+        "speed": 3.94
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "莫汗达尔",
       "value": 600,
+      "health": 500,
+      "shield": 300,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "棱镜光束",
+          "damage": 10,
+          "range": 8,
+          "speed": 0.71,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 3,
+        "speed": 4.73
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "泰坦棱镜",
       "value": 500,
+      "health": 500,
+      "shield": 500,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "灵能单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "棱镜射线",
+          "damage": 40,
+          "range": 11,
+          "speed": 1.79,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 2,
+        "speed": 3.5
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "菲尼克斯",
       "value": 1000,
+      "health": 300,
+      "shield": 500,
+      "tag": [
+        "机械单位",
+        "重型单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "净化者之刃",
+          "damage": "60, vs 重甲 100",
+          "range": "melee",
+          "speed": 0.86,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 3,
+        "speed": 4.2
+      },
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 3
+      },
       "type": "unit",
       "race": "P",
       "utyp": "normal"
@@ -4765,13 +5439,80 @@ export default {
     {
       "name": "旋风狂热者",
       "value": 100,
+      "health": 100,
+      "shield": 50,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "太阳能战斧",
+          "damage": 16,
+          "multiple": 1,
+          "range": "melee",
+          "speed": 0.86,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 4.2
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "科罗拉里昂",
       "value": 1500,
+      "health": 600,
+      "shield": 300,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "重型单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "太阳能射线",
+          "damage": "10, vs 重甲 16",
+          "range": 8,
+          "speed": 0.36,
+          "target": "A"
+        },
+        {
+          "name": "拦截机",
+          "damage": 5,
+          "multiple": 2,
+          "range": 8,
+          "speed": 2.14,
+          "target": "GA"
+        },
+        {
+          "name": "强击机",
+          "damage": 12,
+          "multiple": 4,
+          "range": 8,
+          "speed": 2.14,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 3,
+        "speed": 2.97
+      },
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 1
+      },
       "type": "unit",
       "race": "P",
       "utyp": "normal"
@@ -4779,6 +5520,32 @@ export default {
     {
       "name": "卡尔达利斯",
       "value": 800,
+      "health": 400,
+      "shield": 200,
+      "tag": [
+        "轻甲",
+        "机械单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "灵能利刃",
+          "damage": 18,
+          "multiple": 2,
+          "range": "melee",
+          "speed": 0.57,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 2,
+        "speed": 4.2
+      },
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 1
+      },
       "type": "unit",
       "race": "P",
       "utyp": "normal"
@@ -4786,21 +5553,104 @@ export default {
     {
       "name": "仲裁者",
       "value": 1000,
+      "health": 300,
+      "shield": 500,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "裂空光炮",
+          "damage": 20,
+          "range": 9,
+          "speed": 1.07,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护板",
+        "defense": 0,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "英雄不朽者",
       "value": 900,
+      "health": 300,
+      "shield": 300,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "英雄单位"
+      ],
       "bref": "不是不朽者的精英变种",
+      "weapon": [
+        {
+          "name": "相位碎裂炮",
+          "damage": "40, vs 重甲 80",
+          "range": 8,
+          "speed": 1.04,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "阿塔尼斯",
       "value": 1000,
+      "health": 200,
+      "shield": 300,
+      "tag": [
+        "生物单位",
+        "灵能单位",
+        "英雄单位"
+      ],
+      "weapon": [
+        {
+          "name": "光影双刃",
+          "damage": 20,
+          "multiple": 2,
+          "range": "melee",
+          "speed": 0.71,
+          "target": "G"
+        },
+        {
+          "name": "灵能突击",
+          "damage": 20,
+          "range": 4,
+          "speed": 0.71,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 3,
+        "speed": 4.13
+      },
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 3
+      },
       "type": "unit",
       "race": "P",
       "utyp": "normal"
@@ -4808,51 +5658,235 @@ export default {
     {
       "name": "激励者",
       "value": 150,
+      "health": 40,
+      "shield": 40,
+      "magic": 200,
+      "tag": [
+        "轻甲",
+        "机械单位",
+        "灵能单位"
+      ],
+      "rmrk": "初始能量100",
+      "weapon": [
+        {
+          "name": "清洁光束",
+          "damage": 6,
+          "range": 5,
+          "speed": 0.71,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "追猎者(精英)",
       "value": 350,
+      "health": 150,
+      "shield": 130,
+      "tag": [
+        "重甲",
+        "机械单位"
+      ],
+      "weapon": [
+        {
+          "name": "粒子碎裂炮",
+          "damage": "26, vs 重甲 36",
+          "range": 6,
+          "speed": 1.34,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 4.13
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "狂热者(精英)",
       "value": 200,
+      "health": 175,
+      "shield": 80,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "灵能利刃",
+          "damage": 14,
+          "multiple": 2,
+          "range": "melee",
+          "speed": 0.86,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 4.2
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "旋风狂热者(精英)",
       "value": 200,
+      "health": 175,
+      "shield": 80,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "太阳能巨斧",
+          "damage": 16,
+          "multiple": 1,
+          "range": "melee",
+          "speed": 0.86,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.85
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "使徒(精英)",
       "value": 250,
+      "health": 70,
+      "shield": 70,
+      "tag": [
+        "轻甲",
+        "生物单位"
+      ],
+      "weapon": [
+        {
+          "name": "净化者刃炮",
+          "damage": "20, vs 轻甲 30",
+          "range": 5,
+          "speed": 0.96,
+          "target": "GA"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.5
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "黑暗圣堂武士(精英)",
       "value": 375,
+      "health": 80,
+      "shield": 80,
+      "tag": [
+        "轻甲",
+        "生物单位",
+        "灵能单位"
+      ],
+      "weapon": [
+        {
+          "name": "灵能镰刀",
+          "damage": 90,
+          "range": "melee",
+          "speed": 1.21,
+          "target": "G"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.94
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "巨像(精英)",
       "value": 800,
+      "health": 350,
+      "shield": 250,
+      "tag": [
+        "重甲",
+        "机械单位",
+        "重型单位"
+      ],
+      "weapon": [
+        {
+          "name": "焚化射线",
+          "damage": 20,
+          "multiple": 2,
+          "range": 9,
+          "speed": 1.57,
+          "target": "G"
+        },
+        {
+          "name": "热能射线枪(对空)",
+          "damage": 8,
+          "multiple": 2,
+          "range": 8,
+          "speed": 1.18,
+          "target": "A"
+        }
+      ],
+      "armor": {
+        "name": "星灵护甲",
+        "defense": 1,
+        "speed": 3.15
+      },
       "type": "unit",
       "race": "P",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "虚空辉光舰(精英)",
@@ -4888,70 +5922,33 @@ export default {
     {
       "name": "执政官(精英)",
       "value": 650,
-      "type": "unit",
-      "race": "P",
-      "utyp": "normal"
-    },
-    {
-      "name": "幽魂",
-      "race": "T",
-      "value": 275,
-      "health": 160,
+      "health": 10,
+      "shield": 450,
       "tag": [
-        "生物单位",
-        "灵能单位"
+        "灵能单位",
+        "重型单位"
       ],
       "weapon": [
         {
-          "name": "AGR-14型电磁枪",
-          "damage": "18, vs 重甲 23",
-          "range": 8,
-          "speed": 0.71,
+          "name": "灵能进射",
+          "damage": 35,
+          "range": 5,
+          "speed": 1.25,
           "target": "GA"
         }
       ],
       "armor": {
-        "name": "人类步兵护甲",
+        "name": "星灵护甲",
         "defense": 0,
-        "speed": 3.85
+        "speed": 3.94
       },
       "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "沃拉尊",
-      "race": "N",
-      "value": 0,
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "幼雷兽",
-      "race": "Z",
-      "value": 180,
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "诺娃",
-      "race": "T",
-      "value": 400,
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "泽拉图",
       "race": "P",
-      "value": 1000,
-      "type": "unit",
-      "utyp": "normal"
-    },
-    {
-      "name": "混合体巨兽",
-      "race": "N",
-      "value": 1200,
-      "type": "unit",
-      "utyp": "normal"
+      "utyp": "normal",
+      "sarmor": {
+        "name": "星灵等离子护盾",
+        "defense": 0
+      }
     },
     {
       "name": "岗哨机枪",
