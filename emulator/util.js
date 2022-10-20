@@ -29,13 +29,28 @@ export function $ () {
   }
 }
 
-export async function 获得 (card, unit, number) {
-  if (number === 0) {
+export function 获得 (card, unit) {
+  if (unit.length === 0) {
     return
   }
-  await card.player.bus.async_emit('obtain-unit', {
+  return card.player.bus.async_emit('obtain-unit', {
     card,
-    unit: Array(number).fill(unit)
+    unit
+  })
+}
+
+export function 获得N (card, unit, number) {
+  return 获得(card, Array(number).fill(unit))
+}
+
+export function 转换 (card, index, to) {
+  if (index.length === 0) {
+    return
+  }
+  return p.bus.async_emit('transform-unit', {
+    card,
+    index,
+    to
   })
 }
 

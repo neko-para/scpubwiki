@@ -2,6 +2,7 @@ import emitter from '../async-emitter.js'
 import descs from './data.js'
 import { getUnit } from '../data'
 import { Pool as _Pool } from './pool.js'
+import { shuffle, 获得 } from './util.js'
 
 export const Pool = _Pool
 
@@ -19,9 +20,11 @@ class Card {
     this.race = cardt.race,
     this.level = cardt.level,
     this.unit = [],
+    this.upgrade = []
 
     this.player = player,
     this.pos = -1
+    this.info = {}
 
     this.bus.on('*<', async (ev) => {
       player.log(`卡牌 ${this.pos} 接收到 ${ev}\n`)
@@ -85,6 +88,8 @@ class Card {
         this.unit[i] = to
       })
     })
+
+    this.bus.on('wrap-in', ({ unit }) => 获得(this, unit))
   }
   
   async load_default_unit () {
@@ -94,11 +99,15 @@ class Card {
     }
   }
 
-  take_unit (at) {
+  take_at (at) {
     const u = this.unit[at]
     this.unit[at] = this.unit[this.unit.length - 1]
     this.unit.pop()
     return u
+  }
+
+  take_unit (u) {
+    return take_at(this.unit.indexOf(u))
   }
 
   find_infr () {
@@ -117,20 +126,27 @@ class Card {
   }
 
   power () {
-    return this.locate('水晶塔', this.unit.length).length + this.locate('虚空水晶塔', this.unit.length).length
+    return this.locate('水晶塔').length + this.locate('虚空水晶塔').length
   }
 
-  locate (u, cnt, pos = 0) {
+  locateX (pred, cnt = -1) {
     const res = []
-    while (cnt-- > 0) {
-      const idx = this.unit.indexOf(u, pos)
-      if (idx === -1) {
-        return res
+    if (cnt === -1) {
+      cnt = this.unit.length
+    }
+    for (let i = 0; i < this.unit.length; i++) {
+      if (pred(this.unit[i])) {
+        res.push(i)
+        if (res.length >= cnt) {
+          return res.slice(0, cnt)
+        }
       }
-      res.push(idx)
-      pos = idx + 1
     }
     return res
+  }
+
+  locate (u, cnt = -1) {
+    return this.locateX(unit => unit === u, cnt)
   }
 
   calculateValue () {
@@ -162,25 +178,56 @@ export class Player {
     this.stepper = null
     this.cache = ''
 
-    this.bus.on('*<', async (ev, param) => {
+    this.bus.on('*<', (ev, param) => {
       param = param || {}
       this.log(`玩家接收到 ${ev}  -  `, true)
       if ('card' in param) {
         if (param.card) {
           this.log(`转发至第${param.card.pos}张卡牌`)
-          await param.card.bus.async_emit(ev, param)
         } else {
           this.log('舍弃')
         }
       } else {
         this.log(`通知所有卡牌`)
+      }
+    })
+    this.bus.on('*', async (ev, param) => {
+      param = param || {}
+      if ('card' in param) {
+        if (param.card) {
+          await param.card.bus.async_emit(`${ev}-before`, param)
+          await param.card.bus.async_emit(ev, param)
+          await param.card.bus.async_emit(`${ev}-after`, param)
+        }
+      } else {
+        await this.bus.async_emit(`${ev}-before-dispatch`, param)
         await this.enumPresent(async c => {
           await c.bus.async_emit(ev, param)
         })
+        await this.bus.async_emit(`${ev}-after-dispatch`, param)
       }
     })
     this.bus.on('round-start', () => {
       this.flag = {}
+    })
+    this.bus.on('wrap-after-dispatch', async ({ unit, info }) => {
+      if (info.to === null) {
+        const choice = []
+        this.enumPresent(card => {
+          if (card.race === 'P') {
+            choice.push(card.pos)
+          }
+        })
+        if (choice.length === 0) {
+          return
+        }
+        shuffle(choice)
+        info.to = this.present[choice[0]]
+      }
+      await this.bus.async_emit('wrap-in', {
+        unit,
+        card: info.to
+      })
     })
   }
 
@@ -309,8 +356,8 @@ export class Player {
       ...cr.unit.filter(u => !infrs.includes(u))
     ]
 
-    cl.desc()
-    cr.desc()
+    await cl.desc()
+    await cr.desc()
 
     await this.step(`即将三连卡牌`)
     this.present[card.pos] = card
@@ -379,16 +426,22 @@ export class Player {
   }
 
   async sell (pos) {
-    this.present[pos].desc()
+    const card = this.present[pos]
 
     await this.step(`即将广播卡牌出售消息`)
     await this.bus.async_emit('card-sell', {
-      selled: this.present[pos]
+      selled: card
     })
 
-    await this.step(`卡牌 ${pos} ${this.present[pos].name} 即将出售`)
+    await this.step(`卡牌 ${pos} ${this.present[pos].name} 即将移除`)
     this.present[pos] = null
     this.mineral += 1
+
+    await this.step(`即将广播卡牌出售完成消息`)
+    await this.bus.async_emit('card-selled', {
+      card
+    })
+    await card.desc()
     await this.refresh()
   }
 
