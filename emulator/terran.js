@@ -1,7 +1,7 @@
 import { getUnit, getCard } from '../data'
 import { shuffle, $, 获得, 获得N, 转换, 左侧, 相邻两侧 } from './util.js'
 
-async function 任务 (announce, card, count, result, check = () => true, renew = null) {
+function 任务 (announce, card, count, result, check = () => true, renew = null) {
   let n = 0
   if (renew) {
     renew(async () => {
@@ -10,7 +10,6 @@ async function 任务 (announce, card, count, result, check = () => true, renew 
       await announce(`任务: 0 / ${count}`)
     })
   }
-  await announce(`任务: 0 / ${count}`)
   return async (...arg) => {
     if (n < count && check(...arg)) {
       n++
@@ -59,6 +58,7 @@ export default {
     .bind('round-end', 反应堆(c, g, '陆战队员')),
   挖宝奇兵: (p, c, g, a) => $()
     .for(p)
+    .bind('post-enter', () => a(`任务: 0 / 5`))
     .bind('refresh', 任务(a, c, 5, async () => {
       await p.bus.async_emit('discover-card', {
         filter: c => {
@@ -114,6 +114,7 @@ export default {
     .bind('round-end', 反应堆(c, g, '劫掠者')),
   飙车流: (p, c, g, a) => $()
     .for(c)
+    .bind('post-enter', () => a(`任务: 0 / 3`))
     .bind('fast-prod', () => 获得N(c, '秃鹫', g ? 5 : 3))
     .for(p)
     .bind('card-enter', 任务(a, c, 3, () => 左侧(c, async card => {
@@ -129,6 +130,7 @@ export default {
     let rn = null
     return $()
     .for(c)
+    .bind('post-enter', () => a(`任务: 0 / 2`))
     .bind('post-enter', () => 相邻两侧(c, async card => {
       if (card.race === 'T') {
         await p.bus.async_emit('switch-infr', {
@@ -267,6 +269,8 @@ export default {
   帝国舰队: (p, c, g, a) => {
     let rn = null
     return $()
+    .for(c)
+    .bind('post-enter', () => a(`任务: 0 / 3`))
     .for(p)
     .bind('card-sell', 任务(a, c, 3, async () => {
         await 获得N(c, '战列巡航舰', g ? 2 : 1)
