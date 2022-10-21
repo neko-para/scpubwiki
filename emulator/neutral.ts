@@ -1,4 +1,5 @@
-import { canElite, elited, getUnit, isBiological, UnitKey } from "../data"
+import { canElite, elited, isBiological, UnitKey } from "../data"
+import { Race } from "../data/types"
 import { CardInstance } from "./card"
 import { Description } from "./types"
 import {
@@ -6,6 +7,7 @@ import {
   Binder,
   shuffle,
   右侧,
+  夺取,
   左侧,
   相邻两侧,
   获得,
@@ -52,10 +54,17 @@ function 黑暗容器(
       .for(card)
       .bind("post-enter", async () => {
         card.info.黑暗值 = 0
-        announce(`黑暗值: 0`)
+        await announce(`黑暗值: 0`)
       })
       .bind("sell-card", 黑暗容器S(card))
       .bind("destroy-card", 黑暗容器D(card))
+      .bind("gain-darkness", async ({ darkness }) => {
+        card.info.黑暗值 += darkness
+        await card.player.bus.async_emit("flash-annouce", {
+          card,
+        })
+      })
+      .bind("flash-annouce", () => announce(`黑暗值: ${card.info.黑暗值}`))
   }
 }
 
@@ -107,11 +116,9 @@ const Data: Description = {
     $()
       .for(c)
       .bind("round-end", async () => {
-        const rs = {
-          T: false,
-          P: false,
-          Z: false,
-        }
+        const rs: {
+          [r in Race]?: true
+        } = {}
         await p.asyncEnumPresent(async card => (rs[card.race] = true))
         let units: UnitKey[] = []
         if (rs.T) {
@@ -208,17 +215,58 @@ const Data: Description = {
     $()
       .for(c)
       .bind("round-end", async () => {
-        const rs = {
-          T: false,
-          P: false,
-          Z: false,
-          N: false,
-        }
+        const rs: {
+          [r in Race]?: true
+        } = {}
         await p.asyncEnumPresent(async card => (rs[card.race] = true))
         if (rs.T && rs.P && rs.Z && rs.N) {
           await 获得N(c, "混合体毁灭者", g ? 4 : 2)
         }
       }),
+  阿拉纳克: (p, c, g) =>
+    $()
+      .for(c)
+      .bind("post-enter", async () => {
+        const cs: CardInstance[] = []
+        await p.asyncEnumPresent(async card => {
+          if (card !== c) {
+            cs.push(card)
+          }
+        })
+        shuffle(cs)
+        for (const card of cs.slice(0, 2)) {
+          c.upgrade = [...c.upgrade, ...card.upgrade].slice(0, 5)
+          await 夺取(c, card)
+        }
+        // TODO: 考虑如何处理献祭
+      }),
+  天罚行者: (p, c, g, a) =>
+    $()
+      .apply(黑暗容器(c, a))
+      .bind("post-enter", async () => {
+        let n = 0
+        await p.asyncEnumPresent(async card => {
+          if (card.info.黑暗值 && card.level <= 4) {
+            n += card.info.黑暗值
+            card.info.黑暗值 = 0
+            await p.bus.async_emit("flash-annouce", {
+              card,
+            })
+          }
+        })
+        await p.bus.async_emit("gain-darkness", {
+          card: c,
+          darkness: n,
+        })
+        await 获得N(c, "天罚行者", Math.floor(n / 5))
+      })
+      .bind("round-end", () =>
+        获得N(
+          c,
+          "天罚行者",
+          (g ? 2 : 1) * Math.min(2, Math.floor(c.info.黑暗值 / 10))
+        )
+      ),
 }
 
 export default Data

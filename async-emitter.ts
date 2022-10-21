@@ -78,7 +78,7 @@ export class Emitter<T extends Record<string, object>> {
     }
   }
 
-  async emit<K extends keyof T & string>(name: K, param: T[K]) {
+  emit<K extends keyof T & string>(name: K, param: T[K]) {
     const obj = this.map.get(name) || {
       before: [],
       on: [],

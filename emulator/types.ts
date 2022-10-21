@@ -59,6 +59,10 @@ export type BusInfo = {
     card: CardInstance
     darkness: number
   }
+  seize: {
+    card: CardInstance
+    target: CardInstance
+  }
   "card-enter": {
     card: CardInstance
   }
@@ -69,6 +73,9 @@ export type BusInfo = {
     card: CardInstance
   }
   "card-combined": {
+    card: CardInstance
+  }
+  "flash-annouce": {
     card: CardInstance
   }
 

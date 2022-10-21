@@ -1,9 +1,9 @@
 import { Player, infrs } from "."
 import { AsyncEmitter } from "../async-emitter"
-import { CardKey, getUnit, UnitKey } from "../data"
+import { CardKey, getUnit, isNormal, UnitKey } from "../data"
 import { Card, Race } from "../data/types"
 import { BusInfo } from "./types"
-import { 获得, 相邻两侧, 获得N } from "./util"
+import { 获得, 相邻两侧, 获得N, 摧毁 } from "./util"
 
 export class CardInstance {
   bus: AsyncEmitter<BusInfo>
@@ -118,6 +118,14 @@ export class CardInstance {
 
     this.bus.on("incubate-into", ({ unit }) => 获得(this, unit))
 
+    this.bus.on("seize", async ({ target }) => {
+      await this.player.step(
+        `卡牌 ${this.pos} ${this.name} 即将夺取 ${target.pos} ${target.name}`
+      )
+      this.unit = [...this.unit, ...target.unit.filter(isNormal)].slice(0, 200)
+      await 摧毁(target)
+    })
+
     this.bus.on("card-selled", async () => {
       const n = this.locate("虚空水晶塔").length
       await 相邻两侧(this, async card => {
@@ -135,7 +143,7 @@ export class CardInstance {
   async load_default_unit() {
     await this.player.step(`卡牌 ${this.pos} ${this.name} 即将添加默认单位`)
     for (const k in this.template.unit) {
-      this.unit.push(...Array(this.template.unit[k]).fill(k))
+      this.unit.push(...Array(this.template.unit[k as UnitKey]).fill(k))
     }
   }
 

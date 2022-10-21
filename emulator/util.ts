@@ -107,6 +107,13 @@ export function 摧毁(card: CardInstance) {
   })
 }
 
+export function 夺取(card: CardInstance, target: CardInstance) {
+  return card.player.bus.async_emit("seize", {
+    card,
+    target,
+  })
+}
+
 export async function 左侧(
   card: CardInstance,
   func: (card: CardInstance) => Promise<void>
