@@ -1,5 +1,6 @@
 import { AsyncEmitter } from "../async-emitter"
-import { BusInfo, CardInstance } from "."
+import { CardInstance } from "."
+import { BusInfo } from "./types"
 
 export function shuffle(array: any[]) {
   for (let i = array.length - 1; i > 0; i--) {

@@ -1,4 +1,4 @@
-import { Card } from "../data/pubdata.d"
+import { Card } from "../data/types"
 import { getCard, data } from "../data"
 
 const poolCount = {

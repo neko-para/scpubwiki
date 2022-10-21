@@ -1,5 +1,5 @@
 import AhoCorasick from "ahocorasick"
-import { Card, Term, Unit, Upgrade } from "./pubdata.d"
+import { Card, Term, Unit, Upgrade } from "./types"
 import raw from "./pubdata.js"
 const {
   card,

@@ -1,6 +1,6 @@
 import { CardInstance } from "."
 import { getUnit, data } from "../data"
-import { Unit } from "../data/pubdata.d"
+import { Unit } from "../data/types"
 import { Description } from "./types"
 import { shuffle, $, 获得, 获得N, 相邻两侧, 转换 } from "./util"
 

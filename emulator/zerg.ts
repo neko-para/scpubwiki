@@ -1,9 +1,9 @@
 import { CardInstance, Player } from "."
-import { getUnit, data, getCard } from "../data"
-import { shuffle, $, 获得, 获得N, 摧毁, 相邻两侧, 转换 } from "./util"
+import { getUnit, getCard } from "../data"
+import { $, 获得, 获得N, 摧毁, 相邻两侧, 转换 } from "./util"
 import { 科挂 } from "./terran"
 import { Description } from "./types"
-import { Card, Unit } from "../data/pubdata.d"
+import { Card, Unit } from "../data/types"
 
 function 虫卵牌描述(p: Player, c: CardInstance, g: boolean) {
   return $()

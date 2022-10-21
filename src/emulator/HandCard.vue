@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Card } from '../../data/pubdata.d'
+import { Card } from '../../data/types'
 import ReferText from '../components/ReferText.vue'
 const props = defineProps<{
   card: Card | null,
