@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ReferText from './ReferText.vue'
-import { canElite, tr, Unit } from '../../data'
-import { Armor, Weapon } from '../../data/types';
+import { canElite, tr, Unit, Armor, Weapon } from '../../data'
 
 const props = defineProps<{
   node: Unit

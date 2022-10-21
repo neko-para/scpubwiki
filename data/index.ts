@@ -1,9 +1,13 @@
 import AhoCorasick from "ahocorasick"
+
 import type {
   Card,
   Term,
   Unit,
   Upgrade,
+  Weapon,
+  Armor,
+  SArmor,
   SplitResult,
   SplitResultRefer,
 } from "./types"
@@ -28,10 +32,6 @@ const {
   upgradeCategory$order,
 } = raw
 
-interface AhoCorasickSearcher {
-  search(t: string): [number, string[]][]
-}
-
 export const Cards: Map<CardKey, Card> = new Map()
 export const Terms: Map<TermKey, Term> = new Map()
 export const Units: Map<UnitKey, Unit> = new Map()
@@ -39,7 +39,7 @@ export const Upgrades: Map<UpgradeKey, Upgrade> = new Map()
 
 export { attr, attr$order, tr, info, upgradeCategory, upgradeCategory$order }
 export { CardKey, TermKey, UnitKey, UpgradeKey, PossibleKey }
-export { Card, Term, Unit, Upgrade }
+export { Card, Term, Unit, Upgrade, Weapon, Armor, SArmor }
 export { SplitResult, SplitResultRefer }
 
 card.forEach(c => Cards.set(c.name, c))
@@ -99,9 +99,7 @@ export const Keywords = Array.from(
   ]).keys()
 )
 
-const searcher: AhoCorasickSearcher = new AhoCorasick(
-  Keywords
-) as unknown as AhoCorasickSearcher
+const searcher = new AhoCorasick(Keywords)
 
 function splitTextPiece(text: string) {
   let result: {

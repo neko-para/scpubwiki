@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, Ref } from 'vue'
 import NodeList from './NodeList.vue'
-import { attr$order, info, upgradeCategory$order, tr, Cards, CardKey, Terms, Units, Upgrades, Card, Upgrade, Unit, Term } from '../../data'
+import { attr$order, info, upgradeCategory$order, tr, Cards, Terms, Units, Upgrades, Card, Upgrade, Unit, Term } from '../../data'
 
 const categorySelector: Ref<'card'|'term'|'unit'|'upgrade'> = ref('card')
 const packSelector = ref('核心')

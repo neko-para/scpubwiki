@@ -135,7 +135,7 @@ export class Player {
     return n
   }
 
-  async requestEnter(pos, query) {
+  async requestEnter(pos: number, query: () => Promise<number>) {
     if (this.presentCount() === 7) {
       return false
     }

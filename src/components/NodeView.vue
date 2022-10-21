@@ -22,7 +22,7 @@ bref.value = props.brief
 const elv = ref(5)
 
 function reqClose() {
-  bus.emit('requestClose', { name: props.node.name })
+  bus.emit('request-close', { name: props.node.name })
 }
 
 function sendToHand(card: Card) {

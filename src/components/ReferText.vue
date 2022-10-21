@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import bus from '../bus'
-import { getTerm, getUnit, splitText, TermKey, Terms, UnitKey, Units } from '../../data'
-import { SplitResult, SplitResultNode, SplitResultRefer } from '../../data/types';
-import { PubNode } from './types';
+import { getTerm, getUnit, splitText, TermKey, Terms, UnitKey, Units, SplitResult, SplitResultRefer } from '../../data'
 
 const props = defineProps<{
   text: string

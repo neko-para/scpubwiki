@@ -32,7 +32,6 @@ const referNodes = computed(() => {
   return nodes
 })
 
-// @ts-ignore
 bus.on('request', ({ node }) => {
   let i = refers.value.indexOf(node.s)
   if (i === -1) {
@@ -42,8 +41,7 @@ bus.on('request', ({ node }) => {
   }
 })
 
-// @ts-ignore
-bus.on('requestClose', ({ name }) => {
+bus.on('request-close', ({ name }) => {
   let i = refers.value.indexOf(name)
   if (i !== -1) {
     refers.value = [ ...refers.value.slice(0, i), ...refers.value.slice(i + 1) ]
