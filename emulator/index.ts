@@ -1,4 +1,4 @@
-import { Card, Race, Unit, Upgrade } from "../data/pubdata.d"
+import { Card, Race } from "../data/pubdata.d"
 
 import { AsyncEmitter } from "../async-emitter.js"
 import descs from "./data.js"
@@ -9,8 +9,6 @@ import { shuffle, 相邻两侧, 获得, 获得N } from "./util.js"
 export { Pool }
 
 export const infrs = ["反应堆", "科技实验室", "高级科技实验室"]
-
-const upgrades = [0, 5, 7, 8, 9, 11, 0]
 
 export type BusInfo = {
   "obtain-unit": {
@@ -37,6 +35,10 @@ export type BusInfo = {
   "wrap-in": {
     card: CardInstance
     unit: string[]
+  }
+  regroup: {
+    card: CardInstance
+    id: number
   }
   inject: {
     card: CardInstance
@@ -76,6 +78,17 @@ export type BusInfo = {
   "discover-card": {
     filter: (card: Card) => boolean
   }
+  wrap: {
+    unit: string[]
+    info: {
+      to: CardInstance | null
+    }
+  }
+  "regroup-count": {
+    info: {
+      count: number
+    }
+  }
 }
 
 export class CardInstance {
@@ -85,7 +98,7 @@ export class CardInstance {
   race: Race
   level: number
   unit: string[]
-  upgrade: Upgrade[]
+  upgrade: string[]
   player: Player
   pos: number
   info: Record<string, any>
@@ -287,6 +300,7 @@ export class CardInstance {
   }
 }
 
+const upgrades = [0, 5, 7, 8, 9, 11, 0]
 export class Player {
   bus: AsyncEmitter<BusInfo>
   level: number
@@ -496,7 +510,7 @@ export class Player {
 
   canCombine(pos: number) {
     const cardt = this.hand[pos]
-    return cardt && !cardt.attr?.gold && this.findSame(cardt).length >= 2
+    return !!cardt && !cardt.attr?.gold && this.findSame(cardt).length >= 2
   }
 
   async combine(pos: number) {

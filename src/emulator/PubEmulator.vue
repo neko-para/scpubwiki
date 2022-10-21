@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import HandCard from './HandCard.vue'
 import PresentCard from './PresentCard.vue'
@@ -13,13 +13,10 @@ function refresh () {
 }
 
 const player = new Player()
-player.logger = str => {
-  console.log('Emulator: ' + str)
-}
 player.refresh = refresh
 
 const stepMessage = ref('')
-const goNextStep = ref(null)
+const goNextStep = ref<(() => void) | null>(null)
 function installStep () {
   steping.value = true
   player.stepper = async (msg) => new Promise((resolve) => {
@@ -41,17 +38,19 @@ function stopStep () {
 }
 
 const choosingPos = ref(-1)
-let chooseResolve = null
+let chooseResolve: ((value: number) => void) | null = null
 
 bus.on('add-to-hand', async ({ card }) => {
   await player.obtain_hand(card)
   refresh()
 })
 
-player.bus.async_emit('round-start')
+player.bus.async_emit('round-start', {})
 
-function choose (i) {
-  chooseResolve(i)
+function choose (i: number) {
+  if (chooseResolve) {
+    chooseResolve(i)
+  }
   choosingPos.value = -1
 }
 
@@ -60,7 +59,7 @@ function enter (i) {
     return
   }
   player.requestEnter(i, async () => {
-    return new Promise((resolve) => {
+    return new Promise<number>((resolve) => {
       chooseResolve = resolve
       choosingPos.value = i
     })
@@ -93,7 +92,7 @@ function sell (i) {
     <v-card-actions>
       <v-btn :disabled="steping" color="red" @click="installStep()">开启单步调试</v-btn>
       <v-btn :disabled="!steping" color="red" @click="stopStep()">停止单步调试</v-btn>
-      <v-btn :disabled="!goNextStep" @click="goNextStep()">步进</v-btn>
+      <v-btn :disabled="!goNextStep" @click="goNextStep && goNextStep()">步进</v-btn>
     </v-card-actions>
     <v-card-text v-if="steping">
       {{ stepMessage }}

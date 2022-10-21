@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
-import { infrs } from '../../emulator'
+import { CardInstance, infrs } from '../../emulator'
 import ReferText from '../components/ReferText.vue'
-const props = defineProps({
-  card: Object,
-  indexing: Boolean
-})
+const props = defineProps<{
+  card: CardInstance | null,
+  indexing: boolean
+}>()
 
 const el = ref(2)
 

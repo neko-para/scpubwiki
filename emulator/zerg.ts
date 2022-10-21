@@ -3,8 +3,7 @@ import { getUnit, data, getCard } from "../data"
 import { shuffle, $, 获得, 获得N, 摧毁, 相邻两侧, 转换 } from "./util"
 import { 科挂 } from "./terran"
 import { Description } from "./types"
-import { Card } from "../data/pubdata"
-import { Unit } from "../data/pubdata"
+import { Card, Unit } from "../data/pubdata.d"
 
 function 虫卵牌描述(p: Player, c: CardInstance, g: boolean) {
   return $()
@@ -419,7 +418,7 @@ const Data: Description = {
                 idx: i,
                 unit: u,
                 value: uu.value,
-                hero: uu.tag.includes("英雄单位"),
+                hero: !!uu.tag?.includes("英雄单位"),
               }
             })
             .sort((a, b) => {

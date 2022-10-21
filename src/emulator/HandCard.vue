@@ -1,11 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import { Card } from '../../data/pubdata.d'
 import ReferText from '../components/ReferText.vue'
-const props = defineProps({
-  card: Object,
-  entering: Boolean,
-  combining: Boolean
-})
+const props = defineProps<{
+  card: Card | null,
+  entering: boolean,
+  combining: boolean
+}>()
 
 const el = ref(2)
 
