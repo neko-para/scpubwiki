@@ -28,21 +28,21 @@ export class Emitter {
   }
 
   on(name: string, func: NormalFunc) {
-    const arr = this.map.get(name)
-    if (arr) {
-      arr.push(func)
+    const obj = this.map.get(name)
+    if (obj) {
+      obj.push(func)
     } else {
       this.map.set(name, [func])
     }
   }
 
   off(name: string, func: NormalFunc) {
-    const arr = this.map.get(name)
-    if (arr) {
+    const obj = this.map.get(name)
+    if (obj) {
       if (func) {
-        const idx = arr.indexOf(func)
+        const idx = obj.indexOf(func)
         if (idx !== -1) {
-          arr.splice(idx, 1)
+          obj.splice(idx, 1)
         }
       } else {
         this.map.set(name, [])
@@ -67,22 +67,41 @@ export class Emitter {
   }
 }
 
+type Funcs = ((param: any) => Promise<void>)[]
+
 export class AsyncEmitter<T extends Record<string, object>> {
-  map: Map<keyof T & string, ((param: any) => Promise<void>)[]>
-  wcf: AsyncWildcastFunc[]
-  wca: AsyncWildcastFunc[]
+  map: Map<
+    keyof T & string,
+    {
+      before: Funcs
+      on: Funcs
+      after: Funcs
+    }
+  >
+  wc: AsyncWildcastFunc[]
 
   constructor() {
     this.map = new Map()
-    this.wcf = []
-    this.wca = []
+    this.wc = []
   }
 
-  wildcast(name: "*<" | "*", func: AsyncWildcastFunc) {
-    if (name === "*<") {
-      this.wcf.push(func)
+  wildcast(func: AsyncWildcastFunc) {
+    this.wc.push(func)
+  }
+
+  before<K extends keyof T & string>(
+    name: K,
+    func: (param: T[K]) => Promise<void>
+  ) {
+    const obj = this.map.get(name)
+    if (obj) {
+      obj.before.push(func)
     } else {
-      this.wca.push(func)
+      this.map.set(name, {
+        before: [func],
+        on: [],
+        after: [],
+      })
     }
   }
 
@@ -90,11 +109,31 @@ export class AsyncEmitter<T extends Record<string, object>> {
     name: K,
     func: (param: T[K]) => Promise<void>
   ) {
-    const arr = this.map.get(name)
-    if (arr) {
-      arr.push(func)
+    const obj = this.map.get(name)
+    if (obj) {
+      obj.on.push(func)
     } else {
-      this.map.set(name, [func])
+      this.map.set(name, {
+        before: [],
+        on: [func],
+        after: [],
+      })
+    }
+  }
+
+  after<K extends keyof T & string>(
+    name: K,
+    func: (param: T[K]) => Promise<void>
+  ) {
+    const obj = this.map.get(name)
+    if (obj) {
+      obj.after.push(func)
+    } else {
+      this.map.set(name, {
+        before: [],
+        on: [],
+        after: [func],
+      })
     }
   }
 
@@ -102,32 +141,36 @@ export class AsyncEmitter<T extends Record<string, object>> {
     name: K,
     func: (param: T[K]) => Promise<void>
   ) {
-    const arr = this.map.get(name)
-    if (arr) {
-      if (func) {
-        const idx = arr.indexOf(func)
-        if (idx !== -1) {
-          arr.splice(idx, 1)
-        }
-      } else {
-        this.map.set(name, [])
+    const obj = this.map.get(name)
+    if (!obj) {
+      return
+    }
+    for (const key of ["before", "on", "after"]) {
+      const fs = obj[key] as Funcs
+      const idx = fs.indexOf(func)
+      if (idx !== -1) {
+        fs.splice(idx, 1)
       }
     }
   }
 
   async async_emit<K extends keyof T & string>(name: K, param: T[K]) {
-    if (name[name.length - 1] !== "$") {
-      for (const f of this.wcf) {
-        await f(name, param)
-      }
+    const obj = this.map.get(name) || {
+      before: [],
+      on: [],
+      after: [],
     }
-    for (const f of this.map.get(name) || []) {
+    for (const f of obj.before) {
       await f(param)
     }
-    if (name[name.length - 1] !== "$") {
-      for (const f of this.wca) {
-        await f(name, param)
-      }
+    for (const f of obj.on) {
+      await f(param)
+    }
+    for (const f of obj.after) {
+      await f(param)
+    }
+    for (const f of this.wc) {
+      await f(name, param)
     }
   }
 }

@@ -137,8 +137,7 @@ const Data: Description = {
         p.flag.爆虫滚滚 = 1
         await 获得(c, unit)
       })
-      // @ts-ignore
-      .bind("card-sell-after-dispatch$", () => {
+      .bindAfter("sell-card", async () => {
         p.flag.爆虫滚滚 = 0
       }),
   飞龙骑脸: (p, c, g) =>
@@ -164,8 +163,7 @@ const Data: Description = {
       .bind("incubate", async () => {
         p.flag.孵化所 = null
       })
-      // @ts-ignore
-      .bind("incubate-into-before$", async () => {
+      .bindBefore("incubate-into", async () => {
         if (p.flag.孵化所) {
           if (c.pos < p.flag.孵化所.pos) {
             p.flag.孵化所 = c
@@ -174,8 +172,7 @@ const Data: Description = {
           p.flag.孵化所 = c
         }
       })
-      // @ts-ignore
-      .bind("incubate-into-after$", async ({ unit, card }) => {
+      .bindAfter("incubate-into", async ({ unit, card }) => {
         if (card !== c || p.flag.孵化所 !== c) {
           return
         }
@@ -281,8 +278,9 @@ const Data: Description = {
           }
         }
       })
-      // @ts-ignore
-      .bind("incubate-after$", () => (p.flag.扎加拉 = 0)),
+      .bindAfter("incubate", async () => {
+        p.flag.扎加拉 = 0
+      }),
   斯托科夫: (p, c, g) =>
     $()
       .for(c)
@@ -292,8 +290,7 @@ const Data: Description = {
         }
       })
       .for(p)
-      // @ts-ignore
-      .bind("card-enter-before$", ({ card }) => {
+      .bindBefore("card-enter", async ({ card }) => {
         if (card.level === 6 || card.race === "Z") {
           return
         }
@@ -321,8 +318,7 @@ const Data: Description = {
           }
         }
       })
-      // @ts-ignore
-      .bind("card-enter-after$", async ({ card }) => {
+      .bindAfter("card-enter", async ({ card }) => {
         if (card.level === 6 || card.race === "Z") {
           return
         }

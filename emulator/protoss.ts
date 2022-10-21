@@ -202,8 +202,9 @@ const Data: Description = {
         }
       })
       .for(p)
-      // @ts-ignore
-      .bind("wrap-after-dispatch$", () => delete p.flag.莫汗达尔),
+      .bindAfter("wrap", async () => {
+        delete p.flag.莫汗达尔
+      }),
   光复艾尔: (p, c, g, a) =>
     $()
       .for(p)
@@ -228,8 +229,7 @@ const Data: Description = {
           await 获得(c, unit)
         }
       })
-      // @ts-ignore
-      .bind("card-sell-after-dispatch$", () => {
+      .bindAfter("sell-card", async () => {
         p.flag.光复艾尔 = 0
       }),
   菲尼克斯: (p, c, g) =>
@@ -290,8 +290,9 @@ const Data: Description = {
         }
       })
       .for(p)
-      // @ts-ignore
-      .bind("round-end-before-dispatch$", () => (p.flag.阿塔尼斯 = 1)),
+      .bind("round-end", async () => {
+        p.flag.阿塔尼斯 = 1
+      }),
   净化之光: (p, c, g) =>
     $()
       .for(c)
@@ -347,8 +348,7 @@ const Data: Description = {
   英雄叉: (p, c, g) =>
     $()
       .for(c)
-      // @ts-ignore
-      .bind("wrap-in-before$", ({ unit }) => {
+      .bindBefore("wrap-in", async ({ unit }) => {
         for (let i = 0; i < unit.length; i++) {
           if (unit[i] === "狂热者(精英)") {
             unit[i] = "卡尔达利斯"

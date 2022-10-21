@@ -44,43 +44,25 @@ export class Player {
     this.stepper = null
     this.cache = ""
 
-    this.bus.wildcast("*<", async (ev, param) => {
-      param = param || {}
-      if ("card" in param) {
-        // @ts-ignore
-        if (param.card) {
-          // @ts-ignore
-          await this.bus.async_emit(`${ev}-before$`, param)
-        }
-      } else {
-        // @ts-ignore
-        await this.bus.async_emit(`${ev}-before-dispatch$`, param)
-      }
-    })
-    this.bus.wildcast("*", async (ev, param) => {
+    this.bus.wildcast(async (ev, param) => {
       param = param || {}
       if ("card" in param) {
         // @ts-ignore
         if (param.card) {
           // @ts-ignore
           await param.card.bus.async_emit(ev, param)
-          // @ts-ignore
-          await this.bus.async_emit(`${ev}-after$`, param)
         }
       } else {
         await this.asyncEnumPresent(async c => {
           // @ts-ignore
           await c.bus.async_emit(ev, param)
         })
-        // @ts-ignore
-        await this.bus.async_emit(`${ev}-after-dispatch$`, param)
       }
     })
     this.bus.on("round-start", async () => {
       this.flag = {}
     })
-    // @ts-ignore
-    this.bus.on("wrap-after-dispatch$", async ({ unit, info }) => {
+    this.bus.after("wrap", async ({ unit, info }) => {
       if (info.to === null) {
         const choice: number[] = []
         this.enumPresent((card: CardInstance) => {
@@ -96,7 +78,7 @@ export class Player {
       }
       await this.bus.async_emit("wrap-in", {
         unit,
-        card: info.to,
+        card: info.to as CardInstance,
       })
     })
     this.bus.on("destroy-card", async ({ destroyed: card }) => {

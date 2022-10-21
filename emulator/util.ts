@@ -37,6 +37,28 @@ export class Binder {
     return this
   }
 
+  bindBefore<K extends keyof BusInfo & string>(
+    ev: K,
+    func: (param: BusInfo[K]) => Promise<void>
+  ) {
+    this.bus?.before(ev, func)
+    this.clf.push(() => {
+      this.bus?.off(ev, func)
+    })
+    return this
+  }
+
+  bindAfter<K extends keyof BusInfo & string>(
+    ev: K,
+    func: (param: BusInfo[K]) => Promise<void>
+  ) {
+    this.bus?.after(ev, func)
+    this.clf.push(() => {
+      this.bus?.off(ev, func)
+    })
+    return this
+  }
+
   clear() {
     return () => {
       this.clf.forEach(f => f())
