@@ -1,7 +1,7 @@
-import { Card } from "./index.js"
+import { CardInstance } from "./index.ts"
 import { getUnit, data, getCard } from "../data"
-import { shuffle, $, 获得, 获得N, 摧毁, 相邻两侧, 转换 } from "./util.js"
-import { 科挂 } from "./terran.js"
+import { shuffle, $, 获得, 获得N, 摧毁, 相邻两侧, 转换 } from "./util.ts"
+import { 科挂 } from "./terran.ts"
 
 function 虫卵牌描述(p, c, g) {
   return $()
@@ -55,7 +55,7 @@ async function 注卵(card, unit) {
       return
     }
     await card.player.step(`即将在 ${idx} 创建虫卵`)
-    const cc = new Card(getCard("虫卵"), card.player)
+    const cc = new CardInstance(getCard("虫卵"), card.player)
     cc.gold = true
     cc.pos = idx
     cc.desc = 虫卵牌描述(card.player, cc, false, null).clear()
@@ -113,7 +113,7 @@ export default {
         await 孵化(c, Array(Math.floor(count / (g ? 15 : 20))).fill("爆虫"))
       })
       .for(p)
-      .bind("card-sell", async ({ selled: card }) => {
+      .bind("sell-card", async ({ selled: card }) => {
         if (card === c || p.flag.爆虫滚滚) {
           return
         }

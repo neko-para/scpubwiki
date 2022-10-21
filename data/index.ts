@@ -70,7 +70,9 @@ function putIndex(entry: Card | Term | Unit | Upgrade) {
   es.forEach(putIndex)
 })
 
-const searcher: AhoCorasickSearcher = new AhoCorasick(Object.keys(data))
+const searcher: AhoCorasickSearcher = new AhoCorasick(
+  Object.keys(data)
+) as unknown as AhoCorasickSearcher
 
 function splitTextPiece(text: string) {
   let result: {

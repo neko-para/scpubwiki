@@ -1,5 +1,5 @@
-import emitter from '../async-emitter.js'
+import { Emitter } from "../async-emitter.ts"
 
-const bus = new emitter()
+const bus = new Emitter()
 
 export default bus

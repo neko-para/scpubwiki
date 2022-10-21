@@ -1,5 +1,5 @@
-type Race = "T" | "P" | "Z" | "N" | "G"
-type Pack =
+export type Race = "T" | "P" | "Z" | "N" | "G"
+export type Pack =
   | "核心"
   | "天空之怒"
   | "并肩作战"

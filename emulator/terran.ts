@@ -1,7 +1,24 @@
+import { CardInstance, Player } from "."
 import { getUnit, getCard } from "../data"
-import { shuffle, $, 获得, 获得N, 转换, 左侧, 相邻两侧 } from "./util.js"
+import {
+  shuffle,
+  Binder,
+  $,
+  获得,
+  获得N,
+  转换,
+  左侧,
+  相邻两侧,
+} from "./util.js"
 
-function 任务(announce, card, count, result, check = () => true, renew = null) {
+function 任务(
+  announce: (msg: string) => Promise<void>,
+  card: CardInstance,
+  count: number,
+  result: () => Promise<void>,
+  check?: (...args: any) => boolean,
+  renew?: (f: () => Promise<void>) => void
+) {
   let n = 0
   if (renew) {
     renew(async () => {
@@ -10,8 +27,8 @@ function 任务(announce, card, count, result, check = () => true, renew = null)
       await announce(`任务: 0 / ${count}`)
     })
   }
-  return async (...arg) => {
-    if (n < count && check(...arg)) {
+  return async (...arg: any) => {
+    if (n < count && (!check || check(...arg))) {
       n++
       await announce(`任务: ${n} / ${count}`)
       if (n === count) {
@@ -25,7 +42,7 @@ function 任务(announce, card, count, result, check = () => true, renew = null)
   }
 }
 
-function 反应堆(card, gold, unit) {
+function 反应堆(card: CardInstance, gold: boolean, unit: string) {
   return async () => {
     if (card.infr_type() === 0) {
       await 获得N(card, unit, gold ? 2 : 1)
@@ -33,7 +50,11 @@ function 反应堆(card, gold, unit) {
   }
 }
 
-export function 科挂(card, count, result) {
+export function 科挂(
+  card: CardInstance,
+  count: number,
+  result: () => Promise<void>
+) {
   return async () =>
     card.player.asyncEnumPresent(async c => {
       count -= c.locateX(u =>
@@ -47,13 +68,20 @@ export function 科挂(card, count, result) {
     })
 }
 
-export default {
+const Data: {
+  [key: string]: (
+    player: Player,
+    card: CardInstance,
+    gold: boolean,
+    announce: (msg: string) => Promise<void>
+  ) => Binder
+} = {
   死神火车: (p, c, g, a) =>
     $()
       .for(p)
       .bind(
         "card-enter",
-        任务(a, c, 2, () => {
+        任务(a, c, 2, async () => {
           p.mineral += g ? 2 : 1
         })
       ),
@@ -94,12 +122,12 @@ export default {
       .for(c)
       .bind("post-enter", async () => {
         await 相邻两侧(c, async card => {
-          const taked = []
+          const taked: string[] = []
           card.unit.forEach((unit, index) => {
             if (index % 3 === 0) {
               return
             }
-            if (getUnit(unit).utyp !== "normal") {
+            if (getUnit(unit)?.utyp !== "normal") {
               return
             }
             taked.push(unit)
@@ -142,21 +170,22 @@ export default {
           a,
           c,
           3,
-          () =>
-            左侧(c, async card => {
+          async () => {
+            await 左侧(c, async card => {
               if (card.race === "T") {
                 await p.bus.async_emit("upgrade-infr", {
                   card,
                 })
               }
-            }),
+            })
+          },
           ({ card }) => {
             return card.race === "T"
           }
         )
       ),
   科考小队: (p, c, g, a) => {
-    let rn = null
+    let rn = async () => {}
     return $()
       .for(c)
       .bind("post-enter", () => a(`任务: 0 / 2`))
@@ -228,15 +257,15 @@ export default {
           }
         })
       )
-      .bind("post-enter", () =>
-        左侧(c, async card => {
+      .bind("post-enter", async () => {
+        await 左侧(c, async card => {
           if (card.race === "T") {
             await p.bus.async_emit("upgrade-infr", {
               card,
             })
           }
         })
-      ),
+      }),
   护航中队: (p, c, g) =>
     $()
       .for(c)
@@ -310,7 +339,7 @@ export default {
       ),
   游骑兵: (p, c, g) =>
     $()
-      .for(g)
+      .for(p)
       .bind(
         "switch-infr",
         async ({ card }) => await 获得N(card, "雷诺(狙击手)", g ? 2 : 1)
@@ -324,7 +353,7 @@ export default {
   沃菲尔德: (p, c, g) =>
     $()
       .for(p)
-      .bind("card-sell", async ({ selled: card }) => {
+      .bind("sell-card", async ({ selled: card }) => {
         if (card === c) {
           return
         }
@@ -332,9 +361,9 @@ export default {
         if (card.race === "T") {
           if (p.flag.沃菲尔德 < (g ? 2 : 1)) {
             p.flag.沃菲尔德++
-            const unit = []
+            const unit: string[] = []
             card.unit = card.unit.filter(u => {
-              if (getUnit(u).utyp !== "normal") {
+              if (getUnit(u)?.utyp !== "normal") {
                 return true
               } else {
                 unit.push(u)
@@ -351,13 +380,13 @@ export default {
         )
       ),
   帝国舰队: (p, c, g, a) => {
-    let rn = null
+    let rn = async () => {}
     return $()
       .for(c)
       .bind("post-enter", () => a(`任务: 0 / 3`))
       .for(p)
       .bind(
-        "card-sell",
+        "sell-card",
         任务(
           a,
           c,
@@ -386,9 +415,9 @@ export default {
   艾尔游骑兵: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", () =>
-        左侧(c, async card => 获得N(card, "水晶塔", g ? 2 : 1))
-      )
+      .bind("fast-prod", async () => {
+        await 左侧(c, async card => 获得N(card, "水晶塔", g ? 2 : 1))
+      })
       .bind("round-end", async () => {
         let n = 0
         await 相邻两侧(c, async card => {
@@ -428,15 +457,25 @@ export default {
     $()
       .for(c)
       .bind("fast-prod", async () => {
-        for (const card of p.hand.filter(x => x)) {
-          const us = getCard(card).unit
-          const r = []
+        for (const card of p.hand) {
+          if (!card) {
+            continue
+          }
+          const us = card.unit
+          const r: string[] = []
           for (const k in us) {
             const u = getUnit(k)
+            if (!u) {
+              continue
+            }
             if (u.utyp !== "normal") {
               continue
             }
-            if (u.tag.includes("英雄单位") || !u.tag.includes("生物单位")) {
+            if (
+              !u.tag ||
+              u.tag.includes("英雄单位") ||
+              !u.tag.includes("生物单位")
+            ) {
               continue
             }
             r.push(...Array(us[k]).fill(k))
@@ -457,3 +496,5 @@ export default {
         }
       }),
 }
+
+export default Data
