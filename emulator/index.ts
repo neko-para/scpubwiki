@@ -38,6 +38,10 @@ export type BusInfo = {
     card: CardInstance
     unit: string[]
   }
+  inject: {
+    card: CardInstance
+    unit: string[]
+  }
   incubate: {
     card: CardInstance
     unit: string[]
@@ -87,7 +91,7 @@ export class CardInstance {
   info: Record<string, any>
   announce: string
 
-  desc: () => Promise<void>
+  desc: () => void
 
   darkgold?: boolean
   gold?: boolean
@@ -269,7 +273,7 @@ export class CardInstance {
     return res
   }
 
-  locate(u, cnt = -1) {
+  locate(u: string, cnt = -1) {
     return this.locateX(unit => unit === u, cnt)
   }
 

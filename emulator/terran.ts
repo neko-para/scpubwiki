@@ -1,15 +1,7 @@
 import { CardInstance, Player } from "."
 import { getUnit, getCard } from "../data"
-import {
-  shuffle,
-  Binder,
-  $,
-  获得,
-  获得N,
-  转换,
-  左侧,
-  相邻两侧,
-} from "./util.js"
+import { Description } from "./types"
+import { shuffle, Binder, $, 获得, 获得N, 转换, 左侧, 相邻两侧 } from "./util"
 
 function 任务(
   announce: (msg: string) => Promise<void>,
@@ -68,14 +60,7 @@ export function 科挂(
     })
 }
 
-const Data: {
-  [key: string]: (
-    player: Player,
-    card: CardInstance,
-    gold: boolean,
-    announce: (msg: string) => Promise<void>
-  ) => Binder
-} = {
+const Data: Description = {
   死神火车: (p, c, g, a) =>
     $()
       .for(p)

@@ -1,9 +1,12 @@
-import { CardInstance } from "./index.ts"
+import { CardInstance, Player } from "."
 import { getUnit, data, getCard } from "../data"
-import { shuffle, $, 获得, 获得N, 摧毁, 相邻两侧, 转换 } from "./util.ts"
-import { 科挂 } from "./terran.ts"
+import { shuffle, $, 获得, 获得N, 摧毁, 相邻两侧, 转换 } from "./util"
+import { 科挂 } from "./terran"
+import { Description } from "./types"
+import { Card } from "../data/pubdata"
+import { Unit } from "../data/pubdata"
 
-function 虫卵牌描述(p, c, g) {
+function 虫卵牌描述(p: Player, c: CardInstance, g: boolean) {
   return $()
     .for(c)
     .bind("inject", async ({ unit }) => {
@@ -20,7 +23,10 @@ function 虫卵牌描述(p, c, g) {
       if (k === 2) {
         await 孵化(
           c,
-          c.unit.filter(u => getUnit(u).tag.includes("生物单位"))
+          c.unit.filter(u => {
+            const uu = getUnit(u)
+            return uu?.tag && uu.tag.includes("生物单位")
+          })
         )
         await 摧毁(c)
         c.player.mineral += 1
@@ -28,7 +34,7 @@ function 虫卵牌描述(p, c, g) {
     })
 }
 
-function 虫卵牌位(player) {
+function 虫卵牌位(player: Player) {
   let idx = -1
   player.enumPresent(c => {
     if (c.name === "虫卵") {
@@ -39,7 +45,7 @@ function 虫卵牌位(player) {
   return idx
 }
 
-async function 注卵(card, unit) {
+async function 注卵(card: CardInstance, unit: string[]) {
   if (unit.length === 0) {
     return
   }
@@ -55,29 +61,29 @@ async function 注卵(card, unit) {
       return
     }
     await card.player.step(`即将在 ${idx} 创建虫卵`)
-    const cc = new CardInstance(getCard("虫卵"), card.player)
+    const cc = new CardInstance(getCard("虫卵") as Card, card.player)
     cc.gold = true
     cc.pos = idx
-    cc.desc = 虫卵牌描述(card.player, cc, false, null).clear()
+    cc.desc = 虫卵牌描述(card.player, cc, false).clear()
     card.player.present[idx] = cc
   }
   await card.player.bus.async_emit("inject", {
-    card: card.player.present[idx],
+    card: card.player.present[idx] as CardInstance,
     unit,
   })
 }
 
-function 孵化(card, unit) {
+async function 孵化(card: CardInstance, unit: string[]) {
   if (unit.length === 0) {
     return
   }
-  return card.player.bus.async_emit("incubate", {
+  await card.player.bus.async_emit("incubate", {
     card,
     unit,
   })
 }
 
-export default {
+const Data: Description = {
   虫卵: 虫卵牌描述,
   虫群先锋: (p, c, g) =>
     $()
@@ -117,7 +123,7 @@ export default {
         if (card === c || p.flag.爆虫滚滚) {
           return
         }
-        const unit = []
+        const unit: string[] = []
         card.unit = card.unit.filter(u => {
           if (u === "跳虫") {
             unit.push("爆虫")
@@ -132,6 +138,7 @@ export default {
         p.flag.爆虫滚滚 = 1
         await 获得(c, unit)
       })
+      // @ts-ignore
       .bind("card-sell-after-dispatch$", () => {
         p.flag.爆虫滚滚 = 0
       }),
@@ -155,7 +162,10 @@ export default {
   孵化所: (p, c, g) =>
     $()
       .for(p)
-      .bind("incubate", () => (p.flag.孵化所 = null))
+      .bind("incubate", async () => {
+        p.flag.孵化所 = null
+      })
+      // @ts-ignore
       .bind("incubate-into-before$", async () => {
         if (p.flag.孵化所) {
           if (c.pos < p.flag.孵化所.pos) {
@@ -165,6 +175,7 @@ export default {
           p.flag.孵化所 = c
         }
       })
+      // @ts-ignore
       .bind("incubate-into-after$", async ({ unit, card }) => {
         if (card !== c || p.flag.孵化所 !== c) {
           return
@@ -230,7 +241,7 @@ export default {
     $()
       .for(c)
       .bind("post-enter", () =>
-        相邻两侧(async card =>
+        相邻两侧(c, async card =>
           转换(
             card,
             card.locateX(u => ["蟑螂", "蟑螂(精英)"].includes(u), g ? 2 : 1),
@@ -249,7 +260,7 @@ export default {
         })
       )
       .bind("round-end", () =>
-        相邻两侧(async card => {
+        相邻两侧(c, async card => {
           if (card.race === "Z") {
             await 获得N(card, "守卫", g ? 4 : 2)
           }
@@ -271,16 +282,18 @@ export default {
           }
         }
       })
+      // @ts-ignore
       .bind("incubate-after$", () => (p.flag.扎加拉 = 0)),
   斯托科夫: (p, c, g) =>
     $()
       .for(c)
-      .bind("post-enter", () => {
+      .bind("post-enter", async () => {
         if (!("斯托科夫" in p.glob)) {
           p.glob.斯托科夫 = 0
         }
       })
       .for(p)
+      // @ts-ignore
       .bind("card-enter-before$", ({ card }) => {
         if (card.level === 6 || card.race === "Z") {
           return
@@ -309,6 +322,7 @@ export default {
           }
         }
       })
+      // @ts-ignore
       .bind("card-enter-after$", async ({ card }) => {
         if (card.level === 6 || card.race === "Z") {
           return
@@ -322,7 +336,10 @@ export default {
             p.flag.斯托科夫C,
             card.unit.filter(u => {
               const uu = getUnit(u)
-              return uu.utyp === "normal" && !uu.tag.includes("英雄单位")
+              if (!uu || uu.utyp !== "normal") {
+                return false
+              }
+              return !uu.tag?.includes("英雄单位")
             })
           )
         }
@@ -365,14 +382,15 @@ export default {
         if (idx === -1) {
           return
         }
-        let v = 0,
-          u = null
-        p.present[idx].unit.forEach(unit => {
-          const uu = getUnit(unit)
+        const egg = p.present[idx] as CardInstance
+        let v = 0
+        let u: string | null = null
+        egg.unit.forEach(unit => {
+          const uu = getUnit(unit) as Unit
           if (uu.utyp !== "normal") {
             return
           }
-          if (!g && uu.tag.includes("英雄单位")) {
+          if (!g && uu.tag?.includes("英雄单位")) {
             return
           }
           if (uu.value > v) {
@@ -380,22 +398,23 @@ export default {
             u = unit
           }
         })
-        if (u) {
-          await p.asyncEnumPresent(async card => {
-            if (card.race === "Z") {
-              await 获得(card, [u])
-            }
-          })
+        if (!u) {
+          return
         }
-        await 摧毁(p.present[idx])
+        await p.asyncEnumPresent(async card => {
+          if (card.race === "Z") {
+            await 获得(card, [u as string])
+          }
+        })
+        await 摧毁(egg)
       }),
   基因突变: (p, c, g) => {
     const f = () =>
-      相邻两侧(async card => {
+      相邻两侧(c, async card => {
         if (card.race === "Z") {
           const us = card.unit
             .map((u, i) => {
-              const uu = getUnit(u)
+              const uu = getUnit(u) as Unit
               return {
                 idx: i,
                 unit: u,
@@ -410,8 +429,8 @@ export default {
                 return a.value - b.value
               }
             })
-          let v = 0,
-            u = null
+          let v = 0
+          let u: string | null = null
           us.forEach(ui => {
             if (ui.hero) {
               return
@@ -444,3 +463,5 @@ export default {
       })
       .bind("round-end", () => 孵化(c, ["被感染的女妖"])),
 }
+
+export default Data

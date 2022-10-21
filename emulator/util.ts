@@ -61,11 +61,11 @@ export function 获得N(card: CardInstance, unit: string, number: number) {
   return 获得(card, Array(number).fill(unit))
 }
 
-export function 转换(card: CardInstance, index: number[], to: string) {
+export async function 转换(card: CardInstance, index: number[], to: string) {
   if (index.length === 0) {
     return
   }
-  return card.player.bus.async_emit("transform-unit", {
+  await card.player.bus.async_emit("transform-unit", {
     card,
     index,
     to,
