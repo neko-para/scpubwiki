@@ -1,5 +1,13 @@
 import { CardInstance, Player } from "."
-import { getUnit, getCard } from "../data"
+import {
+  getUnit,
+  getCard,
+  UnitKey,
+  isHero,
+  isNormal,
+  isBiological,
+  elited,
+} from "../data"
 import { Description } from "./types"
 import { shuffle, Binder, $, 获得, 获得N, 转换, 左侧, 相邻两侧 } from "./util"
 
@@ -34,7 +42,7 @@ function 任务(
   }
 }
 
-function 反应堆(card: CardInstance, gold: boolean, unit: string) {
+function 反应堆(card: CardInstance, gold: boolean, unit: UnitKey) {
   return async () => {
     if (card.infr_type() === 0) {
       await 获得N(card, unit, gold ? 2 : 1)
@@ -107,7 +115,7 @@ const Data: Description = {
       .for(c)
       .bind("post-enter", async () => {
         await 相邻两侧(c, async card => {
-          const taked: string[] = []
+          const taked: UnitKey[] = []
           card.unit.forEach((unit, index) => {
             if (index % 3 === 0) {
               return
@@ -237,8 +245,9 @@ const Data: Description = {
       .for(c)
       .bind("fast-prod", () =>
         相邻两侧(c, async card => {
-          for (const u of ["歌利亚", "维京战机"]) {
-            await 转换(card, card.locate(u, g ? 2 : 1), u + "(精英)")
+          const us: UnitKey[] = ["歌利亚", "维京战机"]
+          for (const u of us) {
+            await 转换(card, card.locate(u, g ? 2 : 1), elited(u))
           }
         })
       )
@@ -264,8 +273,9 @@ const Data: Description = {
       .bind("round-end", () =>
         p.asyncEnumPresent(async card => {
           if (card.race === "T") {
-            for (const u of ["陆战队员", "劫掠者"]) {
-              await 转换(card, card.locate(u, g ? 5 : 3), u + "(精英)")
+            const us: UnitKey[] = ["陆战队员", "劫掠者"]
+            for (const u of us) {
+              await 转换(card, card.locate(u, g ? 5 : 3), elited(u))
             }
           }
         })
@@ -299,12 +309,8 @@ const Data: Description = {
           const nNorRest = nNor % 6
           cnt += (nNor - nNorRest) / 6
           nNorTran += nNor - nNorRest
-          while (nProTran-- > 0) {
-            card.take_unit("陆战队员(精英)")
-          }
-          while (nNorTran-- > 0) {
-            card.take_unit("陆战队员")
-          }
+          card.take_units("陆战队员(精英)", nProTran)
+          card.take_units("陆战队员", nNorTran)
           await 获得N(card, "牛头人陆战队员", cnt)
         })
       ),
@@ -316,8 +322,9 @@ const Data: Description = {
         "round-end",
         科挂(c, 5, () =>
           p.asyncEnumPresent(async card => {
-            for (const u of ["攻城坦克", "战狼"]) {
-              await 转换(card, card.locate(u, g ? 2 : 1), u + "(精英)")
+            const us: UnitKey[] = ["攻城坦克", "战狼"]
+            for (const u of us) {
+              await 转换(card, card.locate(u, g ? 2 : 1), elited(u))
             }
           })
         )
@@ -346,7 +353,7 @@ const Data: Description = {
         if (card.race === "T") {
           if (p.flag.沃菲尔德 < (g ? 2 : 1)) {
             p.flag.沃菲尔德++
-            const unit: string[] = []
+            const unit: UnitKey[] = []
             card.unit = card.unit.filter(u => {
               if (getUnit(u)?.utyp !== "normal") {
                 return true
@@ -447,20 +454,10 @@ const Data: Description = {
             continue
           }
           const us = card.unit
-          const r: string[] = []
+          const r: UnitKey[] = []
           for (const k in us) {
-            const u = getUnit(k)
-            if (!u) {
-              continue
-            }
-            if (u.utyp !== "normal") {
-              continue
-            }
-            if (
-              !u.tag ||
-              u.tag.includes("英雄单位") ||
-              !u.tag.includes("生物单位")
-            ) {
+            const unit = k as UnitKey
+            if (!isNormal(unit) || isHero(unit) || !isBiological(unit)) {
               continue
             }
             r.push(...Array(us[k]).fill(k))

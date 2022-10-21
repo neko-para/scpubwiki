@@ -1,3 +1,5 @@
+import { CardKey, TermKey, UnitKey, UpgradeKey, PossibleKey } from "./pubdata"
+
 export type Race = "T" | "P" | "Z" | "N" | "G"
 export type Pack =
   | "核心"
@@ -11,14 +13,41 @@ export type Pack =
 type UnitType = "normal" | "spbd" | "spun"
 type UpgradeCategory = "S" | "3" | "T" | "P" | "Z" | "C" | "V" | "O"
 
+type SplitResultString = {
+  t: "str"
+  s: string
+  m?: true
+}
+
+export type SplitResultRefer = {
+  t: "ref"
+  s: PossibleKey
+  m?: true
+}
+
+type SplitResultUser = {
+  t: "usr"
+  s: string
+  m?: true
+}
+
+export type SplitResultNode =
+  | SplitResultString
+  | SplitResultRefer
+  | SplitResultUser
+
+export type SplitResult = SplitResultNode[]
+
 export interface Card {
-  name: string
+  name: CardKey
   type: "card"
   race: Race
   level: number
   pack: Pack
   pool: boolean
-  unit: Record<string, number>
+  unit: {
+    [key in UnitKey]?: number
+  }
   desc: [string, string][]
   banner?: string
   attr?: {
@@ -33,7 +62,7 @@ export interface Card {
 }
 
 export interface Term {
-  name: string
+  name: TermKey
   type: "term"
   race: Race
   bref: string
@@ -61,13 +90,13 @@ interface SArmor {
 }
 
 export interface Unit {
-  name: string
+  name: UnitKey
   type: "unit"
   race: Race
   utyp: UnitType
   value: number
 
-  tag?: string[]
+  tag: string[]
   health?: number
   shield?: number
   power?: number
@@ -80,7 +109,7 @@ export interface Unit {
 }
 
 export interface Upgrade {
-  name: string
+  name: UpgradeKey
   type: "upgrade"
   novr?: true
   cate: UpgradeCategory

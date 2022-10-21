@@ -1,5 +1,5 @@
 import { Card } from "../data/types"
-import { getCard, data } from "../data"
+import { Cards, getCard } from "../data"
 
 const poolCount = {
   1: 18,
@@ -15,17 +15,14 @@ export class Pool {
 
   constructor() {
     this.pool = []
-    for (const k in data) {
-      const c = getCard(k)
-      if (c) {
-        if (c.attr?.rare) {
-          if (Math.random() <= 0.15) {
-            this.pool.push(c)
-          }
-        } else {
-          this.pool.push(...Array(poolCount[c.level]).fill(c))
+    Cards.forEach(c => {
+      if (c.attr?.rare) {
+        if (Math.random() <= 0.15) {
+          this.pool.push(c)
         }
+      } else {
+        this.pool.push(...Array(poolCount[c.level]).fill(c))
       }
-    }
+    })
   }
 }

@@ -1,5 +1,12 @@
 import { CardInstance, Player } from "."
-import { getUnit, getCard } from "../data"
+import {
+  getUnit,
+  getCard,
+  isBiological,
+  isHero,
+  isNormal,
+  UnitKey,
+} from "../data"
 import { $, 获得, 获得N, 摧毁, 相邻两侧, 转换 } from "./util"
 import { 科挂 } from "./terran"
 import { Description } from "./types"
@@ -22,10 +29,7 @@ function 虫卵牌描述(p: Player, c: CardInstance, g: boolean) {
       if (k === 2) {
         await 孵化(
           c,
-          c.unit.filter(u => {
-            const uu = getUnit(u)
-            return uu?.tag && uu.tag.includes("生物单位")
-          })
+          c.unit.filter(u => isBiological(u))
         )
         await 摧毁(c)
         c.player.mineral += 1
@@ -44,7 +48,7 @@ function 虫卵牌位(player: Player) {
   return idx
 }
 
-async function 注卵(card: CardInstance, unit: string[]) {
+async function 注卵(card: CardInstance, unit: UnitKey[]) {
   if (unit.length === 0) {
     return
   }
@@ -72,7 +76,7 @@ async function 注卵(card: CardInstance, unit: string[]) {
   })
 }
 
-async function 孵化(card: CardInstance, unit: string[]) {
+async function 孵化(card: CardInstance, unit: UnitKey[]) {
   if (unit.length === 0) {
     return
   }
@@ -122,7 +126,7 @@ const Data: Description = {
         if (card === c || p.flag.爆虫滚滚) {
           return
         }
-        const unit: string[] = []
+        const unit: UnitKey[] = []
         card.unit = card.unit.filter(u => {
           if (u === "跳虫") {
             unit.push("爆虫")
@@ -196,9 +200,7 @@ const Data: Description = {
         await p.asyncEnumPresent(async card => {
           let nn = card.locate("陆战队员", g ? 4 : 2).length
           n += nn
-          while (nn--) {
-            card.take_unit("陆战队员")
-          }
+          card.take_units("陆战队员", nn)
         })
         await 注卵(c, Array(n).fill("被感染的陆战队员"))
       })
@@ -329,13 +331,7 @@ const Data: Description = {
         if (p.flag.斯托科夫) {
           await 注卵(
             p.flag.斯托科夫C,
-            card.unit.filter(u => {
-              const uu = getUnit(u)
-              if (!uu || uu.utyp !== "normal") {
-                return false
-              }
-              return !uu.tag?.includes("英雄单位")
-            })
+            card.unit.filter(u => isNormal(u) && !isHero(u))
           )
         }
       }),
@@ -379,15 +375,15 @@ const Data: Description = {
         }
         const egg = p.present[idx] as CardInstance
         let v = 0
-        let u: string | null = null
+        let u: UnitKey | null = null
         egg.unit.forEach(unit => {
-          const uu = getUnit(unit) as Unit
-          if (uu.utyp !== "normal") {
+          if (!isNormal(unit)) {
             return
           }
-          if (!g && uu.tag?.includes("英雄单位")) {
+          if (!g && isHero(unit)) {
             return
           }
+          const uu = getUnit(unit)
           if (uu.value > v) {
             v = uu.value
             u = unit
@@ -398,7 +394,7 @@ const Data: Description = {
         }
         await p.asyncEnumPresent(async card => {
           if (card.race === "Z") {
-            await 获得(card, [u as string])
+            await 获得(card, [u as UnitKey])
           }
         })
         await 摧毁(egg)
@@ -408,15 +404,12 @@ const Data: Description = {
       相邻两侧(c, async card => {
         if (card.race === "Z") {
           const us = card.unit
-            .map((u, i) => {
-              const uu = getUnit(u) as Unit
-              return {
-                idx: i,
-                unit: u,
-                value: uu.value,
-                hero: !!uu.tag?.includes("英雄单位"),
-              }
-            })
+            .map((u, i) => ({
+              idx: i,
+              unit: u,
+              value: getUnit(u).value,
+              hero: isHero(u),
+            }))
             .sort((a, b) => {
               if (a.value === b.value) {
                 return a.idx - b.idx

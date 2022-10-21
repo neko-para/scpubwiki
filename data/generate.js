@@ -103,19 +103,16 @@ function processUnits(obj) {
         defense: 0,
       }
     }
-    if ("tag" in u) {
-      // currently not all unit finished
-      u.tag = u.tag
-        .split(",")
-        .map(x => x.trim())
-        .filter(x => x)
-      u.weapon = u.weapon || []
-      u.weapon.forEach(w => {
-        if (typeof w.damage === "string") {
-          w.damage = w.damage.replace(/(\d+), (\D+)(\d+)/, "$1, vs $2 $3")
-        }
-      })
-    }
+    u.tag = (u.tag || "")
+      .split(",")
+      .map(x => x.trim())
+      .filter(x => x)
+    u.weapon = u.weapon || []
+    u.weapon.forEach(w => {
+      if (typeof w.damage === "string") {
+        w.damage = w.damage.replace(/(\d+), (\D+)(\d+)/, "$1, vs $2 $3")
+      }
+    })
   })
 }
 
@@ -203,11 +200,26 @@ async function main() {
   }
   await fs.writeFile(
     "data/pubdata.ts",
-    `import { Data } from "./pubdata.d"\nconst data: Data = ${JSON.stringify(
-      result,
-      null,
-      2
-    )}\nexport default data\n`
+    `import { Data } from "./types"
+export type UnitKey = "${result.unit.map(x => x.name).join('"|"')}"
+export const AllUnit: UnitKey[] = ["${result.unit
+      .map(x => x.name)
+      .join('","')}"]
+export type CardKey = "${result.card.map(x => x.name).join('"|"')}"
+export const AllCard: CardKey[] = ["${result.card
+      .map(x => x.name)
+      .join('","')}"]
+export type TermKey = "${result.term.map(x => x.name).join('"|"')}"
+export const AllTerm: TermKey[] = ["${result.term
+      .map(x => x.name)
+      .join('","')}"]
+export type UpgradeKey = "${result.upgrade.map(x => x.name).join('"|"')}"
+export const AllUpgrade: UpgradeKey[] = ["${result.upgrade
+      .map(x => x.name)
+      .join('","')}"]
+export type PossibleKey = UnitKey | CardKey | TermKey | UpgradeKey
+const data: Data = ${JSON.stringify(result, null, 2)}
+export { data }\n`
   )
 }
 

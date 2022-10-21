@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import ReferText from './ReferText.vue'
-import { data, tr } from '../../data'
+import { canElite, tr, Unit } from '../../data'
 
-const props = defineProps({
-  node: Object
-})
+const props = defineProps<{
+  node: Unit
+}>()
 
 const target = {
   G: '地面单位',
@@ -13,7 +13,7 @@ const target = {
 }
 
 function calcWeapon (wp) {
-  const r = []
+  const r: string[] = []
   r.push(`伤害: ${wp.damage}`)
   if (wp.multiple) {
     r.push(`多重攻击: ${wp.multiple}`)
@@ -25,7 +25,7 @@ function calcWeapon (wp) {
 }
 
 function calcArmor (a) {
-  const r = []
+  const r: string[] = []
   r.push(`护甲: ${a.defense}`)
   if (a.speed) {
     r.push(`移动速度: ${a.speed}`)
@@ -73,7 +73,7 @@ function calcArmor (a) {
           </v-card-text>
         </template>
         <v-divider></v-divider>
-        <v-card-title>{{ node.armor.name }}</v-card-title>
+        <v-card-title>{{ node.armor?.name }}</v-card-title>
         <v-card-text>
           <refer-text :text="calcArmor(node.armor)"></refer-text>
         </v-card-text>
@@ -93,7 +93,7 @@ function calcArmor (a) {
       <refer-text :text="`作为${node.name.substring(0, node.name.length - 4)}的精英变种`"></refer-text>
     </v-card-text>
   </template>
-  <template v-else-if="`${node.name}(精英)` in data">
+  <template v-else-if="canElite(node.name)">
     <v-divider></v-divider>
     <v-card-text>
       <refer-text :text="`存在精英变种${node.name}(精英)`"></refer-text>

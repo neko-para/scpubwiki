@@ -1,6 +1,7 @@
 import { AsyncEmitter } from "../async-emitter"
 import { CardInstance } from "."
 import { BusInfo } from "./types"
+import { UnitKey } from "../data"
 
 export function shuffle(array: any[]) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -59,6 +60,11 @@ export class Binder {
     return this
   }
 
+  apply(func: (binder: Binder) => void) {
+    func(this)
+    return this
+  }
+
   clear() {
     return () => {
       this.clf.forEach(f => f())
@@ -70,7 +76,7 @@ export function $() {
   return new Binder()
 }
 
-export async function 获得(card: CardInstance, unit: string[]) {
+export async function 获得(card: CardInstance, unit: UnitKey[]) {
   if (unit.length === 0) {
     return
   }
@@ -80,11 +86,11 @@ export async function 获得(card: CardInstance, unit: string[]) {
   })
 }
 
-export function 获得N(card: CardInstance, unit: string, number: number) {
+export function 获得N(card: CardInstance, unit: UnitKey, number: number) {
   return 获得(card, Array(number).fill(unit))
 }
 
-export async function 转换(card: CardInstance, index: number[], to: string) {
+export async function 转换(card: CardInstance, index: number[], to: UnitKey) {
   if (index.length === 0) {
     return
   }
@@ -109,10 +115,8 @@ export async function 左侧(
     const c = card.player.present[card.pos - 1]
     if (c) {
       await func(c)
-      return true
     }
   }
-  return false
 }
 
 export async function 右侧(
@@ -123,10 +127,8 @@ export async function 右侧(
     const c = card.player.present[card.pos + 1]
     if (c) {
       await func(c)
-      return true
     }
   }
-  return false
 }
 
 export async function 相邻两侧(

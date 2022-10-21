@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import HandCard from './HandCard.vue'
 import PresentCard from './PresentCard.vue'
-import bus from '../bus.js'
+import bus from '../bus'
 import { Player } from '../../emulator'
 
 const steping = ref(false)
@@ -40,6 +40,7 @@ function stopStep () {
 const choosingPos = ref(-1)
 let chooseResolve: ((value: number) => void) | null = null
 
+// @ts-ignore
 bus.on('add-to-hand', async ({ card }) => {
   await player.obtain_hand(card)
   refresh()
@@ -54,7 +55,7 @@ function choose (i: number) {
   choosingPos.value = -1
 }
 
-function enter (i) {
+function enter (i: number) {
   if (choosingPos.value !== -1) {
     return
   }
@@ -70,14 +71,14 @@ function enter (i) {
   })
 }
 
-function combine (i) {
+function combine (i: number) {
   if (choosingPos.value !== -1) {
     return
   }
   player.combine(i)
 }
 
-function sell (i) {
+function sell (i: number) {
   if (choosingPos.value !== -1) {
     return
   }

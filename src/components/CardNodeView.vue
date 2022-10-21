@@ -1,22 +1,19 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import ReferText from './ReferText.vue'
-import { getUnit, attr, attr$order, tr } from '../../data'
+import { Card, getUnit, attr, attr$order, tr, UnitKey } from '../../data'
 
-const props = defineProps({
-  node: Object,
-  bref: Boolean
-})
+const props = defineProps<{
+  node: Card,
+  bref: boolean
+}>()
 
 const isGold = ref(false)
 
-function attrOf (node) {
-  const a = []
-  if (!node.attr) {
-    return a
-  }
+function attrOf (node: Card) {
+  const a: string[] = []
   attr$order.forEach(at => {
-    if (at in node.attr) {
+    if (at in (node.attr || [])) {
       a.push(at)
     }
   })
@@ -24,7 +21,7 @@ function attrOf (node) {
 }
 
 function brefTexts () {
-  const t = []
+  const t: string[] = []
   t.push(Object.keys(props.node.unit)
     .map(k => `${k} ${props.node.unit[k]}`).join(' '))
   attrOf(props.node).forEach(a => {
@@ -42,10 +39,7 @@ function brefTexts () {
 function calcValue () {
   let sum = 0
   for (const k in props.node.unit) {
-    if (!getUnit(k)) {
-      console.log(k)
-    }
-    sum += getUnit(k).value * props.node.unit[k]
+    sum += getUnit(k as UnitKey).value * props.node.unit[k]
   }
   return sum
 }

@@ -1,4 +1,4 @@
-import { Emitter } from "../async-emitter.ts"
+import { Emitter } from "../async-emitter"
 
 const bus = new Emitter()
 

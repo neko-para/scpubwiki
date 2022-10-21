@@ -1,6 +1,6 @@
 import { Player, infrs } from "."
 import { AsyncEmitter } from "../async-emitter"
-import { getUnit } from "../data"
+import { CardKey, getUnit, UnitKey } from "../data"
 import { Card, Race } from "../data/types"
 import { BusInfo } from "./types"
 import { 获得, 相邻两侧, 获得N } from "./util"
@@ -8,10 +8,10 @@ import { 获得, 相邻两侧, 获得N } from "./util"
 export class CardInstance {
   bus: AsyncEmitter<BusInfo>
   template: Card
-  name: string
+  name: CardKey
   race: Race
   level: number
-  unit: string[]
+  unit: UnitKey[]
   upgrade: string[]
   player: Player
   pos: number
@@ -22,6 +22,7 @@ export class CardInstance {
 
   darkgold?: boolean
   gold?: boolean
+  void?: boolean
 
   constructor(cardt: Card, player: Player) {
     this.bus = new AsyncEmitter()
@@ -124,9 +125,7 @@ export class CardInstance {
           await this.player.step(
             `即将转移 ${n} 虚空水晶塔到卡牌 ${card.pos} ${card.name}`
           )
-          for (let i = 0; i < n; i++) {
-            this.take_unit("虚空水晶塔")
-          }
+          this.take_units("虚空水晶塔", n)
           await 获得N(card, "虚空水晶塔", n)
         }
       })
@@ -140,15 +139,21 @@ export class CardInstance {
     }
   }
 
-  take_at(at) {
+  take_at(at: number) {
     const u = this.unit[at]
     this.unit[at] = this.unit[this.unit.length - 1]
     this.unit.pop()
     return u
   }
 
-  take_unit(u) {
+  take_unit(u: UnitKey) {
     return this.take_at(this.unit.indexOf(u))
+  }
+
+  take_units(u: UnitKey, n: number) {
+    while (n--) {
+      this.take_at(this.unit.indexOf(u))
+    }
   }
 
   find_infr() {
@@ -184,7 +189,7 @@ export class CardInstance {
     return n
   }
 
-  locateX(pred: (unit: string) => boolean, cnt = -1) {
+  locateX(pred: (unit: UnitKey) => boolean, cnt = -1) {
     const res: number[] = []
     if (cnt === -1) {
       cnt = this.unit.length
@@ -200,16 +205,17 @@ export class CardInstance {
     return res
   }
 
-  locate(u: string, cnt = -1) {
+  locate(u: UnitKey, cnt = -1) {
     return this.locateX(unit => unit === u, cnt)
+  }
+
+  count(u: UnitKey, maxi = -1) {
+    return this.locate(u, maxi).length
   }
 
   calculateValue() {
     let sum = 0
-    this.unit.forEach(u => {
-      const uu = getUnit(u)
-      sum += uu ? uu.value : 0
-    })
+    this.unit.forEach(u => (sum += getUnit(u).value))
     return sum
   }
 }

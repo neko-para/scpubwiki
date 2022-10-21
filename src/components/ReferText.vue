@@ -1,26 +1,37 @@
-<script setup>
-import { ref, computed } from 'vue'
-import bus from '../bus.js'
-import { data, splitText } from '../../data'
+<script setup lang="ts">
+import { computed } from 'vue'
+import bus from '../bus'
+import { getTerm, getUnit, splitText, TermKey, Terms, UnitKey, Units } from '../../data'
+import { SplitResult, SplitResultNode, SplitResultRefer } from '../../data/types';
+import { PubNode } from './types';
 
-const props = defineProps({
-  text: String
-})
+const props = defineProps<{
+  text: string
+}>()
 
 const nodes = computed(() => {
-  const res = []
+  const res: SplitResult = []
   props.text.split('\n').forEach(t => {
     res.push(...splitText(t))
     res.push({
-      t: 'br'
+      t: 'usr',
+      s: 'br'
     })
   })
   return res
 })
 
-const rdata = ref(data)
+function queryBref (key: string): string | null {
+  if (Units.has(key as UnitKey)) {
+    return getUnit(key as UnitKey).bref || null
+  } else if (Terms.has(key as TermKey)) {
+    return getTerm(key as TermKey).bref
+  } else {
+    return null
+  }
+}
 
-function request (node) {
+function request (node: SplitResultRefer) {
   bus.emit('request', node)
 }
 
@@ -29,16 +40,16 @@ function request (node) {
 <template>
   <span>
     <span v-for="(node, idx) in nodes" :key="idx">
-      <br v-if="node.t === 'br'">
+      <br v-if="node.t === 'usr' && node.s === 'br'">
       <span v-else-if="node.t === 'str'" :class="{ modified: node.m }">{{ node.s }}</span>
-      <template v-else>
-        <v-tooltip location="bottom" v-if="rdata[node.s]?.bref">
+      <template v-else-if="node.t === 'ref'">
+        <v-tooltip location="bottom" v-if="queryBref(node.s)">
           <template v-slot:activator="{ props: p }">
             <span v-bind="p" @click="request(node)" :class="{ ref: true, modified: node.m }">
               {{ node.s }}
             </span>
           </template>
-          <span>{{ rdata[node.s].bref }}</span>
+          <span>{{ queryBref(node.s) }}</span>
         </v-tooltip>
         <span v-else @click="request(node)" :class="{ ref: true, modified: node.m }">
           {{ node.s }}

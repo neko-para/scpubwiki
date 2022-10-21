@@ -1,9 +1,9 @@
 import { infrs } from "."
 import { AsyncEmitter } from "../async-emitter"
-import { Card } from "../data/types"
+import { Card } from "../data"
 import { CardInstance } from "./card"
 import { Descriptions } from "./data"
-import { BusInfo } from "./types"
+import { BusInfo, DescriptionGen } from "./types"
 import { shuffle } from "./util"
 
 const upgrades = [0, 5, 7, 8, 9, 11, 0]
@@ -86,7 +86,7 @@ export class Player {
       this.present[card.pos] = null
 
       if (card.desc) {
-        await card.desc()
+        card.desc()
       }
       await this.refresh()
     })
@@ -218,19 +218,24 @@ export class Player {
     card.pos = poses[0]
     card.unit = [...cl.unit, ...cr.unit.filter(u => !infrs.includes(u))]
 
-    await cl.desc()
-    await cr.desc()
+    cl.desc()
+    cr.desc()
 
     await this.step(`即将三连卡牌`)
     this.present[card.pos] = card
     this.present[poses[1]] = null
 
     await this.step(`即将绑定卡牌描述效果`)
-    card.desc = Descriptions[cardt.name](this, card, true, async msg => {
-      await this.step(`卡牌 ${pos} ${cardt.name} 即将更新卡面描述`)
-      card.announce = msg
-      await this.refresh()
-    }).clear()
+    card.desc = (Descriptions[cardt.name] as DescriptionGen)(
+      this,
+      card,
+      true,
+      async msg => {
+        await this.step(`卡牌 ${pos} ${cardt.name} 即将更新卡面描述`)
+        card.announce = msg
+        await this.refresh()
+      }
+    ).clear()
 
     await this.step(`即将广播卡牌三连消息`)
     await this.bus.async_emit("card-combined", {
@@ -263,6 +268,9 @@ export class Player {
     if (cardt.attr?.gold) {
       card.darkgold = true
     }
+    if (cardt.attr?.void) {
+      card.void = true
+    }
     card.pos = into
 
     await card.load_default_unit()
@@ -271,11 +279,16 @@ export class Player {
     this.present[into] = card
 
     await this.step(`即将绑定卡牌描述效果`)
-    card.desc = Descriptions[cardt.name](this, card, false, async msg => {
-      await this.step(`卡牌 ${pos} ${cardt.name} 即将更新卡面描述`)
-      card.announce = msg
-      await this.refresh()
-    }).clear()
+    card.desc = (Descriptions[cardt.name] as DescriptionGen)(
+      this,
+      card,
+      false,
+      async msg => {
+        await this.step(`卡牌 ${pos} ${cardt.name} 即将更新卡面描述`)
+        card.announce = msg
+        await this.refresh()
+      }
+    ).clear()
 
     await this.step(`即将广播卡牌进场消息`)
     await this.bus.async_emit("card-enter", {

@@ -1,20 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import ReferText from './ReferText.vue'
 import CardNodeView from './CardNodeView.vue'
 import UnitNodeView from './UnitNodeView.vue'
-import bus from '../bus.js'
+import bus from '../bus'
+import { PubNode } from './types'
 
-const props = defineProps({
-  node: Object,
-  brief: {
-    type: Boolean,
-    default: false
-  },
-  closable: {
-    type: Boolean,
-    default: false
-  }
+const props = withDefaults(defineProps<{
+  node: PubNode,
+  brief?: boolean
+  closable?: boolean
+}>(), {
+  brief: false,
+  closable: false
 })
 
 const bref = ref(true)

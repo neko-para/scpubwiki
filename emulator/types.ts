@@ -1,25 +1,27 @@
 import { Player, CardInstance } from "."
-import { Card } from "../data/types"
+import { Card, CardKey, UnitKey } from "../data"
 import { Binder } from "./util"
 
+export type DescriptionGen = (
+  player: Player,
+  card: CardInstance,
+  gold: boolean,
+  announce: (msg: string) => Promise<void>
+) => Binder
+
 export type Description = {
-  [key: string]: (
-    player: Player,
-    card: CardInstance,
-    gold: boolean,
-    announce: (msg: string) => Promise<void>
-  ) => Binder
+  [key in CardKey]?: DescriptionGen
 }
 
 export type BusInfo = {
   "obtain-unit": {
     card: CardInstance
-    unit: string[]
+    unit: UnitKey[]
   }
   "transform-unit": {
     card: CardInstance
     index: number[]
-    to: string
+    to: UnitKey
   }
   "fast-prod": {
     card: CardInstance
@@ -35,7 +37,7 @@ export type BusInfo = {
   }
   "wrap-in": {
     card: CardInstance
-    unit: string[]
+    unit: UnitKey[]
   }
   regroup: {
     card: CardInstance
@@ -43,15 +45,19 @@ export type BusInfo = {
   }
   inject: {
     card: CardInstance
-    unit: string[]
+    unit: UnitKey[]
   }
   incubate: {
     card: CardInstance
-    unit: string[]
+    unit: UnitKey[]
   }
   "incubate-into": {
     card: CardInstance
-    unit: string[]
+    unit: UnitKey[]
+  }
+  "gain-darkness": {
+    card: CardInstance
+    darkness: number
   }
   "card-enter": {
     card: CardInstance
@@ -80,7 +86,7 @@ export type BusInfo = {
     filter: (card: Card) => boolean
   }
   wrap: {
-    unit: string[]
+    unit: UnitKey[]
     info: {
       to: CardInstance | null
     }

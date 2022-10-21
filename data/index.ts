@@ -1,6 +1,21 @@
 import AhoCorasick from "ahocorasick"
-import { Card, Term, Unit, Upgrade } from "./types"
-import raw from "./pubdata.js"
+import type {
+  Card,
+  Term,
+  Unit,
+  Upgrade,
+  SplitResult,
+  SplitResultRefer,
+} from "./types"
+import { data as raw } from "./pubdata"
+import type {
+  CardKey,
+  TermKey,
+  UnitKey,
+  UpgradeKey,
+  PossibleKey,
+  AllUnit,
+} from "./pubdata"
 const {
   card,
   term,
@@ -14,64 +29,79 @@ const {
   upgradeCategory$order,
 } = raw
 
-interface Disa {
-  type: "disa"
-  card?: Card
-  term?: Term
-  unit?: Unit
-  upgrade?: Upgrade
-}
-
 interface AhoCorasickSearcher {
-  search(string): [number, string[]][]
+  search(t: string): [number, string[]][]
 }
 
-type SplitResult = {
-  t: "str" | "ref"
-  s: string
-  m?: true
-}[]
+export const Cards: Map<CardKey, Card> = new Map()
+export const Terms: Map<TermKey, Term> = new Map()
+export const Units: Map<UnitKey, Unit> = new Map()
+export const Upgrades: Map<UpgradeKey, Upgrade> = new Map()
 
 export { attr, attr$order, tr, info, upgradeCategory, upgradeCategory$order }
+export { CardKey, TermKey, UnitKey, UpgradeKey, PossibleKey }
+export { Card, Term, Unit, Upgrade }
+export { SplitResult, SplitResultRefer }
 
-export const data: Record<string, Card | Term | Unit | Upgrade | Disa> = {}
+card.forEach(c => Cards.set(c.name, c))
+term.forEach(t => Terms.set(t.name, t))
+unit.forEach(u => Units.set(u.name, u))
+upgrade.forEach(u => Upgrades.set(u.name, u))
 
-function putIndex(entry: Card | Term | Unit | Upgrade) {
-  if (entry.name in data) {
-    const old = data[entry.name]
-    if (old.type === "disa") {
-      switch (entry.type) {
-        case "card":
-          old.card = entry
-          break
-        case "term":
-          old.term = entry
-          break
-        case "unit":
-          old.unit = entry
-          break
-        case "upgrade":
-          old.upgrade = entry
-          break
-      }
-    } else {
-      data[entry.name] = {
-        type: "disa",
-      }
-      data[entry.name][old.type] = old
-      data[entry.name][entry.type] = entry
-    }
-  } else {
-    data[entry.name] = entry
-  }
+export function getCard(key: CardKey) {
+  return Cards.get(key) as Card
+}
+export function getTerm(key: TermKey) {
+  return Terms.get(key) as Term
+}
+export function getUnit(key: UnitKey) {
+  return Units.get(key) as Unit
+}
+export function getUpgrade(key: UpgradeKey) {
+  return Upgrades.get(key) as Upgrade
+}
+export function canElite(key: UnitKey) {
+  return key + "(精英)" in AllUnit
+}
+export function elited(key: UnitKey) {
+  return (key + "(精英)") as UnitKey
+}
+export function isBiological(key: UnitKey) {
+  return getUnit(key).tag.includes("生物单位")
+}
+export function isMachine(key: UnitKey) {
+  return getUnit(key).tag.includes("机械单位")
+}
+export function isHeavy(key: UnitKey) {
+  return getUnit(key).tag.includes("机械单位")
+}
+export function isPsionic(key: UnitKey) {
+  return getUnit(key).tag.includes("灵能单位")
+}
+export function isHero(key: UnitKey) {
+  return getUnit(key).tag.includes("英雄单位")
+}
+export function isNormal(key: UnitKey) {
+  return getUnit(key).utyp === "normal"
+}
+export function isSpecialBuilding(key: UnitKey) {
+  return getUnit(key).utyp === "spbd"
+}
+export function isSpecialUnit(key: UnitKey) {
+  return getUnit(key).utyp === "spun"
 }
 
-;[card, term, unit, upgrade].forEach(es => {
-  es.forEach(putIndex)
-})
+export const Keywords = Array.from(
+  new Set<CardKey | TermKey | UnitKey | UpgradeKey>([
+    ...Array.from(Cards.keys()),
+    ...Array.from(Terms.keys()),
+    ...Array.from(Units.keys()),
+    ...Array.from(Upgrades.keys()),
+  ]).keys()
+)
 
 const searcher: AhoCorasickSearcher = new AhoCorasick(
-  Object.keys(data)
+  Keywords
 ) as unknown as AhoCorasickSearcher
 
 function splitTextPiece(text: string) {
@@ -123,7 +153,7 @@ function splitTextPiece(text: string) {
     }
     secs.push({
       t: "ref",
-      s: res.word,
+      s: res.word as PossibleKey,
     })
     ps = res.end + 1
   })
@@ -152,32 +182,4 @@ export function splitText(text: string) {
     }
   })
   return result
-}
-
-export function getUnit(key: string) {
-  const d = data[key]
-  if (!d) {
-    return null
-  }
-  if (d.type === "disa") {
-    return d.unit || null
-  } else if (d.type === "unit") {
-    return d
-  } else {
-    return null
-  }
-}
-
-export function getCard(key: string) {
-  const d = data[key]
-  if (!d) {
-    return null
-  }
-  if (d.type === "disa") {
-    return d.card || null
-  } else if (d.type === "card") {
-    return d
-  } else {
-    return null
-  }
 }

@@ -1,11 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onBeforeUpdate, computed } from 'vue'
+import { PubNode } from './types'
 import NodeView from './NodeView.vue'
 
 const perPage = 10
-const props = defineProps({
-  nodes: Array
-})
+const props = defineProps<{
+  nodes: PubNode[]
+}>()
 
 const nPage = computed(() => {
   return Math.ceil(props.nodes.length / perPage)

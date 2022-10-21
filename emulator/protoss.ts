@@ -1,10 +1,19 @@
 import { CardInstance } from "."
-import { getUnit, data } from "../data"
-import { Unit } from "../data/types"
+import {
+  canElite,
+  elited,
+  getUnit,
+  isBiological,
+  isHeavy,
+  isHero,
+  isNormal,
+  Unit,
+  UnitKey,
+} from "../data"
 import { Description } from "./types"
 import { shuffle, $, 获得, 获得N, 相邻两侧, 转换 } from "./util"
 
-async function 折跃(card: CardInstance, unit: string[]) {
+async function 折跃(card: CardInstance, unit: UnitKey[]) {
   await card.player.step(
     `卡牌 ${card.pos} ${card.name} 即将折跃 ${unit.join(", ")}`
   )
@@ -113,16 +122,12 @@ const Data: Description = {
       .bind("post-enter", () =>
         p.asyncEnumPresent(async card => {
           if (card.race === "P") {
-            const idx = card.locateX(unit => {
-              const uu = getUnit(unit)
-              return !!uu?.tag?.includes("生物单位")
-            })
+            const idx = card.locateX(unit => isBiological(unit))
             for (const i of idx.slice(0, g ? 2 : 1)) {
-              const u = getUnit(card.unit[i]) as Unit
               await 转换(
                 card,
                 [i],
-                u.tag?.includes("英雄单位") ? "英雄不朽者" : "不朽者"
+                isHero(card.unit[i]) ? "英雄不朽者" : "不朽者"
               )
             }
           }
@@ -138,18 +143,15 @@ const Data: Description = {
       .for(c)
       .bind("round-end", 集结(c, 5, 0))
       .bind("regroup", async () => {
-        const unit: string[] = []
+        const unit: UnitKey[] = []
         p.enumPresent(card => {
           if (card.race === "P") {
             const us = card
-              .locateX(unit => {
-                const uu = getUnit(unit) as Unit
-                return `${unit}(精英)` in data && !uu.tag?.includes("重型单位")
-              })
+              .locateX(unit => canElite(unit) && !isHeavy(unit))
               .map(i => card.unit[i])
             shuffle(us)
             us.slice(0, 2).forEach(u => {
-              unit.push(card.take_unit(u) + "(精英)")
+              unit.push(elited(card.take_unit(u)))
             })
           }
         })
@@ -214,12 +216,11 @@ const Data: Description = {
           return
         }
         if (card.race === "P") {
-          const unit: string[] = []
+          const unit: UnitKey[] = []
           card.unit = card.unit.filter(u => {
-            const uu = getUnit(u) as Unit
-            if (uu.utyp !== "normal" && u !== "水晶塔") {
+            if (!isNormal(u) && u !== "水晶塔") {
               return true
-            } else if (g || !uu.tag?.includes("英雄单位")) {
+            } else if (g || !isHero(u)) {
               unit.push(u)
             }
           })
@@ -335,13 +336,7 @@ const Data: Description = {
         await 转换(c, c.locate("不朽者", g ? 2 : 1), "英雄不朽者")
         await 转换(
           c,
-          c.locateX(
-            u => {
-              const uu = getUnit(u) as Unit
-              return !!uu.tag?.includes("生物单位")
-            },
-            g ? 2 : 1
-          ),
+          c.locateX(u => isBiological(u), g ? 2 : 1),
           "高阶圣堂武士"
         )
       }),

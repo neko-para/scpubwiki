@@ -1,65 +1,77 @@
-<script setup>
-import { ref, computed } from 'vue'
+<script setup lang="ts">
+import { ref, computed, Ref } from 'vue'
 import NodeList from './NodeList.vue'
-import { data, attr$order, info, upgradeCategory$order, tr } from '../../data'
+import { attr$order, info, upgradeCategory$order, tr, Cards, CardKey, Terms, Units, Upgrades, Card, Upgrade, Unit, Term } from '../../data'
 
-const categorySelector = ref('card')
-const packSelector = ref('none')
+const categorySelector: Ref<'card'|'term'|'unit'|'upgrade'> = ref('card')
+const packSelector = ref('核心')
 const raceSelector = ref('none')
-const starTick = {}
+const starTick: Record<number, string> = {}
 for (let i = 0; i <= 7; i++) {
   starTick[i] = String(i)
 }
 const cateSelector = ref('none')
-const starRange = ref([0, 7])
+const starRange = ref([1, 6])
 const attrSelector = ref('none')
 
-function testSelector (value, selector) {
+function testSelector (value: string, selector: string) {
   return selector !== 'none' && selector !== value
 }
 
 const searchResult = computed(() => {
-  const res = []
-  for (const k in data) {
-    let d = data[k]
-    if (d.type === 'disa' && categorySelector.value in d) {
-      d = d[categorySelector.value]
-    }
-    if (d.type !== categorySelector.value) {
-      continue
-    }
-    if (d.type === 'card' && testSelector(d.pack, packSelector.value)) {
-      continue
-    }
-    if (d.type === 'upgrade') {
-      if (testSelector(d.cate, cateSelector.value)) {
-        continue
+  switch (categorySelector.value) {
+    case 'card': {
+      const res: Card[] = []
+      for (const card of Cards.values()) {
+        if (testSelector(card.pack, packSelector.value) || testSelector(card.race, raceSelector.value)) {
+          continue
+        }
+        if (['none', '核心'].includes(packSelector.value)) {
+          if (starRange.value[0] > card.level || starRange.value[1] < card.level) {
+            continue
+          }
+          if (attrSelector.value !== 'none' && !(card.attr && attrSelector.value in card.attr)) {
+            continue
+          }
+        }
+        res.push(card)
       }
-    } else {
-      if (testSelector(d.race, raceSelector.value)) {
-        continue
-      }
+      res.sort((a, b) => {
+        return a.level === b.level ? a.name.localeCompare(b.name) : a.level - b.level
+      })
+      return res
     }
-    if (d.type === 'card' && ['none', '核心'].includes(packSelector.value)) {
-      if (starRange.value[0] > d.level || starRange.value[1] < d.level) {
-        continue
+    case 'term': {
+      const res: Term[] = []
+      for (const term of Terms.values()) {
+        if (testSelector(term.race, raceSelector.value)) {
+          continue
+        }
+        res.push(term)
       }
-      if (attrSelector.value !== 'none' && !(d.attr && attrSelector.value in d.attr)) {
-        continue
-      }
+      return res
     }
-    res.push(d)
+    case 'unit': {
+      const res: Unit[] = []
+      for (const unit of Units.values()) {
+        if (testSelector(unit.race, raceSelector.value)) {
+          continue
+        }
+        res.push(unit)
+      }
+      return res
+    }
+    case 'upgrade': {
+      const res: Upgrade[] = []
+      for (const upgrade of Upgrades.values()) {
+        if (testSelector(upgrade.cate, cateSelector.value)) {
+          continue
+        }
+        res.push(upgrade)
+      }
+      return res
+    }
   }
-  if (categorySelector.value === 'card') {
-    res.sort((a, b) => {
-      if (a.level !== b.level) {
-        return a.level - b.level
-      } else {
-        return a.name.localeCompare(b.name)
-      }
-    })
-  }
-  return res
 })
 
 </script>
