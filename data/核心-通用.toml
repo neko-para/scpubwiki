@@ -1,11 +1,11 @@
 race = "G"
+"attr$order" = ["rare", "gold", "insert", "origin", "dark", "void"]
 
 [info]
-race = [ "T", "P", "Z", "N", "G" ]
-pack = [ "核心", "天空之怒", "并肩作战", "拉克希尔", "短兵相接", "快速启动", "独辟蹊径", "军备竞赛" ]
+race = ["T", "P", "Z", "N", "G"]
+pack = ["核心", "天空之怒", "并肩作战", "拉克希尔", "短兵相接", "快速启动", "独辟蹊径", "军备竞赛"]
 
 [attr]
-"$order" = ["rare", "gold", "insert", "origin", "dark", "void"]
 rare = "作为极低概率出现的卡牌"
 gold = "无法三连"
 insert = "可以定点部署"

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import NodeList from './NodeList.vue'
-import { data, attr, info, upgradeCategory, tr } from '../../data'
+import { data, attr$order, info, upgradeCategory$order, tr } from '../../data'
 
 const categorySelector = ref('card')
 const packSelector = ref('none')
@@ -85,7 +85,7 @@ const searchResult = computed(() => {
           <v-divider></v-divider>
           <v-radio-group color="secondary" v-model="cateSelector" inline hide-details class="radios">
             <v-radio value="none" label="全部"></v-radio>
-            <v-radio v-for="(k, i) in upgradeCategory.$order" :key="`Cate-${i}`" :value="k" :label="tr[k]"></v-radio>
+            <v-radio v-for="(k, i) in upgradeCategory$order" :key="`Cate-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
         </template>
         <template v-if="categorySelector === 'card'">
@@ -99,7 +99,7 @@ const searchResult = computed(() => {
           <v-divider></v-divider>
           <v-radio-group :disabled="!['none', '核心'].includes(packSelector)" color="secondary" v-model="attrSelector" inline hide-details>
             <v-radio value="none" label="全部"></v-radio>
-            <v-radio v-for="(k, i) in attr.$order" :key="`Attr-${i}`" :value="k" :label="tr[k]"></v-radio>
+            <v-radio v-for="(k, i) in attr$order" :key="`Attr-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
         </template>
       </v-card-text>

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import ReferText from './ReferText.vue'
-import { getUnit, attr, tr } from '../../data'
+import { getUnit, attr, attr$order, tr } from '../../data'
 
 const props = defineProps({
   node: Object,
@@ -15,7 +15,7 @@ function attrOf (node) {
   if (!node.attr) {
     return a
   }
-  attr.$order.forEach(at => {
+  attr$order.forEach(at => {
     if (at in node.attr) {
       a.push(at)
     }

@@ -25,4 +25,4 @@ dist-ssr
 
 .vscode
 test.js
-data/pubdata.js
+data/pubdata.ts

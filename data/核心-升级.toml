@@ -1,5 +1,5 @@
+"upgradeCategory$order" = ["S", "3", "T", "P", "Z", "C", "V", "O"]
 [upgradeCategory]
-"$order" = [ "S", "3", "T", "P", "Z", "C", "V", "O" ]
 S = "特殊"
 "3" = "三连"
 T = "人族"
