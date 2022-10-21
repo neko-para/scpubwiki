@@ -32,17 +32,19 @@ const referNodes = computed(() => {
   return nodes
 })
 
-bus.on('request', (n: SplitResultRefer) => {
-  let i = refers.value.indexOf(n.s)
+// @ts-ignore
+bus.on('request', ({ node }) => {
+  let i = refers.value.indexOf(node.s)
   if (i === -1) {
-    refers.value = [ n.s, ...refers.value ]
+    refers.value = [ node.s, ...refers.value ]
   } else {
-    refers.value = [ n.s, ...refers.value.slice(0, i), ...refers.value.slice(i + 1) ]
+    refers.value = [ node.s, ...refers.value.slice(0, i), ...refers.value.slice(i + 1) ]
   }
 })
 
-bus.on('requestClose', (n: PossibleKey) => {
-  let i = refers.value.indexOf(n)
+// @ts-ignore
+bus.on('requestClose', ({ name }) => {
+  let i = refers.value.indexOf(name)
   if (i !== -1) {
     refers.value = [ ...refers.value.slice(0, i), ...refers.value.slice(i + 1) ]
   }

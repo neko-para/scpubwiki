@@ -7,14 +7,13 @@ import type {
   SplitResult,
   SplitResultRefer,
 } from "./types"
-import { data as raw } from "./pubdata"
+import { data as raw, AllUnit } from "./pubdata"
 import type {
   CardKey,
   TermKey,
   UnitKey,
   UpgradeKey,
   PossibleKey,
-  AllUnit,
 } from "./pubdata"
 const {
   card,

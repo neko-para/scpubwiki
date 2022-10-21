@@ -5,6 +5,7 @@ import CardNodeView from './CardNodeView.vue'
 import UnitNodeView from './UnitNodeView.vue'
 import bus from '../bus'
 import { PubNode } from './types'
+import { Card } from '../../data'
 
 const props = withDefaults(defineProps<{
   node: PubNode,
@@ -21,10 +22,10 @@ bref.value = props.brief
 const elv = ref(5)
 
 function reqClose() {
-  bus.emit('requestClose', props.node.name)
+  bus.emit('requestClose', { name: props.node.name })
 }
 
-function sendToHand(card) {
+function sendToHand(card: Card) {
   bus.emit('add-to-hand', {
     card
   })
@@ -36,7 +37,7 @@ function sendToHand(card) {
   <v-card :elevation="elv" @mouseover="elv = 20" @mouseout="elv = 5">
     <v-card-actions v-if="props.node.type === 'card' || props.closable">
       <v-spacer></v-spacer>
-      <v-btn v-if="node.type === 'card' && node.pool && ['T', 'P', 'Z'].includes(node.race)" @click="sendToHand(node)">获取</v-btn>
+      <v-btn v-if="node.type === 'card' && node.pool && ['T', 'P', 'Z'].includes(node.race)" @click="sendToHand(node as Card)">获取</v-btn>
       <v-btn v-if="node.type === 'card'" @click="bref = !bref">
         {{ bref ? '展开' : '收起' }}
       </v-btn>

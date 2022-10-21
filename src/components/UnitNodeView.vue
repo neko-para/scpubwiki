@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ReferText from './ReferText.vue'
 import { canElite, tr, Unit } from '../../data'
+import { Armor, Weapon } from '../../data/types';
 
 const props = defineProps<{
   node: Unit
@@ -12,7 +13,7 @@ const target = {
   GA: '空中和地面单位'
 }
 
-function calcWeapon (wp) {
+function calcWeapon (wp: Weapon) {
   const r: string[] = []
   r.push(`伤害: ${wp.damage}`)
   if (wp.multiple) {
@@ -24,7 +25,7 @@ function calcWeapon (wp) {
   return r.join('\n')
 }
 
-function calcArmor (a) {
+function calcArmor (a: Armor) {
   const r: string[] = []
   r.push(`护甲: ${a.defense}`)
   if (a.speed) {
@@ -72,17 +73,19 @@ function calcArmor (a) {
             <refer-text :text="calcWeapon(wp)"></refer-text>
           </v-card-text>
         </template>
-        <v-divider></v-divider>
-        <v-card-title>{{ node.armor?.name }}</v-card-title>
-        <v-card-text>
-          <refer-text :text="calcArmor(node.armor)"></refer-text>
-        </v-card-text>
-        <template v-if="node.sarmor">  
+        <template v-if="node.armor">
           <v-divider></v-divider>
-          <v-card-title>{{ node.sarmor.name }}</v-card-title>
+          <v-card-title>{{ node.armor.name }}</v-card-title>
           <v-card-text>
-            <refer-text :text="calcArmor(node.sarmor)"></refer-text>
+            <refer-text :text="calcArmor(node.armor)"></refer-text>
           </v-card-text>
+          <template v-if="node.sarmor">  
+            <v-divider></v-divider>
+            <v-card-title>{{ node.sarmor.name }}</v-card-title>
+            <v-card-text>
+              <refer-text :text="calcArmor(node.sarmor)"></refer-text>
+            </v-card-text>
+          </template>
         </template>
       </v-card>
     </v-card-text>

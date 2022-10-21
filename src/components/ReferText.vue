@@ -32,7 +32,7 @@ function queryBref (key: string): string | null {
 }
 
 function request (node: SplitResultRefer) {
-  bus.emit('request', node)
+  bus.emit('request', { node })
 }
 
 </script>

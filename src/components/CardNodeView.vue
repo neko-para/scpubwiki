@@ -23,7 +23,7 @@ function attrOf (node: Card) {
 function brefTexts () {
   const t: string[] = []
   t.push(Object.keys(props.node.unit)
-    .map(k => `${k} ${props.node.unit[k]}`).join(' '))
+    .map(k => `${k} ${props.node.unit[k as UnitKey]}`).join(' '))
   attrOf(props.node).forEach(a => {
     t.push(attr[a])
   })
@@ -39,7 +39,7 @@ function brefTexts () {
 function calcValue () {
   let sum = 0
   for (const k in props.node.unit) {
-    sum += getUnit(k as UnitKey).value * props.node.unit[k]
+    sum += getUnit(k as UnitKey).value * (props.node.unit[k as UnitKey] || 0)
   }
   return sum
 }

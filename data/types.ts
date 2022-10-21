@@ -69,7 +69,7 @@ export interface Term {
   extr?: string
 }
 
-interface Weapon {
+export interface Weapon {
   name: string
   damage: number | string
   multiple?: number
@@ -78,13 +78,13 @@ interface Weapon {
   target: "G" | "A" | "GA"
 }
 
-interface Armor {
+export interface Armor {
   name: string
   defense: number
   speed?: number | string
 }
 
-interface SArmor {
+export interface SArmor {
   name: string
   defense: number
 }
