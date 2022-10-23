@@ -1,9 +1,17 @@
 import { Player, infrs } from "."
 import { AsyncEmitter } from "../async-emitter"
-import { CardKey, getUnit, isNormal, UnitKey } from "../data"
+import {
+  CardKey,
+  getUnit,
+  getUpgrade,
+  isNormal,
+  UnitKey,
+  UpgradeKey,
+} from "../data"
+import { AllUpgrade } from "../data/pubdata"
 import { Card, Race } from "../data/types"
 import { BusInfo } from "./types"
-import { 获得, 相邻两侧, 获得N, 摧毁 } from "./util"
+import { 获得, 相邻两侧, 获得N, 摧毁, shuffle } from "./util"
 
 export class CardInstance {
   bus: AsyncEmitter<BusInfo>
@@ -12,7 +20,7 @@ export class CardInstance {
   race: Race
   level: number
   unit: UnitKey[]
-  upgrade: string[]
+  upgrade: UpgradeKey[]
   player: Player
   pos: number
   info: Record<string, any>
@@ -43,6 +51,19 @@ export class CardInstance {
         `卡牌 ${this.pos} ${this.name} 即将获得 ${unit.join(", ")}`
       )
       this.unit.push(...unit)
+    })
+
+    this.bus.on("gain-upgrade", async ({ upgrade }) => {
+      const u: UpgradeKey =
+        upgrade ||
+        shuffle(AllUpgrade.filter(u => this.upgrade.indexOf(u) === -1))[0]
+      if (
+        this.upgrade.length < 5 &&
+        (this.upgrade.indexOf(u) === -1 || !getUpgrade(u).novr)
+      ) {
+        await player.step(`卡牌 ${this.pos} ${this.name} 即将获得 ${u} 升级`)
+        this.upgrade.push(u)
+      }
     })
 
     this.bus.on("round-end", async () => {
@@ -219,6 +240,9 @@ export class CardInstance {
 
   count(u: UnitKey, maxi = -1) {
     return this.locate(u, maxi).length
+  }
+  countIn(u: UnitKey[], maxi = -1) {
+    return this.locateX(unit => u.includes(unit), maxi).length
   }
 
   calculateValue() {

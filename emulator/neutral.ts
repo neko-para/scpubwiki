@@ -1,4 +1,4 @@
-import { canElite, elited, isBiological, UnitKey } from "../data"
+import { canElite, elited, getUpgrade, isBiological, UnitKey } from "../data"
 import { Race } from "../data/types"
 import { CardInstance } from "./card"
 import { Description } from "./types"
@@ -69,19 +69,21 @@ function 黑暗容器(
 }
 
 function 供养(card: CardInstance, unit: UnitKey, essence: number) {
-  return async () => {
-    await 右侧(card, async c => {
-      const n = card.locate("精华").length
-      await 获得N(c, unit, Math.floor(n / essence))
-      if (c.template.attr?.origin) {
-        await 获得N(c, "精华", n)
-      }
+  return (binder: Binder) => {
+    binder.for(card).bind("card-selled", async () => {
+      await 右侧(card, async c => {
+        const n = card.locate("精华").length
+        await 获得N(c, unit, Math.floor(n / essence))
+        if (c.template.attr?.origin) {
+          await 获得N(c, "精华", n)
+        }
+      })
     })
   }
 }
 
 const Data: Description = {
-  原始蟑螂: (p, c, g) => $().for(c).bind("card-selled", 供养(c, "原始蟑螂", 1)),
+  原始蟑螂: (p, c, g) => $().apply(供养(c, "原始蟑螂", 1)),
   不死队: (p, c, g, a) =>
     $()
       .apply(黑暗容器(c, a))
@@ -89,8 +91,8 @@ const Data: Description = {
   紧急部署: () => $(),
   原始刺蛇: (p, c, g) =>
     $()
+      .apply(供养(c, "原始刺蛇", 1))
       .for(c)
-      .bind("card-selled", 供养(c, "原始刺蛇", 1))
       .bind("round-end", () =>
         获得(c, [
           ...Array(g ? 2 : 1).fill("原始刺蛇"),
@@ -106,7 +108,7 @@ const Data: Description = {
       .bind("round-end", async () => {
         let n = 0
         p.asyncEnumPresent(async card => {
-          const cnt = card.locate("精华").length
+          const cnt = card.count("精华")
           n += cnt
           card.take_units("精华", cnt)
         })
@@ -139,7 +141,7 @@ const Data: Description = {
   暴掠龙: (p, c, g) =>
     $()
       .for(c)
-      .bind("card-selled", 供养(c, "暴掠龙", 2))
+      .apply(供养(c, "暴掠龙", 2))
       .bind("round-end", () =>
         获得(c, [
           ...Array(g ? 2 : 1).fill("暴掠龙"),
@@ -192,7 +194,8 @@ const Data: Description = {
       ),
   原始雷兽: (p, c, g) =>
     $()
-      .bind("card-selled", 供养(c, "原始雷兽", 4))
+      .apply(供养(c, "原始雷兽", 4))
+      .for(c)
       .bind("round-end", async () => {
         await 获得N(c, "原始雷兽", g ? 2 : 1)
         let n = 0
@@ -235,7 +238,12 @@ const Data: Description = {
         })
         shuffle(cs)
         for (const card of cs.slice(0, 2)) {
-          c.upgrade = [...c.upgrade, ...card.upgrade].slice(0, 5)
+          card.upgrade.forEach(u => {
+            if (c.upgrade.indexOf(u) === -1 || !getUpgrade(u).novr) {
+              c.upgrade.push(u)
+            }
+          })
+          c.upgrade = c.upgrade.slice(0, 5)
           await 夺取(c, card)
         }
         // TODO: 考虑如何处理献祭
@@ -266,6 +274,71 @@ const Data: Description = {
           "天罚行者",
           (g ? 2 : 1) * Math.min(2, Math.floor(c.info.黑暗值 / 10))
         )
+      ),
+  德哈卡: (p, c, g) =>
+    $()
+      .for(p)
+      .bindAfter("round-start", async () => {
+        if (p.glob.德哈卡) {
+          p.glob.德哈卡 = 0
+          await p.bus.async_emit("discover-card", {
+            filter: c => {
+              return c.level < 5 && !!c.attr?.origin
+            },
+          })
+        }
+      })
+      .for(c)
+      .bind("sell-card", async ({ selled }) => {
+        if (selled.count("精华") >= 3) {
+          await 获得N(c, "德哈卡分身", g ? 4 : 2)
+        }
+      })
+      .bind("round-end", async () => {
+        if (p.mineral >= 1) {
+          p.glob.德哈卡 = 1
+        }
+      }),
+  我叫小明: (p, c, g) =>
+    $()
+      .for(c)
+      .bind("post-enter", () =>
+        左侧(c, async card => {
+          await p.obtain_hand(card.template)
+        })
+      )
+      .bind("card-selled", () =>
+        左侧(c, async card => {
+          await p.bus.async_emit("gain-upgrade", {
+            card,
+            upgrade: "星空加速",
+          })
+        })
+      ),
+  豆浆油条KT1: (p, c) =>
+    $()
+      .for(c)
+      .bind("post-enter", async () => {
+        await p.bus.async_emit("gain-upgrade", {
+          card: c,
+          upgrade: null,
+        })
+        await 相邻两侧(c, async card => {
+          await p.bus.async_emit("gain-upgrade", {
+            card,
+            upgrade: null,
+          })
+        })
+      }),
+  豆浆油条: (p, c) =>
+    $()
+      .for(c)
+      .bind("round-end", () =>
+        p.asyncEnumPresent(async card => {
+          if (card.pos > c.pos) {
+            card.void = true
+          }
+        })
       ),
 }
 

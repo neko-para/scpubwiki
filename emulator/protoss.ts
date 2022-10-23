@@ -11,7 +11,7 @@ import {
   UnitKey,
 } from "../data"
 import { Description } from "./types"
-import { shuffle, $, 获得, 获得N, 相邻两侧, 转换 } from "./util"
+import { shuffle, $, 获得, 获得N, 相邻两侧, 转换, Binder } from "./util"
 
 async function 折跃(card: CardInstance, unit: UnitKey[]) {
   await card.player.step(
@@ -36,20 +36,22 @@ async function 集结部队(card: CardInstance, id: number) {
 }
 
 function 集结(card: CardInstance, power: number, id: number) {
-  return async () => {
-    let n = 0
-    if (card.power() >= power * 2) {
-      n++
-    }
-    if (card.power() >= power) {
-      n++
-    }
-    if (card.player.flag.阿塔尼斯) {
-      n++
-    }
-    while (n--) {
-      await 集结部队(card, id)
-    }
+  return (binder: Binder) => {
+    binder.for(card).bind("round-end", async () => {
+      let n = 0
+      if (card.power() >= power * 2) {
+        n++
+      }
+      if (card.power() >= power) {
+        n++
+      }
+      if (card.player.flag.阿塔尼斯) {
+        n++
+      }
+      while (n--) {
+        await 集结部队(card, id)
+      }
+    })
   }
 }
 
@@ -78,7 +80,7 @@ const Data: Description = {
   万叉奔腾: (p, c, g) =>
     $()
       .for(c)
-      .bind("round-end", 集结(c, 2, 0))
+      .apply(集结(c, 2, 0))
       .bind("regroup", () => 获得N(c, "狂热者", g ? 2 : 1)),
   折跃信标: (p, c, g) =>
     $()
@@ -109,7 +111,7 @@ const Data: Description = {
       .bind("post-enter", async () => {
         c.upgrade.push("暗影战士")
       })
-      .bind("round-end", 集结(c, 3, 0))
+      .apply(集结(c, 3, 0))
       .bind("regroup", () => 获得N(c, "黑暗圣堂武士", g ? 2 : 1))
       .bind("round-end", async () => {
         if (c.power() >= 6) {
@@ -141,7 +143,7 @@ const Data: Description = {
   净化者军团: (p, c, g) =>
     $()
       .for(c)
-      .bind("round-end", 集结(c, 5, 0))
+      .apply(集结(c, 5, 0))
       .bind("regroup", async () => {
         const unit: UnitKey[] = []
         p.enumPresent(card => {
@@ -166,13 +168,13 @@ const Data: Description = {
   虚空舰队: (p, c, g) =>
     $()
       .for(c)
-      .bind("round-end", 集结(c, 5, 0))
+      .apply(集结(c, 5, 0))
       .bind("regroup", () => 折跃(c, Array(g ? 2 : 1).fill("虚空辉光舰"))),
   势不可挡: (p, c, g) =>
     $()
       .for(c)
       .bind("post-enter", () => 折跃(c, ["执政官(精英)"]))
-      .bind("round-end", 集结(c, 5, 0))
+      .apply(集结(c, 5, 0))
       .bind("regroup", () => 折跃(c, Array(g ? 2 : 1).fill("执政官")))
       .bind("round-end", async () => {
         if (c.power() >= 15) {
@@ -182,8 +184,8 @@ const Data: Description = {
   黄金舰队: (p, c, g) =>
     $()
       .for(c)
-      .bind("round-end", 集结(c, 5, 0))
-      .bind("round-end", 集结(c, 7, 1))
+      .apply(集结(c, 5, 0))
+      .apply(集结(c, 7, 1))
       .bind("regroup", async ({ id }) => {
         if (id === 0) {
           await 获得(c, Array(g ? 2 : 1).fill("侦察机"))
@@ -230,6 +232,10 @@ const Data: Description = {
           await 获得(c, unit)
         }
       })
+      .bind("gain-upgrade", async () => {
+        c.info.已展开 = 1
+        await a(`泰坦棱镜已展开`)
+      })
       .bindAfter("sell-card", async () => {
         p.flag.光复艾尔 = 0
       }),
@@ -242,7 +248,7 @@ const Data: Description = {
           await 转换(card, card.locate("狂热者(精英)"), "旋风狂热者(精英)")
         })
       )
-      .bind("round-end", 集结(c, 5, 0))
+      .apply(集结(c, 5, 0))
       .bind("regroup", () => 获得N(c, "掠夺者", g ? 2 : 1)),
   酒馆后勤处: (p, c, g) =>
     $()
@@ -262,7 +268,7 @@ const Data: Description = {
   净化一切: (p, c, g) =>
     $()
       .for(c)
-      .bind("round-end", 集结(c, 4, 0))
+      .apply(集结(c, 4, 0))
       .bind("regroup", () => 折跃(c, Array(g ? 2 : 1).fill("狂热者(精英)")))
       .bind("round-end", async () => {
         if (c.power() >= 7) {
@@ -298,7 +304,7 @@ const Data: Description = {
     $()
       .for(c)
       .bind("round-end", () => 获得N(c, "虚空辉光舰", g ? 2 : 1))
-      .bind("round-end", 集结(c, 4, 0))
+      .apply(集结(c, 4, 0))
       .bind("regroup", () =>
         p.asyncEnumPresent(async card =>
           转换(card, card.locate("虚空辉光舰", g ? 2 : 1), "虚空辉光舰(精英)")
@@ -318,7 +324,7 @@ const Data: Description = {
       .bind("post-enter", async () => {
         c.upgrade.push("暗影战士")
       })
-      .bind("round-end", 集结(c, 5, 0))
+      .apply(集结(c, 5, 0))
       .bind("regroup", () => 获得N(c, "黑暗圣堂武士(精英)", g ? 2 : 1)),
   六脉神剑: (p, c, g) =>
     $()
@@ -331,7 +337,7 @@ const Data: Description = {
   晋升仪式: (p, c, g) =>
     $()
       .for(c)
-      .bind("round-end", 集结(c, 4, 0))
+      .apply(集结(c, 4, 0))
       .bind("regroup", async () => {
         await 转换(c, c.locate("不朽者", g ? 2 : 1), "英雄不朽者")
         await 转换(

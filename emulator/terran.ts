@@ -1,7 +1,6 @@
-import { CardInstance, Player } from "."
+import { CardInstance } from "."
 import {
   getUnit,
-  getCard,
   UnitKey,
   isHero,
   isNormal,
@@ -9,7 +8,7 @@ import {
   elited,
 } from "../data"
 import { Description } from "./types"
-import { shuffle, Binder, $, 获得, 获得N, 转换, 左侧, 相邻两侧 } from "./util"
+import { shuffle, $, 获得, 获得N, 转换, 左侧, 相邻两侧, Binder } from "./util"
 
 function 任务(
   announce: (msg: string) => Promise<void>,
@@ -42,11 +41,33 @@ function 任务(
   }
 }
 
-function 反应堆(card: CardInstance, gold: boolean, unit: UnitKey) {
-  return async () => {
-    if (card.infr_type() === 0) {
-      await 获得N(card, unit, gold ? 2 : 1)
-    }
+function 改挂件(card: CardInstance) {
+  return (binder: Binder) => {
+    binder.for(card).bind("post-enter", () =>
+      相邻两侧(card, async card => {
+        if (card.race === "T") {
+          await card.player.bus.async_emit("switch-infr", {
+            card,
+          })
+        }
+      })
+    )
+  }
+}
+
+function 快产(card: CardInstance, result: () => Promise<void>) {
+  return (binder: Binder) => {
+    binder.for(card).bind("fast-prod", result)
+  }
+}
+
+function 反应堆(card: CardInstance, unit: UnitKey) {
+  return (binder: Binder) => {
+    binder.for(card).bind("round-end", async () => {
+      if (card.infr_type() === 0) {
+        await 获得N(card, unit, card.gold ? 2 : 1)
+      }
+    })
   }
 }
 
@@ -55,17 +76,20 @@ export function 科挂(
   count: number,
   result: () => Promise<void>
 ) {
-  return async () =>
-    card.player.asyncEnumPresent(async c => {
-      count -= c.locateX(u =>
-        ["科技实验室", "高级科技实验室"].includes(u)
-      ).length
-      if (--count <= 0) {
-        await card.player.step(`卡牌 ${card.pos} ${card.name} 即将触发科挂效果`)
-        await result()
-        return true
-      }
-    })
+  return (binder: Binder) => {
+    binder.for(card).bind("round-end", async () =>
+      card.player.asyncEnumPresent(async c => {
+        count -= c.countIn(["科技实验室", "高级科技实验室"])
+        if (--count <= 0) {
+          await card.player.step(
+            `卡牌 ${card.pos} ${card.name} 即将触发科挂效果`
+          )
+          await result()
+          return true
+        }
+      })
+    )
+  }
 }
 
 const Data: Description = {
@@ -79,14 +103,15 @@ const Data: Description = {
         })
       ),
   好兄弟: (p, c, g) =>
-    $()
-      .for(c)
-      .bind("fast-prod", () => 获得N(c, "陆战队员", g ? 6 : 4))
-      .bind("round-end", 反应堆(c, g, "陆战队员")),
+    $().apply(
+      快产(c, () => 获得N(c, "陆战队员", g ? 6 : 4)),
+      反应堆(c, "陆战队员")
+    ),
   挖宝奇兵: (p, c, g, a) =>
     $()
-      .for(p)
+      .for(c)
       .bind("post-enter", () => a(`任务: 0 / 5`))
+      .for(p)
       .bind(
         "refresh",
         任务(a, c, 5, async () => {
@@ -97,24 +122,12 @@ const Data: Description = {
           })
         })
       ),
-  实验室安保: (p, c, g) =>
-    $()
-      .for(c)
-      .bind("round-end", 反应堆(c, g, "陆战队员"))
-      .bind("post-enter", async () => {
-        await 相邻两侧(c, async card => {
-          if (card.race === "T") {
-            await p.bus.async_emit("switch-infr", {
-              card,
-            })
-          }
-        })
-      }),
+  实验室安保: (p, c, g) => $().apply(反应堆(c, "陆战队员"), 改挂件(c)),
   征兵令: (p, c, g) =>
     $()
       .for(c)
-      .bind("post-enter", async () => {
-        await 相邻两侧(c, async card => {
+      .bind("post-enter", () =>
+        相邻两侧(c, async card => {
           const taked: UnitKey[] = []
           card.unit.forEach((unit, index) => {
             if (index % 3 === 0) {
@@ -130,32 +143,32 @@ const Data: Description = {
           })
           await 获得(c, taked)
         })
-      }),
+      ),
   恶火小队: (p, c, g) =>
     $()
       .for(c)
-      .bind("round-end", 反应堆(c, g, "恶火"))
-      .bind(
-        "round-end",
-        科挂(c, 2, () => 获得N(c, "歌利亚", g ? 2 : 1))
-      )
-      .bind("fast-prod", () => 获得N(c, "攻城坦克", 1)),
+      .apply(
+        反应堆(c, "恶火"),
+        科挂(c, 2, () => 获得N(c, "歌利亚", g ? 2 : 1)),
+        快产(c, () => 获得N(c, "攻城坦克", 1))
+      ),
   空投地雷: (p, c, g) =>
     $()
       .for(p)
       .bind("card-enter", () => 获得N(c, "寡妇雷", g ? 2 : 1))
-      .for(c)
-      .bind("fast-prod", () => 获得N(c, "寡妇雷", g ? 3 : 2)),
+      .apply(快产(c, () => 获得N(c, "寡妇雷", g ? 3 : 2))),
   步兵连队: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", () => 获得N(c, "劫掠者", g ? 5 : 3))
-      .bind("round-end", 反应堆(c, g, "劫掠者")),
+      .apply(
+        快产(c, () => 获得N(c, "劫掠者", g ? 5 : 3)),
+        反应堆(c, "劫掠者")
+      ),
   飙车流: (p, c, g, a) =>
     $()
       .for(c)
       .bind("post-enter", () => a(`任务: 0 / 3`))
-      .bind("fast-prod", () => 获得N(c, "秃鹫", g ? 5 : 3))
+      .apply(快产(c, () => 获得N(c, "秃鹫", g ? 5 : 3)))
       .for(p)
       .bind(
         "card-enter",
@@ -211,23 +224,21 @@ const Data: Description = {
   陆军学院: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", () => 获得N(c, "维京战机", g ? 5 : 3))
-      .bind(
-        "round-end",
+      .apply(
+        快产(c, () => 获得N(c, "维京战机", g ? 5 : 3)),
         科挂(c, 3, () => 获得N(c, "战狼", g ? 2 : 1))
       ),
   空军学院: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", () => 获得N(c, "维京战机", g ? 5 : 3))
+      .apply(快产(c, () => 获得N(c, "维京战机", g ? 5 : 3)))
       .for(p)
       .bind("task-done", () => 获得N(c, "解放者", g ? 2 : 1)),
   交叉火力: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", () => 获得N(c, "歌利亚", g ? 5 : 3))
-      .bind(
-        "round-end",
+      .apply(
+        快产(c, () => 获得N(c, "歌利亚", g ? 5 : 3)),
         科挂(c, 5, () => 获得N(c, "攻城坦克", g ? 2 : 1))
       ),
   枪兵坦克: (p, c, g) =>
@@ -243,13 +254,15 @@ const Data: Description = {
   斯台特曼: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", () =>
-        相邻两侧(c, async card => {
-          const us: UnitKey[] = ["歌利亚", "维京战机"]
-          for (const u of us) {
-            await 转换(card, card.locate(u, g ? 2 : 1), elited(u))
-          }
-        })
+      .apply(
+        快产(c, () =>
+          相邻两侧(c, async card => {
+            const us: UnitKey[] = ["歌利亚", "维京战机"]
+            for (const u of us) {
+              await 转换(card, card.locate(u, g ? 2 : 1), elited(u))
+            }
+          })
+        )
       )
       .bind("post-enter", async () => {
         await 左侧(c, async card => {
@@ -263,13 +276,13 @@ const Data: Description = {
   护航中队: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", () => 获得N(c, "黄昏之翼", g ? 2 : 1))
+      .apply(快产(c, () => 获得N(c, "黄昏之翼", g ? 2 : 1)))
       .for(p)
       .bind("card-enter", () => 获得N(c, "怨灵战机", g ? 2 : 1)),
   泰凯斯: (p, c, g) =>
     $()
       .for(c)
-      .bind("round-end", 反应堆(c, g, "陆战队员(精英)"))
+      .apply(反应堆(c, "陆战队员(精英)"))
       .bind("round-end", () =>
         p.asyncEnumPresent(async card => {
           if (card.race === "T") {
@@ -284,7 +297,7 @@ const Data: Description = {
   外籍军团: (p, c, g) =>
     $()
       .for(c)
-      .bind("round-end", 反应堆(c, g, "牛头人陆战队员"))
+      .apply(反应堆(c, "牛头人陆战队员"))
       .bind("post-enter", () =>
         相邻两侧(c, async card => {
           let nPro = 0,
@@ -317,9 +330,8 @@ const Data: Description = {
   钢铁洪流: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", () => 获得N(c, "雷神", g ? 2 : 1))
-      .bind(
-        "round-end",
+      .apply(
+        快产(c, () => 获得N(c, "雷神", g ? 2 : 1)),
         科挂(c, 5, () =>
           p.asyncEnumPresent(async card => {
             const us: UnitKey[] = ["攻城坦克", "战狼"]
@@ -340,8 +352,7 @@ const Data: Description = {
         "upgrade-infr",
         async ({ card }) => await 获得N(card, "雷诺(狙击手)", g ? 2 : 1)
       )
-      .for(c)
-      .bind("round-end", 反应堆(c, g, "雷诺(狙击手)")),
+      .apply(反应堆(c, "雷诺(狙击手)")),
   沃菲尔德: (p, c, g) =>
     $()
       .for(p)
@@ -393,23 +404,21 @@ const Data: Description = {
           }
         )
       )
-      .for(c)
-      .bind(
-        "round-end",
-        科挂(c, 4, () => 获得N(c, "黄昏之翼", g ? 4 : 2))
-      )
+      .apply(科挂(c, 4, () => 获得N(c, "黄昏之翼", g ? 4 : 2)))
   },
   黄昏之翼: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", () => 获得N(c, "黄昏之翼", g ? 2 : 1))
-      .bind("round-end", 反应堆(c, g, "女妖")),
+      .apply(
+        快产(c, () => 获得N(c, "黄昏之翼", g ? 2 : 1)),
+        反应堆(c, "女妖")
+      ),
   艾尔游骑兵: (p, c, g) =>
     $()
+      .apply(
+        快产(c, () => 左侧(c, async card => 获得N(card, "水晶塔", g ? 2 : 1)))
+      )
       .for(c)
-      .bind("fast-prod", async () => {
-        await 左侧(c, async card => 获得N(card, "水晶塔", g ? 2 : 1))
-      })
       .bind("round-end", async () => {
         let n = 0
         await 相邻两侧(c, async card => {
@@ -423,9 +432,10 @@ const Data: Description = {
       }),
   帝国敢死队: (p, c, g) =>
     $()
-      .for(c)
-      .bind("fast-prod", () => 获得N(c, "诺娃", 2))
-      .bind("round-end", 反应堆(c, g, "诺娃"))
+      .apply(
+        快产(c, () => 获得N(c, "诺娃", 2)),
+        反应堆(c, "诺娃")
+      )
       .for(p)
       .bind("task-done", () => 获得N(c, "诺娃", g ? 2 : 1)),
   以火治火: (p, c, g) =>
@@ -438,39 +448,45 @@ const Data: Description = {
           }
         })
       )
-      .bind("fast-prod", () =>
-        p.asyncEnumPresent(async card => {
-          if (card.race === "T") {
-            await 转换(card, card.locate("火蝠", g ? 3 : 2), "火蝠(精英)")
-          }
-        })
+      .apply(
+        快产(c, () =>
+          p.asyncEnumPresent(async card => {
+            if (card.race === "T") {
+              await 转换(card, card.locate("火蝠", g ? 3 : 2), "火蝠(精英)")
+            }
+          })
+        )
       ),
   复制中心: (p, c, g) =>
     $()
       .for(c)
-      .bind("fast-prod", async () => {
-        for (const card of p.hand) {
-          if (!card) {
-            continue
-          }
-          const us = card.unit
-          const r: UnitKey[] = []
-          for (const k in us) {
-            const unit = k as UnitKey
-            if (!isNormal(unit) || isHero(unit) || !isBiological(unit)) {
+      .apply(
+        快产(c, async () => {
+          for (const card of p.hand) {
+            if (!card) {
               continue
             }
-            r.push(...Array(us[k]).fill(k))
+            const us = card.unit
+            const r: UnitKey[] = []
+            for (const k in us) {
+              const unit = k as UnitKey
+              if (!isNormal(unit) || isHero(unit) || !isBiological(unit)) {
+                continue
+              }
+              r.push(...Array(us[unit]).fill(unit))
+            }
+            const n = g ? 2 : 1
+            await 获得(c, shuffle(r).slice(0, n))
           }
-          const n = g ? 2 : 1
-          await 获得(c, shuffle(r).slice(0, n))
-        }
-      }),
+        })
+      ),
   黑色行动: (p, c, g) =>
     $()
+      .apply(
+        快产(c, () => 获得N(c, "恶蝠游骑兵", g ? 2 : 1)),
+        反应堆(c, "修理无人机")
+      )
       .for(c)
-      .bind("fast-prod", () => 获得N(c, "恶蝠游骑兵", g ? 2 : 1))
-      .bind("round-end", 反应堆(c, g, "修理无人机"))
       .bind("round-end", async () => {
         const index = c.locate("陆战队员")
         if (index.length > 0) {

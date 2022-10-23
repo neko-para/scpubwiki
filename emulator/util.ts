@@ -60,8 +60,10 @@ export class Binder {
     return this
   }
 
-  apply(func: (binder: Binder) => void) {
-    func(this)
+  apply(...func: ((binder: Binder) => void)[]) {
+    for (const f of func) {
+      f(this)
+    }
     return this
   }
 

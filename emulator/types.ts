@@ -1,5 +1,5 @@
 import { Player, CardInstance } from "."
-import { Card, CardKey, UnitKey } from "../data"
+import { Card, CardKey, UnitKey, UpgradeKey } from "../data"
 import { Binder } from "./util"
 
 export type DescriptionGen = (
@@ -77,6 +77,10 @@ export type BusInfo = {
   }
   "flash-annouce": {
     card: CardInstance
+  }
+  "gain-upgrade": {
+    card: CardInstance
+    upgrade: UpgradeKey | null
   }
 
   "upgrade-pub": {}
