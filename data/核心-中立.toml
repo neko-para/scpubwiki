@@ -250,10 +250,12 @@ speed = 4.55
 [[unit]]
 name = "不死队"
 value = 100
+tag = "轻甲, 生物单位"
 
 [[unit]]
 name = "自动机炮"
 value = 200
+tag = "重甲, 机械单位, 建筑"
 
 [[unit]]
 name = "修理无人机"
@@ -269,22 +271,38 @@ speed = 2.8
 [[unit]]
 name = "原始刺蛇"
 value = 150
+health = 80
+tag = "轻甲, 生物单位"
+[[unit.weapon]]
+name = "骨针"
+damage = 12
+range = 5
+speed = 0.59
+target = "GA"
+[unit.armor]
+name = "异虫地面单位甲壳"
+defense = 0
+speed = 3.5
 
 [[unit]]
 name = "原始异龙"
 value = 250
+tag = "轻甲, 生物单位"
 
 [[unit]]
 name = "鲜血猎手"
 value = 125
+tag = "轻甲, 生物单位"
 
 [[unit]]
 name = "浩劫"
 value = 200
+tag = "轻甲, 机械单位"
 
 [[unit]]
 name = "暴掠龙"
 value = 200
+tag = "重甲, 生物单位"
 
 [[unit]]
 name = "亚格卓拉"

@@ -1,4 +1,4 @@
-import AhoCorasick from "ahocorasick"
+import { AhoCorasick } from "ahocorasick-ts"
 
 import type {
   Card,
@@ -109,14 +109,14 @@ function splitTextPiece(text: string) {
     drop?: boolean
   }[] = searcher.search(text).map(res => {
     let r = ""
-    res[1].forEach(s => {
+    res.keys.forEach(s => {
       if (s.length > r.length) {
         r = s
       }
     })
     return {
-      start: res[0] - r.length + 1,
-      end: res[0],
+      start: res.end - r.length + 1,
+      end: res.end,
       word: r,
     }
   })
