@@ -238,15 +238,14 @@ const Data: Description = {
         })
         shuffle(cs)
         for (const card of cs.slice(0, 2)) {
-          card.upgrade.forEach(u => {
-            if (c.upgrade.indexOf(u) === -1 || !getUpgrade(u).novr) {
-              c.upgrade.push(u)
-            }
-          })
-          c.upgrade = c.upgrade.slice(0, 5)
+          for (const u of card.upgrade) {
+            await p.bus.async_emit('gain-upgrade', {
+              card: c,
+              upgrade: u
+            })
+          }
           await 夺取(c, card)
         }
-        // TODO: 考虑如何处理献祭
       }),
   天罚行者: (p, c, g, a) =>
     $()

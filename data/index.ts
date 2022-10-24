@@ -25,11 +25,8 @@ const {
   unit,
   upgrade,
   attr,
-  attr$order,
   tr,
-  info,
-  upgradeCategory,
-  upgradeCategory$order,
+  order
 } = raw
 
 export const Cards: Map<CardKey, Card> = new Map()
@@ -37,7 +34,7 @@ export const Terms: Map<TermKey, Term> = new Map()
 export const Units: Map<UnitKey, Unit> = new Map()
 export const Upgrades: Map<UpgradeKey, Upgrade> = new Map()
 
-export { attr, attr$order, tr, info, upgradeCategory, upgradeCategory$order }
+export { attr, tr, order }
 export { CardKey, TermKey, UnitKey, UpgradeKey, PossibleKey }
 export { Card, Term, Unit, Upgrade, Weapon, Armor, SArmor }
 export { SplitResult, SplitResultRefer }
@@ -81,13 +78,13 @@ export function isHero(key: UnitKey) {
   return getUnit(key).tag.includes("英雄单位")
 }
 export function isNormal(key: UnitKey) {
-  return getUnit(key).utyp === "normal"
+  return getUnit(key).utype === "normal"
 }
 export function isSpecialBuilding(key: UnitKey) {
-  return getUnit(key).utyp === "spbd"
+  return getUnit(key).utype === "spbd"
 }
 export function isSpecialUnit(key: UnitKey) {
-  return getUnit(key).utyp === "spun"
+  return getUnit(key).utype === "spun"
 }
 
 export const Keywords = Array.from(

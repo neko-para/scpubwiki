@@ -350,10 +350,7 @@ const Data: Description = {
       }),
   生化危机: (p, c, g) =>
     $()
-      .for(c)
-      .bind(
-        "round-end",
-        科挂(c, 2, () =>
+      .apply(科挂(c, 2, () =>
           注卵(c, [
             ...Array(g ? 2 : 1).fill("牛头人陆战队员"),
             ...Array(g ? 4 : 2).fill("科技实验室"),

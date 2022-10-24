@@ -69,14 +69,14 @@ function sendToHand(card: Card) {
         {{ node.name }}
       </v-card-title>
       <v-divider></v-divider>
-      <template v-if="node.novr">
+      <template v-if="!node.override">
         <v-card-text>
           <refer-text :text="'无法叠加'"></refer-text>
         </v-card-text>
         <v-divider></v-divider>
       </template>
       <v-card-text>
-        <refer-text :text="node.desc"></refer-text>
+        <refer-text :text="node.bref"></refer-text>
       </v-card-text>
       <template v-if="node.rmrk">
         <v-divider></v-divider>

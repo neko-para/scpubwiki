@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, Ref } from 'vue'
 import NodeList from './NodeList.vue'
-import { attr$order, info, upgradeCategory$order, tr, Cards, Terms, Units, Upgrades, Card, Upgrade, Unit, Term } from '../../data'
+import { order, tr, Cards, Terms, Units, Upgrades, Card, Upgrade, Unit, Term } from '../../data'
 
 const categorySelector: Ref<'card'|'term'|'unit'|'upgrade'> = ref('card')
 const packSelector = ref('核心')
@@ -64,7 +64,7 @@ const searchResult = computed(() => {
     case 'upgrade': {
       const res: Upgrade[] = []
       for (const upgrade of Upgrades.values()) {
-        if (testSelector(upgrade.cate, cateSelector.value)) {
+        if (testSelector(upgrade.category, cateSelector.value)) {
           continue
         }
         res.push(upgrade)
@@ -90,28 +90,28 @@ const searchResult = computed(() => {
           <v-divider></v-divider>
           <v-radio-group color="secondary" v-model="raceSelector" inline hide-details>
             <v-radio value="none" label="全部"></v-radio>
-            <v-radio v-for="(k, i) in info.race" :key="`Race-${i}`" :value="k" :label="tr[k]"></v-radio>
+            <v-radio v-for="(k, i) in order.race" :key="`Race-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
         </template>
         <template v-else>
           <v-divider></v-divider>
           <v-radio-group color="secondary" v-model="cateSelector" inline hide-details class="radios">
             <v-radio value="none" label="全部"></v-radio>
-            <v-radio v-for="(k, i) in upgradeCategory$order" :key="`Cate-${i}`" :value="k" :label="tr[k]"></v-radio>
+            <v-radio v-for="(k, i) in order.upgrade" :key="`Cate-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
         </template>
         <template v-if="categorySelector === 'card'">
           <v-divider></v-divider>
           <v-radio-group color="secondary" v-model="packSelector" inline hide-details class="radios">
             <v-radio value="none" label="全部"></v-radio>
-            <v-radio v-for="(k, i) in info.pack" :key="`Pack-${i}`" :value="k" :label="k"></v-radio>
+            <v-radio v-for="(k, i) in order.pack" :key="`Pack-${i}`" :value="k" :label="k"></v-radio>
           </v-radio-group>
           <v-divider></v-divider>
           <v-range-slider :disabled="!['none', '核心'].includes(packSelector)" color="secondary" min="0" max="7" step="1" :ticks="starTick" show-ticks="always" v-model="starRange"></v-range-slider>
           <v-divider></v-divider>
           <v-radio-group :disabled="!['none', '核心'].includes(packSelector)" color="secondary" v-model="attrSelector" inline hide-details>
             <v-radio value="none" label="全部"></v-radio>
-            <v-radio v-for="(k, i) in attr$order" :key="`Attr-${i}`" :value="k" :label="tr[k]"></v-radio>
+            <v-radio v-for="(k, i) in order.attr" :key="`Attr-${i}`" :value="k" :label="tr[k]"></v-radio>
           </v-radio-group>
         </template>
       </v-card-text>

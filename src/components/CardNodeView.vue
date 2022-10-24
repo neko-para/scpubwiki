@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import ReferText from './ReferText.vue'
-import { Card, getUnit, attr, attr$order, tr, UnitKey } from '../../data'
+import { Card, getUnit, attr, order, tr, UnitKey } from '../../data'
 
 const props = defineProps<{
   node: Card,
@@ -12,7 +12,7 @@ const isGold = ref(false)
 
 function attrOf (node: Card) {
   const a: string[] = []
-  attr$order.forEach(at => {
+  order.attr?.forEach(at => {
     if (at in (node.attr || [])) {
       a.push(at)
     }

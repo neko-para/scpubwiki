@@ -59,10 +59,11 @@ export class CardInstance {
         shuffle(AllUpgrade.filter(u => this.upgrade.indexOf(u) === -1))[0]
       if (
         this.upgrade.length < 5 &&
-        (this.upgrade.indexOf(u) === -1 || !getUpgrade(u).novr)
+        (this.upgrade.indexOf(u) === -1 || getUpgrade(u).override)
       ) {
         await player.step(`卡牌 ${this.pos} ${this.name} 即将获得 ${u} 升级`)
         this.upgrade.push(u)
+        // TODO: 考虑如何处理献祭
       }
     })
 

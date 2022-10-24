@@ -50,7 +50,7 @@ export interface Card {
   }
   desc: [string, string][]
   banner?: string
-  attr?: {
+  attr: {
     rare?: boolean
     gold?: boolean
     insert?: boolean
@@ -81,7 +81,7 @@ export interface Weapon {
 export interface Armor {
   name: string
   defense: number
-  speed?: number | string
+  speed: number | string
 }
 
 export interface SArmor {
@@ -93,7 +93,7 @@ export interface Unit {
   name: UnitKey
   type: "unit"
   race: Race
-  utyp: UnitType
+  utype: UnitType
   value: number
 
   tag: string[]
@@ -111,25 +111,18 @@ export interface Unit {
 export interface Upgrade {
   name: UpgradeKey
   type: "upgrade"
-  novr?: true
-  cate: UpgradeCategory
-  desc: string
-  rmrk?: string
+  override: boolean
+  category: UpgradeCategory
+  bref: string
+  rmrk: string
 }
 
 export interface Data {
   card: Card[]
   term: Term[]
   unit: Unit[]
-  attr: {
-    [key: string]: string
-  }
-  attr$order: string[]
   upgrade: Upgrade[]
-  upgradeCategory: {
-    [key: string]: string
-  }
-  upgradeCategory$order: string[]
-  info: Record<string, string[]>
   tr: Record<string, string>
+  attr: Record<string, string>
+  order: Record<string, string[]>
 }

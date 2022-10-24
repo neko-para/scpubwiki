@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ReferText from './ReferText.vue'
-import { canElite, tr, Unit, Armor, Weapon } from '../../data'
+import { canElite, tr, Unit, Armor, Weapon, SArmor, isNormal } from '../../data'
 
 const props = defineProps<{
   node: Unit
@@ -30,6 +30,12 @@ function calcArmor (a: Armor) {
   if (a.speed) {
     r.push(`移动速度: ${a.speed}`)
   }
+  return r.join('\n')
+}
+
+function calcSArmor (a: SArmor) {
+  const r: string[] = []
+  r.push(`护甲: ${a.defense}`)
   return r.join('\n')
 }
 
@@ -82,7 +88,7 @@ function calcArmor (a: Armor) {
             <v-divider></v-divider>
             <v-card-title>{{ node.sarmor.name }}</v-card-title>
             <v-card-text>
-              <refer-text :text="calcArmor(node.sarmor)"></refer-text>
+              <refer-text :text="calcSArmor(node.sarmor)"></refer-text>
             </v-card-text>
           </template>
         </template>
@@ -101,10 +107,10 @@ function calcArmor (a: Armor) {
       <refer-text :text="`存在精英变种${node.name}(精英)`"></refer-text>
     </v-card-text>
   </template>
-  <template v-if="node.utyp !== 'normal'">
+  <template v-if="!isNormal(node.name)">
     <v-divider></v-divider>
     <v-card-text>
-      <refer-text :text="tr[node.utyp]"></refer-text>
+      <refer-text :text="tr[node.utype]"></refer-text>
     </v-card-text>
   </template>
   <template v-if="node.bref">

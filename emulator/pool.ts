@@ -21,7 +21,7 @@ export class Pool {
           this.pool.push(c)
         }
       } else {
-        this.pool.push(...Array(poolCount[c.level]).fill(c))
+        this.pool.push(...Array(poolCount[c.level as 1 | 2 | 3 | 4 | 5 | 6]).fill(c))
       }
     })
   }

@@ -133,7 +133,7 @@ const Data: Description = {
             if (index % 3 === 0) {
               return
             }
-            if (getUnit(unit)?.utyp !== "normal") {
+            if (!isNormal(unit)) {
               return
             }
             taked.push(unit)
@@ -366,7 +366,7 @@ const Data: Description = {
             p.flag.沃菲尔德++
             const unit: UnitKey[] = []
             card.unit = card.unit.filter(u => {
-              if (getUnit(u)?.utyp !== "normal") {
+              if (!isNormal(u)) {
                 return true
               } else {
                 unit.push(u)
