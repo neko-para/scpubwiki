@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { UnitKey } from '../../data';
 import { CardInstance, infrs } from '../../emulator'
 import ReferText from '../components/ReferText.vue'
 const props = defineProps<{
@@ -10,10 +11,11 @@ const props = defineProps<{
 const el = ref(2)
 
 const units = computed(() => {
-  const u = {}
+  const u: {
+    [key in UnitKey]?: number
+  } = {}
   props.card?.unit.forEach(uu => {
-    u[uu] = u[uu] || 0
-    u[uu] += 1
+    u[uu] = 1 + (u[uu] || 0)
   })
   return u
 })
@@ -21,14 +23,14 @@ const units = computed(() => {
 function unitInfo () {
   const ks = Object.keys(units.value)
   if (ks.length > 6) {
-    return ks.slice(0, 5).map(k => `${k} ${units.value[k]}`).join('\n') + '...'
+    return ks.slice(0, 5).map(k => `${k} ${units.value[k as UnitKey]}`).join('\n') + '...'
   } else {
-    return ks.map(k => `${k} ${units.value[k]}`).join('\n')
+    return ks.map(k => `${k} ${units.value[k as UnitKey]}`).join('\n')
   }
 }
 
 function fullUnitInfo () {
-  return Object.keys(units.value).map(k => `${k} ${units.value[k]}`).join('\n')
+  return Object.keys(units.value).map(k => `${k} ${units.value[k as UnitKey]}`).join('\n')
 }
 
 function color () {
