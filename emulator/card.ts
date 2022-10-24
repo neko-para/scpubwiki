@@ -2,6 +2,7 @@ import { Player, infrs } from "."
 import { AsyncEmitter } from "../async-emitter"
 import {
   CardKey,
+  getCard,
   getUnit,
   getUpgrade,
   isNormal,
@@ -10,7 +11,8 @@ import {
 } from "../data"
 import { AllUpgrade } from "../data/pubdata"
 import { Card, Race } from "../data/types"
-import { BusInfo } from "./types"
+import { Descriptions } from "./data"
+import { BusInfo, DescriptionGen } from "./types"
 import { 获得, 相邻两侧, 获得N, 摧毁, shuffle } from "./util"
 
 export class CardInstance {
@@ -65,6 +67,26 @@ export class CardInstance {
         this.upgrade.push(u)
         // TODO: 考虑如何处理献祭
       }
+    })
+
+    this.bus.on('switch-desc', async ({ desc }) => {
+      this.desc()
+      await this.player.step(`即将重新绑定卡牌描述效果`)
+      this.template = getCard(desc)
+      this.desc = (Descriptions[this.template.name] as DescriptionGen)(
+        this.player,
+        this,
+        false,
+        async msg => {
+          await this.player.step(`卡牌 ${this.pos} ${this.name} 即将更新卡面描述`)
+          this.announce = msg
+          await this.player.refresh()
+        }
+      ).clear()
+      await this.player.bus.async_emit('post-enter', {
+        card: this
+      })
+      await this.player.refresh()
     })
 
     this.bus.on("round-end", async () => {

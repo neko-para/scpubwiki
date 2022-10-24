@@ -113,6 +113,7 @@ race = "T"
 value = 0
 utype = "spbd"
 tag = []
+health = 0
 bref = "每回合结束时, 根据卡牌描述生产指定单位, 金色卡牌可以生产两轮"
 
 [[unit]]
@@ -121,6 +122,7 @@ race = "T"
 value = 0
 utype = "spbd"
 tag = []
+health = 0
 bref = "能触发某些卡牌的特殊效果"
 
 [[unit]]
@@ -129,6 +131,7 @@ race = "T"
 value = 0
 utype = "spbd"
 tag = []
+health = 0
 bref = '''
 此挂件类型无法再被改变
 保留科技实验室效果的基础上, 同时每回合结束时, 触发此卡牌的快速生产'''

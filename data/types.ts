@@ -97,7 +97,7 @@ export interface Unit {
   value: number
 
   tag: string[]
-  health?: number
+  health: number
   shield?: number
   power?: number
   weapon?: Weapon[]

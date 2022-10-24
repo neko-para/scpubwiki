@@ -1,4 +1,13 @@
-import { canElite, elited, getUpgrade, isBiological, UnitKey } from "../data"
+import {
+  canElite,
+  elited,
+  getUnit,
+  getUpgrade,
+  isBiological,
+  isHero,
+  isNormal,
+  UnitKey,
+} from "../data"
 import { Race } from "../data/types"
 import { CardInstance } from "./card"
 import { Description } from "./types"
@@ -9,6 +18,7 @@ import {
   右侧,
   夺取,
   左侧,
+  摧毁,
   相邻两侧,
   获得,
   获得N,
@@ -194,7 +204,7 @@ const Data: Description = {
       ),
   原始雷兽: (p, c, g) =>
     $()
-      .apply(供养(c, "原始雷兽", 4))
+      .apply(供养(c, "原始暴龙兽", 4))
       .for(c)
       .bind("round-end", async () => {
         await 获得N(c, "原始雷兽", g ? 2 : 1)
@@ -239,9 +249,9 @@ const Data: Description = {
         shuffle(cs)
         for (const card of cs.slice(0, 2)) {
           for (const u of card.upgrade) {
-            await p.bus.async_emit('gain-upgrade', {
+            await p.bus.async_emit("gain-upgrade", {
               card: c,
-              upgrade: u
+              upgrade: u,
             })
           }
           await 夺取(c, card)
@@ -303,7 +313,9 @@ const Data: Description = {
       .for(c)
       .bind("post-enter", () =>
         左侧(c, async card => {
-          await p.obtain_hand(card.template)
+          if (card.template.pool) {
+            await p.obtain_hand(card.template)
+          }
         })
       )
       .bind("card-selled", () =>
@@ -339,6 +351,73 @@ const Data: Description = {
           }
         })
       ),
+  战斗号角: (p, c) =>
+    $()
+      .for(p)
+      .bind("sell-card", async ({ selled }) => {
+        let v = 0
+        let u: UnitKey | null = null
+        selled.unit.forEach(unit => {
+          if (!isNormal(unit)) {
+            return
+          }
+          const uu = getUnit(unit)
+          if (uu.value > v) {
+            v = uu.value
+            u = unit
+          }
+        })
+        if (!u) {
+          return
+        }
+        await 获得(c, [u])
+      }),
+  凯瑞甘: (p, c, g, a) => $()
+      .for(c)
+      .bind('post-enter', () => 相邻两侧(c, async card => {
+        if (!c.info.凯瑞甘 && card.name === "凯瑞甘") {
+          c.info.凯瑞甘 = 1
+          await p.bus.async_emit('switch-desc', {
+            card,
+            desc: '刀锋女王'
+          })
+          await 摧毁(c)
+        }
+      }))
+      .bindAfter('post-enter', async () => {
+        if (!c.info.凯瑞甘) {
+          let sum = 1
+          await 左侧(c, async card => {
+            card.unit.forEach(u => {
+              const uu = getUnit(u)
+              sum += uu.health * 1.5
+              if (uu.shield) {
+                sum += uu.shield * 1.5
+              }
+            })
+            await 摧毁(card)
+          })
+          c.info.献祭 = sum
+          a(`献祭的生命值: ${sum}`)
+        }
+      }),
+  刀锋女王: (p, c, g, a) => $()
+      .for(c)
+      .bind('post-enter', async () => {
+        c.name = "刀锋女王"
+        await 转换(c, c.locate('莎拉·凯瑞甘'), '刀锋女王')
+      }),
+  黄金矿工: (p, c) => $()
+    .for(c)
+    .bind('post-enter', async () => {
+      c.gold = true
+      c.darkgold = false
+      await p.refresh()
+    })
+    .for(p)
+    .bind('round-start', async () => {
+      p.mineral += 1
+    })
 }
 
 export default Data

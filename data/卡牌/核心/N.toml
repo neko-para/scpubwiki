@@ -141,7 +141,7 @@ race = "N"
 pack = "核心"
 level = 4
 unit = { "原始雷兽" = 3 }
-desc = ["供养(4): 原始雷兽", "每回合结束时, 获得{1|2}原始雷兽并除自身外, 每有1张中立卡牌获得1精华"]
+desc = ["供养(4): 原始暴龙兽", "每回合结束时, 获得{1|2}原始雷兽并除自身外, 每有1张中立卡牌获得1精华"]
 
 pool = true
 [card.attr]
@@ -309,6 +309,17 @@ pool = true
 [card.attr]
 insert = true
 void = true
+
+[[card]]
+name = "黄金矿工"
+race = "N"
+pack = "核心"
+level = 0
+unit = {}
+desc = ["每回合开始时, 获得1晶体矿", "出售时, 获得3晶体矿"]
+rmrk = '''多张黄金矿工效果可以叠加
+更改为此卡面描述时, 不修改名称, 星级和种族'''
+pool = false
 
 [[card]]
 name = "岗哨机枪"

@@ -82,6 +82,10 @@ export type BusInfo = {
     card: CardInstance
     upgrade: UpgradeKey | null
   }
+  "switch-desc": {
+    card: CardInstance,
+    desc: CardKey
+  }
 
   "upgrade-pub": {}
   refresh: {}
