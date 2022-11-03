@@ -1,9 +1,9 @@
-import { parse } from "@ltd/j-toml"
-import fs from "fs/promises"
+import { parse } from '@ltd/j-toml'
+import fs from 'fs/promises'
 
 async function searchDataRecursive(res, path) {
   for (const d of await fs.readdir(path)) {
-    if (d.endsWith(".toml")) {
+    if (d.endsWith('.toml')) {
       res.push(`${path}/${d}`)
       continue
     }
@@ -18,8 +18,8 @@ async function readAll(root) {
   await searchDataRecursive(files, root)
   const data = (await Promise.all(files.map(p => fs.readFile(p))))
     .map(b => b.toString())
-    .join("\n")
-  return parse(data, 1, "\n", false)
+    .join('\n')
+  return parse(data, 1, '\n', false)
 }
 
 function splitDesc(str) {
@@ -39,12 +39,12 @@ function splitDesc(str) {
       d3.push(node)
     }
   })
-  return [d1.join(""), d3.join("")]
+  return [d1.join(''), d3.join('')]
 }
 
 async function main() {
-  const result = await readAll("./data")
-  ;["card", "unit", "term", "upgrade"].forEach(k =>
+  const result = await readAll('./data')
+  ;['card', 'unit', 'term', 'upgrade'].forEach(k =>
     result[k].forEach(obj => {
       obj.type = k
     })
@@ -53,7 +53,7 @@ async function main() {
     c.desc = c.desc.map(splitDesc)
   })
   await fs.writeFile(
-    "data/pubdata.ts",
+    'data/pubdata.ts',
     `import { Data } from "./types"
 export type UnitKey = "${result.unit.map(x => x.name).join('"|"')}"
 export const AllUnit: UnitKey[] = ["${result.unit

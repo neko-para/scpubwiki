@@ -1,5 +1,5 @@
-import { Player, infrs } from "."
-import { AsyncEmitter } from "../async-emitter"
+import { Player, infrs } from '.'
+import { AsyncEmitter } from '../async-emitter'
 import {
   CardKey,
   getCard,
@@ -8,12 +8,12 @@ import {
   isNormal,
   UnitKey,
   UpgradeKey,
-} from "../data"
-import { AllUpgrade } from "../data/pubdata"
-import { Card, Race } from "../data/types"
-import { Descriptions } from "./data"
-import { BusInfo, DescriptionGen } from "./types"
-import { 获得, 相邻两侧, 获得N, 摧毁, shuffle } from "./util"
+} from '../data'
+import { AllUpgrade } from '../data/pubdata'
+import { Card, Race } from '../data/types'
+import { Descriptions } from './data'
+import { BusInfo, DescriptionGen } from './types'
+import { 获得, 相邻两侧, 获得N, 摧毁, shuffle } from './util'
 
 export class CardInstance {
   bus: AsyncEmitter<BusInfo>
@@ -45,17 +45,17 @@ export class CardInstance {
     this.player = player
     this.pos = -1
     this.info = {}
-    this.announce = ""
+    this.announce = ''
     this.desc = async () => {}
 
-    this.bus.on("obtain-unit", async ({ unit }) => {
+    this.bus.on('obtain-unit', async ({ unit }) => {
       await player.step(
-        `卡牌 ${this.pos} ${this.name} 即将获得 ${unit.join(", ")}`
+        `卡牌 ${this.pos} ${this.name} 即将获得 ${unit.join(', ')}`
       )
       this.unit.push(...unit)
     })
 
-    this.bus.on("gain-upgrade", async ({ upgrade }) => {
+    this.bus.on('gain-upgrade', async ({ upgrade }) => {
       const u: UpgradeKey =
         upgrade ||
         shuffle(AllUpgrade.filter(u => this.upgrade.indexOf(u) === -1))[0]
@@ -78,68 +78,70 @@ export class CardInstance {
         this,
         false,
         async msg => {
-          await this.player.step(`卡牌 ${this.pos} ${this.name} 即将更新卡面描述`)
+          await this.player.step(
+            `卡牌 ${this.pos} ${this.name} 即将更新卡面描述`
+          )
           this.announce = msg
           await this.player.refresh()
         }
       ).clear()
       await this.player.bus.async_emit('post-enter', {
-        card: this
+        card: this,
       })
       await this.player.refresh()
     })
 
-    this.bus.on("round-end", async () => {
+    this.bus.on('round-end', async () => {
       if (this.infr_type() === 2) {
         await player.step(`卡牌 ${this.pos} ${this.name} 即将触发快速生产`)
-        await player.bus.async_emit("fast-prod", {
+        await player.bus.async_emit('fast-prod', {
           card: this,
         })
       }
     })
 
-    this.bus.on("switch-infr", async () => {
+    this.bus.on('switch-infr', async () => {
       const idx = this.find_infr()
       if (idx !== -1) {
         const f = infrs.indexOf(this.unit[idx])
         if (f < 2) {
           await player.step(`卡牌 ${this.pos} ${this.name} 即将切换挂件`)
-          await player.bus.async_emit("transform-unit", {
+          await player.bus.async_emit('transform-unit', {
             card: this,
             index: [idx],
             to: infrs[1 - f],
           })
           await player.step(`卡牌 ${this.pos} ${this.name} 即将触发快速生产`)
-          await player.bus.async_emit("fast-prod", {
+          await player.bus.async_emit('fast-prod', {
             card: this,
           })
         }
       }
     })
 
-    this.bus.on("upgrade-infr", async () => {
+    this.bus.on('upgrade-infr', async () => {
       const idx = this.find_infr()
       if (idx !== -1) {
         const f = infrs.indexOf(this.unit[idx])
         if (f < 2) {
           await player.step(`卡牌 ${this.pos} ${this.name} 即将将挂件变为高科`)
-          await player.bus.async_emit("transform-unit", {
+          await player.bus.async_emit('transform-unit', {
             card: this,
             index: [idx],
-            to: "高级科技实验室",
+            to: '高级科技实验室',
           })
           await player.step(`卡牌 ${this.pos} ${this.name} 即将触发快速生产`)
-          await player.bus.async_emit("fast-prod", {
+          await player.bus.async_emit('fast-prod', {
             card: this,
           })
         }
       }
     })
 
-    this.bus.on("transform-unit", async ({ index, to }) => {
+    this.bus.on('transform-unit', async ({ index, to }) => {
       await player.step(
         `卡牌 ${this.pos} ${this.name} 即将 ${index.join(
-          ", "
+          ', '
         )} 处的单位变为 ${to}`
       )
       index.forEach(i => {
@@ -147,12 +149,12 @@ export class CardInstance {
       })
     })
 
-    this.bus.on("wrap-in", ({ unit }) => 获得(this, unit))
+    this.bus.on('wrap-in', ({ unit }) => 获得(this, unit))
 
-    this.bus.on("incubate", ({ unit }) =>
+    this.bus.on('incubate', ({ unit }) =>
       相邻两侧(this, async c => {
-        if (c.race === "Z") {
-          await this.player.bus.async_emit("incubate-into", {
+        if (c.race === 'Z') {
+          await this.player.bus.async_emit('incubate-into', {
             card: c,
             unit,
           })
@@ -160,9 +162,9 @@ export class CardInstance {
       })
     )
 
-    this.bus.on("incubate-into", ({ unit }) => 获得(this, unit))
+    this.bus.on('incubate-into', ({ unit }) => 获得(this, unit))
 
-    this.bus.on("seize", async ({ target }) => {
+    this.bus.on('seize', async ({ target }) => {
       await this.player.step(
         `卡牌 ${this.pos} ${this.name} 即将夺取 ${target.pos} ${target.name}`
       )
@@ -170,15 +172,15 @@ export class CardInstance {
       await 摧毁(target)
     })
 
-    this.bus.on("card-selled", async () => {
-      const n = this.locate("虚空水晶塔").length
+    this.bus.on('card-selled', async () => {
+      const n = this.locate('虚空水晶塔').length
       await 相邻两侧(this, async card => {
-        if (card.race === "P" && n > 0) {
+        if (card.race === 'P' && n > 0) {
           await this.player.step(
             `即将转移 ${n} 虚空水晶塔到卡牌 ${card.pos} ${card.name}`
           )
-          this.take_units("虚空水晶塔", n)
-          await 获得N(card, "虚空水晶塔", n)
+          this.take_units('虚空水晶塔', n)
+          await 获得N(card, '虚空水晶塔', n)
         }
       })
     })
@@ -224,7 +226,7 @@ export class CardInstance {
   }
 
   self_power() {
-    return this.locate("水晶塔").length + this.locate("虚空水晶塔").length
+    return this.locate('水晶塔').length + this.locate('虚空水晶塔').length
   }
 
   power() {

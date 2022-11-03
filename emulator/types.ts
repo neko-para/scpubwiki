@@ -1,6 +1,6 @@
-import { Player, CardInstance } from "."
-import { Card, CardKey, UnitKey, UpgradeKey } from "../data"
-import { Binder } from "./util"
+import { Player, CardInstance } from '.'
+import { Card, CardKey, UnitKey, UpgradeKey } from '../data'
+import { Binder } from './util'
 
 export type DescriptionGen = (
   player: Player,
@@ -14,28 +14,28 @@ export type Description = {
 }
 
 export type BusInfo = {
-  "obtain-unit": {
+  'obtain-unit': {
     card: CardInstance
     unit: UnitKey[]
   }
-  "transform-unit": {
+  'transform-unit': {
     card: CardInstance
     index: number[]
     to: UnitKey
   }
-  "fast-prod": {
+  'fast-prod': {
     card: CardInstance
   }
-  "switch-infr": {
+  'switch-infr': {
     card: CardInstance
   }
-  "upgrade-infr": {
+  'upgrade-infr': {
     card: CardInstance
   }
-  "task-done": {
+  'task-done': {
     card: CardInstance
   }
-  "wrap-in": {
+  'wrap-in': {
     card: CardInstance
     unit: UnitKey[]
   }
@@ -51,11 +51,11 @@ export type BusInfo = {
     card: CardInstance
     unit: UnitKey[]
   }
-  "incubate-into": {
+  'incubate-into': {
     card: CardInstance
     unit: UnitKey[]
   }
-  "gain-darkness": {
+  'gain-darkness': {
     card: CardInstance
     darkness: number
   }
@@ -63,41 +63,41 @@ export type BusInfo = {
     card: CardInstance
     target: CardInstance
   }
-  "card-enter": {
+  'card-enter': {
     card: CardInstance
   }
-  "post-enter": {
+  'post-enter': {
     card: CardInstance
   }
-  "card-selled": {
+  'card-selled': {
     card: CardInstance
   }
-  "card-combined": {
+  'card-combined': {
     card: CardInstance
   }
-  "flash-annouce": {
+  'flash-annouce': {
     card: CardInstance
   }
-  "gain-upgrade": {
+  'gain-upgrade': {
     card: CardInstance
     upgrade: UpgradeKey | null
   }
-  "switch-desc": {
-    card: CardInstance,
+  'switch-desc': {
+    card: CardInstance
     desc: CardKey
   }
 
-  "upgrade-pub": {}
+  'upgrade-pub': {}
   refresh: {}
-  "round-start": {}
-  "round-end": {}
-  "sell-card": {
+  'round-start': {}
+  'round-end': {}
+  'sell-card': {
     selled: CardInstance
   }
-  "destroy-card": {
+  'destroy-card': {
     destroyed: CardInstance
   }
-  "discover-card": {
+  'discover-card': {
     filter: (card: Card) => boolean
   }
   wrap: {
@@ -106,7 +106,7 @@ export type BusInfo = {
       to: CardInstance | null
     }
   }
-  "regroup-count": {
+  'regroup-count': {
     info: {
       count: number
     }

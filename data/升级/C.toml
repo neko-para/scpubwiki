@@ -89,5 +89,5 @@ rmrk = ""
 name = "缩小光束"
 category = "C"
 override = true
-bref = "卡牌内所有单位体积减小15%"
+bref = "卡牌内所有单位体积减小15%并且远程武器射程+1"
 rmrk = ""

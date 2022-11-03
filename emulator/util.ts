@@ -1,7 +1,7 @@
-import { AsyncEmitter } from "../async-emitter"
-import { CardInstance } from "."
-import { BusInfo } from "./types"
-import { UnitKey } from "../data"
+import { AsyncEmitter } from '../async-emitter'
+import { CardInstance } from '.'
+import { BusInfo } from './types'
+import { UnitKey } from '../data'
 
 export function shuffle(array: any[]) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -82,7 +82,7 @@ export async function 获得(card: CardInstance, unit: UnitKey[]) {
   if (unit.length === 0) {
     return
   }
-  await card.player.bus.async_emit("obtain-unit", {
+  await card.player.bus.async_emit('obtain-unit', {
     card,
     unit,
   })
@@ -96,7 +96,7 @@ export async function 转换(card: CardInstance, index: number[], to: UnitKey) {
   if (index.length === 0) {
     return
   }
-  await card.player.bus.async_emit("transform-unit", {
+  await card.player.bus.async_emit('transform-unit', {
     card,
     index,
     to,
@@ -104,13 +104,13 @@ export async function 转换(card: CardInstance, index: number[], to: UnitKey) {
 }
 
 export function 摧毁(card: CardInstance) {
-  return card.player.bus.async_emit("destroy-card", {
+  return card.player.bus.async_emit('destroy-card', {
     destroyed: card,
   })
 }
 
 export function 夺取(card: CardInstance, target: CardInstance) {
-  return card.player.bus.async_emit("seize", {
+  return card.player.bus.async_emit('seize', {
     card,
     target,
   })

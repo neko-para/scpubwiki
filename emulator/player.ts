@@ -1,10 +1,10 @@
-import { infrs } from "."
-import { AsyncEmitter } from "../async-emitter"
-import { Card } from "../data"
-import { CardInstance } from "./card"
-import { Descriptions } from "./data"
-import { BusInfo, DescriptionGen } from "./types"
-import { shuffle } from "./util"
+import { infrs } from '.'
+import { AsyncEmitter } from '../async-emitter'
+import { Card } from '../data'
+import { CardInstance } from './card'
+import { Descriptions } from './data'
+import { BusInfo, DescriptionGen } from './types'
+import { shuffle } from './util'
 
 const upgrades = [0, 5, 7, 8, 9, 11, 0]
 export class Player {
@@ -42,11 +42,11 @@ export class Player {
 
     this.refresh = () => {}
     this.stepper = null
-    this.cache = ""
+    this.cache = ''
 
     this.bus.wildcast(async (ev, param) => {
       param = param || {}
-      if ("card" in param) {
+      if ('card' in param) {
         // @ts-ignore
         if (param.card) {
           // @ts-ignore
@@ -59,14 +59,14 @@ export class Player {
         })
       }
     })
-    this.bus.on("round-start", async () => {
+    this.bus.on('round-start', async () => {
       this.flag = {}
     })
-    this.bus.after("wrap", async ({ unit, info }) => {
+    this.bus.after('wrap', async ({ unit, info }) => {
       if (info.to === null) {
         const choice: number[] = []
         this.enumPresent((card: CardInstance) => {
-          if (card.race === "P") {
+          if (card.race === 'P') {
             choice.push(card.pos)
           }
         })
@@ -76,12 +76,12 @@ export class Player {
         shuffle(choice)
         info.to = this.present[choice[0]]
       }
-      await this.bus.async_emit("wrap-in", {
+      await this.bus.async_emit('wrap-in', {
         unit,
         card: info.to as CardInstance,
       })
     })
-    this.bus.on("destroy-card", async ({ destroyed: card }) => {
+    this.bus.on('destroy-card', async ({ destroyed: card }) => {
       await this.step(`卡牌 ${card.pos} ${card.name} 即将移除`)
       this.present[card.pos] = null
 
@@ -238,12 +238,12 @@ export class Player {
     ).clear()
 
     await this.step(`即将广播卡牌三连消息`)
-    await this.bus.async_emit("card-combined", {
+    await this.bus.async_emit('card-combined', {
       card,
     })
 
     await this.step(`即将触发进场效果`)
-    await this.bus.async_emit("post-enter", {
+    await this.bus.async_emit('post-enter', {
       card,
     })
 
@@ -291,12 +291,12 @@ export class Player {
     ).clear()
 
     await this.step(`即将广播卡牌进场消息`)
-    await this.bus.async_emit("card-enter", {
+    await this.bus.async_emit('card-enter', {
       card,
     })
 
     await this.step(`即将触发进场效果`)
-    await this.bus.async_emit("post-enter", {
+    await this.bus.async_emit('post-enter', {
       card,
     })
 
@@ -308,7 +308,7 @@ export class Player {
     const card = this.present[pos] as CardInstance
 
     await this.step(`即将广播卡牌出售消息`)
-    await this.bus.async_emit("sell-card", {
+    await this.bus.async_emit('sell-card', {
       selled: card,
     })
 
@@ -317,7 +317,7 @@ export class Player {
     this.mineral += 1
 
     await this.step(`即将广播卡牌出售完成消息`)
-    await this.bus.async_emit("card-selled", {
+    await this.bus.async_emit('card-selled', {
       card,
     })
     await card.desc()
@@ -328,7 +328,7 @@ export class Player {
     const card = this.present[pos] as CardInstance
 
     await this.step(`即将广播卡牌摧毁消息`)
-    await this.bus.async_emit("destroy-card", {
+    await this.bus.async_emit('destroy-card', {
       destroyed: card,
     })
   }
@@ -354,7 +354,7 @@ export class Player {
 
   async next_round() {
     await this.step(`即将广播回合结束信息`)
-    await this.bus.async_emit("round-end", {})
+    await this.bus.async_emit('round-end', {})
 
     await this.step(`即将更新信息`)
     this.round++
@@ -370,13 +370,13 @@ export class Player {
     }
 
     await this.step(`即将广播回合开始信息`)
-    await this.bus.async_emit("round-start", {})
+    await this.bus.async_emit('round-start', {})
     await this.refresh()
   }
 
   async do_refresh() {
     await this.step(`即将刷新还不存在的商店`)
-    await this.bus.async_emit("refresh", {})
+    await this.bus.async_emit('refresh', {})
     await this.refresh()
   }
 
@@ -388,7 +388,7 @@ export class Player {
       this.upgrade_cost = upgrades[this.level]
 
       await this.step(`即将广播酒馆升级信息`)
-      await this.bus.async_emit("upgrade-pub", {})
+      await this.bus.async_emit('upgrade-pub', {})
       await this.refresh()
     }
   }

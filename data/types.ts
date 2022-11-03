@@ -1,32 +1,32 @@
-import { CardKey, TermKey, UnitKey, UpgradeKey, PossibleKey } from "./pubdata"
+import { CardKey, TermKey, UnitKey, UpgradeKey, PossibleKey } from './pubdata'
 
-export type Race = "T" | "P" | "Z" | "N" | "G"
+export type Race = 'T' | 'P' | 'Z' | 'N' | 'G'
 export type Pack =
-  | "核心"
-  | "天空之怒"
-  | "并肩作战"
-  | "拉克希尔"
-  | "短兵相接"
-  | "快速启动"
-  | "独辟蹊径"
-  | "军备竞赛"
-type UnitType = "normal" | "spbd" | "spun"
-type UpgradeCategory = "S" | "3" | "T" | "P" | "Z" | "C" | "V" | "O"
+  | '核心'
+  | '天空之怒'
+  | '并肩作战'
+  | '拉克希尔'
+  | '短兵相接'
+  | '快速启动'
+  | '独辟蹊径'
+  | '军备竞赛'
+type UnitType = 'normal' | 'spbd' | 'spun'
+type UpgradeCategory = 'S' | '3' | 'T' | 'P' | 'Z' | 'C' | 'V' | 'O'
 
 type SplitResultString = {
-  t: "str"
+  t: 'str'
   s: string
   m?: true
 }
 
 export type SplitResultRefer = {
-  t: "ref"
+  t: 'ref'
   s: PossibleKey
   m?: true
 }
 
 type SplitResultUser = {
-  t: "usr"
+  t: 'usr'
   s: string
   m?: true
 }
@@ -40,7 +40,7 @@ export type SplitResult = SplitResultNode[]
 
 export interface Card {
   name: CardKey
-  type: "card"
+  type: 'card'
   race: Race
   level: number
   pack: Pack
@@ -63,7 +63,7 @@ export interface Card {
 
 export interface Term {
   name: TermKey
-  type: "term"
+  type: 'term'
   race: Race
   bref: string
   extr?: string
@@ -73,9 +73,9 @@ export interface Weapon {
   name: string
   damage: number | string
   multiple?: number
-  range: number | "melee" | "未知"
-  speed: number | "未知"
-  target: "G" | "A" | "GA"
+  range: number | 'melee' | '未知'
+  speed: number | '未知'
+  target: 'G' | 'A' | 'GA'
 }
 
 export interface Armor {
@@ -91,7 +91,7 @@ export interface SArmor {
 
 export interface Unit {
   name: UnitKey
-  type: "unit"
+  type: 'unit'
   race: Race
   utype: UnitType
   value: number
@@ -110,7 +110,7 @@ export interface Unit {
 
 export interface Upgrade {
   name: UpgradeKey
-  type: "upgrade"
+  type: 'upgrade'
   override: boolean
   category: UpgradeCategory
   bref: string

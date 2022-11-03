@@ -1,4 +1,4 @@
-import { AhoCorasick } from "ahocorasick-ts"
+import { AhoCorasick } from 'ahocorasick-ts'
 
 import type {
   Card,
@@ -10,24 +10,16 @@ import type {
   SArmor,
   SplitResult,
   SplitResultRefer,
-} from "./types"
-import { data as raw, AllUnit } from "./pubdata"
+} from './types'
+import { data as raw, AllUnit } from './pubdata'
 import type {
   CardKey,
   TermKey,
   UnitKey,
   UpgradeKey,
   PossibleKey,
-} from "./pubdata"
-const {
-  card,
-  term,
-  unit,
-  upgrade,
-  attr,
-  tr,
-  order
-} = raw
+} from './pubdata'
+const { card, term, unit, upgrade, attr, tr, order } = raw
 
 export const Cards: Map<CardKey, Card> = new Map()
 export const Terms: Map<TermKey, Term> = new Map()
@@ -57,34 +49,34 @@ export function getUpgrade(key: UpgradeKey) {
   return Upgrades.get(key) as Upgrade
 }
 export function canElite(key: UnitKey) {
-  return key + "(精英)" in AllUnit
+  return key + '(精英)' in AllUnit
 }
 export function elited(key: UnitKey) {
-  return (key + "(精英)") as UnitKey
+  return (key + '(精英)') as UnitKey
 }
 export function isBiological(key: UnitKey) {
-  return getUnit(key).tag.includes("生物单位")
+  return getUnit(key).tag.includes('生物单位')
 }
 export function isMachine(key: UnitKey) {
-  return getUnit(key).tag.includes("机械单位")
+  return getUnit(key).tag.includes('机械单位')
 }
 export function isHeavy(key: UnitKey) {
-  return getUnit(key).tag.includes("机械单位")
+  return getUnit(key).tag.includes('机械单位')
 }
 export function isPsionic(key: UnitKey) {
-  return getUnit(key).tag.includes("灵能单位")
+  return getUnit(key).tag.includes('灵能单位')
 }
 export function isHero(key: UnitKey) {
-  return getUnit(key).tag.includes("英雄单位")
+  return getUnit(key).tag.includes('英雄单位')
 }
 export function isNormal(key: UnitKey) {
-  return getUnit(key).utype === "normal"
+  return getUnit(key).utype === 'normal'
 }
 export function isSpecialBuilding(key: UnitKey) {
-  return getUnit(key).utype === "spbd"
+  return getUnit(key).utype === 'spbd'
 }
 export function isSpecialUnit(key: UnitKey) {
-  return getUnit(key).utype === "spun"
+  return getUnit(key).utype === 'spun'
 }
 
 export const Keywords = Array.from(
@@ -105,7 +97,7 @@ function splitTextPiece(text: string) {
     word: string
     drop?: boolean
   }[] = searcher.search(text).map(res => {
-    let r = ""
+    let r = ''
     res.keys.forEach(s => {
       if (s.length > r.length) {
         r = s
@@ -141,19 +133,19 @@ function splitTextPiece(text: string) {
   result.forEach(res => {
     if (ps < res.start) {
       secs.push({
-        t: "str",
+        t: 'str',
         s: text.substring(ps, res.start),
       })
     }
     secs.push({
-      t: "ref",
+      t: 'ref',
       s: res.word as PossibleKey,
     })
     ps = res.end + 1
   })
   if (ps < text.length) {
     secs.push({
-      t: "str",
+      t: 'str',
       s: text.substring(ps),
     })
   }

@@ -1,5 +1,5 @@
-import { Card } from "../data/types"
-import { Cards, getCard } from "../data"
+import { Card } from '../data/types'
+import { Cards, getCard } from '../data'
 
 const poolCount = {
   1: 18,
@@ -21,7 +21,9 @@ export class Pool {
           this.pool.push(c)
         }
       } else {
-        this.pool.push(...Array(poolCount[c.level as 1 | 2 | 3 | 4 | 5 | 6]).fill(c))
+        this.pool.push(
+          ...Array(poolCount[c.level as 1 | 2 | 3 | 4 | 5 | 6]).fill(c)
+        )
       }
     })
   }
